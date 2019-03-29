@@ -6,7 +6,11 @@ import Layout from '../components/Layout';
 // import Features from '../components/Features';
 // import BlogRoll from '../components/BlogRoll';
 
-export const IndexPageTemplate = () => <div />;
+export const IndexPageTemplate = () => (
+  <div>
+    <h1>Soon this will be something cool</h1>
+  </div>
+);
 
 // IndexPageTemplate.propTypes = {
 //   backgroundimage: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
@@ -15,7 +19,7 @@ export const IndexPageTemplate = () => <div />;
 // };
 
 const IndexPage = ({ data }) => {
-  const { frontmatter } = data.markdownRemark;
+  // const { frontmatter } = data.markdownRemark;
 
   return (
     <Layout>
