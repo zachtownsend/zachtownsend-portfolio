@@ -56,3 +56,25 @@ collections:
           - {label: Testimonials, name: testimonials, widget: list, fields: [{label: Quote, name: quote, widget: string}, {label: Author, name: author, widget: string}]}
           - {label: Full_image, name: full_image, widget: image}
           - {label: Pricing, name: pricing, widget: object, fields: [{label: Heading, name: heading, widget: string}, {label: Description, name: description, widget: string}, {label: Plans, name: plans, widget: list, fields: [{label: Plan, name: plan, widget: string}, {label: Price, name: price, widget: string}, {label: Description, name: description, widget: string}, {label: Items, name: items, widget: list}]}]}
+  - name: "projects"
+    label: "Projects"
+    label_singular: "Project"
+    folder: "src/pages/projects"
+    create: true
+    delete: false
+    fields:
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        required: true
+      - label: "Featured Image"
+        name: "thumbnail"
+        widget: "image"
+        required: true
+      - {label: "Client", name: "client", widget: "string"}
+      - label: "Technologies"
+        name: "techs"
+        widget: "list"
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
