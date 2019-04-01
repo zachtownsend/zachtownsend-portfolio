@@ -12,18 +12,31 @@ export const IndexPageTemplate = () => (
   </div>
 );
 
-// IndexPageTemplate.propTypes = {
-//   backgroundimage: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-//   title: PropTypes.string,
-//   subtitle: PropTypes.string
-// };
+IndexPageTemplate.propTypes = {
+  backgroundimage: PropTypes.shape({
+    childImageSharp: {
+      original: {
+        width: PropTypes.number,
+        height: PropTypes.number,
+        src: PropTypes.string,
+      },
+    },
+  }),
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+};
 
 const IndexPage = ({ data }) => {
-  // const { frontmatter } = data.markdownRemark;
+  const { frontmatter } = data.markdownRemark;
+  const { backgroundimage, title, subtitle } = frontmatter;
 
   return (
     <Layout>
-      <IndexPageTemplate />
+      <IndexPageTemplate
+      backgroundimage={backgroundimage}
+      title={title}
+      subtitle={subtitle}
+      />
     </Layout>
   );
 };
@@ -38,40 +51,22 @@ const IndexPage = ({ data }) => {
 
 export default IndexPage;
 
-// export const pageQuery = graphql`
-//   query IndexPageTemplate {
-//     markdownRemark(frontmatter: { templateKey: { eq: "index-page" } }) {
-//       frontmatter {
-//         title
-//         image {
-//           childImageSharp {
-//             fluid(maxWidth: 2048, quality: 100) {
-//               ...GatsbyImageSharpFluid
-//             }
-//           }
-//         }
-//         heading
-//         subheading
-//         mainpitch {
-//           title
-//           description
-//         }
-//         description
-//         intro {
-//           blurbs {
-//             image {
-//               childImageSharp {
-//                 fluid(maxWidth: 240, quality: 64) {
-//                   ...GatsbyImageSharpFluid
-//                 }
-//               }
-//             }
-//             text
-//           }
-//           heading
-//           description
-//         }
-//       }
-//     }
-//   }
-// `;
+export const pageQuery = graphql`
+  query IndexPageTemplate {
+    markdownRemark(frontmatter: { templateKey: { eq: "index-page" } }) {
+      frontmatter {
+        title
+        subtitle
+        backgroundimage {
+          childImageSharp {
+            original {
+              width
+              height
+              src
+            }
+          }
+        }
+      }
+    }
+  }
+`;
