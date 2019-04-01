@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import styled, { ThemeProvider, injectGlobal } from 'styled-components';
-import Nav from './Nav';
+import Navigation from './Navigation';
 import './all.scss';
 import useSiteMetadata from './SiteMetadata';
 
@@ -11,39 +11,21 @@ const theme = {
   gray: '#535556',
   lightGray: '#9C9C9B',
   white: '#fff',
-  darkGray: '#0E0D0D'
+  darkGray: '#0E0D0D',
+  breakpoints: {
+    mobile: 0,
+    tablet: 769,
+    touch: 1023,
+    desktop: 1215,
+    widescreen: 1407,
+  }
 };
-
-const StyledPage = styled.div`
-  padding: 0 20px;
-  background: ${theme.white};
-  min-height: 100vh;
-
-  &::before, &::after {
-    content: "";
-    display: block;
-    position: fixed;
-    left: 0;
-    width: 100%;
-    height: 20px;
-    background-color: #fff;
-    z-index: 1000;
-  }
-
-  &::before {
-    top: 0;
-  }
-
-  &::after {
-    bottom: 0;
-  }
-`;
 
 const TemplateWrapper = ({ children }) => {
   const { title, description } = useSiteMetadata();
   return (
     <ThemeProvider theme={theme}>
-      <StyledPage>
+      <div className="page-container">
         <Helmet>
           <html lang="en" />
           <title>{title}</title>
@@ -79,11 +61,9 @@ const TemplateWrapper = ({ children }) => {
           <meta property="og:url" content="/" />
           <meta property="og:image" content="/img/og-image.jpg" />
         </Helmet>
-        <div className="page-container">
-          <Nav />
-          {children}
-        </div>
-      </StyledPage>
+        <Navigation />
+        {children}
+      </div>
     </ThemeProvider>
   );
 };

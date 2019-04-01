@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageTitle Shows the site title and the page title separated by a slash 1`] = `<header />`;

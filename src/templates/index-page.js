@@ -4,18 +4,24 @@ import { graphql, Link } from 'gatsby';
 import styled from 'styled-components';
 import Layout from '../components/Layout';
 import Button from '../components/Button';
+import ContinueArrow from '../components/ContinueArrow';
 // import Features from '../components/Features';
 // import BlogRoll from '../components/BlogRoll';
 
 const StyledPageContainer = styled.div`
   background: url(${props => props.backgroundimage});
-  min-height: 100vh;
+  padding-top: 20px;
+  min-height: calc(100vh - 20px);
   display: flex;
   justify-content: flex-start;
   align-items: center;
   text-align: center;
   /* background: url('/assets/images/desktop-large_home-bg.jpg') no-repeat center center; */
   background-size: cover;
+
+  > .columns {
+    flex: 1 1 100%;
+  }
 `;
 
 const StyledSiteTitle = styled.header`
@@ -31,23 +37,52 @@ const StyledSiteTitle = styled.header`
     color: ${props => props.theme.lightGray};
     font-size: 18px;
     line-height: 1.1667;
+    display: inline-block;
+    max-width: 12em;
     margin-bottom: 27px;
 
     &.highlight {
       color: ${props => props.theme.primary};
     }
   }
+
+  @media (min-width: ${props => props.theme.breakpoints.tablet}px) {
+    h1 {
+      font-size: 64px;
+    }
+
+    p.subtitle {
+      font-size: 36px;
+    }
+  }
+
+  @media (min-width: ${props => props.theme.breakpoints.desktop}px) {
+    text-align: right;
+
+    .contact-button {
+      display: none;
+    }
+  }
 `;
 
 export const IndexPageTemplate = props => (
   <StyledPageContainer className="section" backgroundimage={props.backgroundimage.childImageSharp.original.src}>
-    {props.title &&
-      <StyledSiteTitle>
-        <h1>{props.title}</h1>
-        {props.subtitle && <p className="subtitle">{props.subtitle}</p>}
-        <Button><Link to="/contact">Contact Me</Link></Button>
-      </StyledSiteTitle>
-    }
+    <div className="columns">
+      <div className="column is-full is-one-third-desktop">
+        {props.title &&
+          <StyledSiteTitle>
+            <h1>{props.title}</h1>
+            {props.subtitle && <p className="subtitle">{props.subtitle}</p>}
+            <Button className="contact-button"><Link to="/contact">Contact Me</Link></Button>
+          </StyledSiteTitle>
+        }
+      </div>
+      <div className="column is-one-third-desktop">
+        <ContinueArrow />
+      </div>
+      <div className="column is-one-third-desktop">
+      </div>
+    </div>
   </StyledPageContainer>
 );
 

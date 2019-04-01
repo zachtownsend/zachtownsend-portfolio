@@ -1,0 +1,60 @@
+import React, { Component } from 'react';
+import { Link } from 'gatsby';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import Logo from './Logo';
+import PageTitle from './PageTitle';
+import Hamburger from './Hamburger';
+
+const StyledNavbar = styled.nav`
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  right:20px;
+  display: flex;
+  justify-content: space-between;
+
+  .logo, .hamburger {
+    flex: 0 1 auto;
+  }
+
+  .logo {
+    svg {
+      width: 44px;
+      height: 44px;
+    }
+  }
+
+  .page-title {
+    flex: 1 1 auto;
+    text-align: left;
+  }
+`;
+
+class Navigation extends Component {
+  render() {
+    return (
+      <StyledNavbar className="section">
+        <Link className="logo" to="/">
+          <Logo />
+        </Link>
+
+        <PageTitle className="page-title" siteTitle="Zach Townsend" pageTitle="Home" />
+
+        <Hamburger className="hamburger" />
+      </StyledNavbar>
+    );
+  }
+}
+
+Navigation.propTypes = {
+  mode: PropTypes.oneOf(['side', 'offcanvas']),
+  active: PropTypes.bool,
+};
+
+Navigation.defaultProps = {
+  mode: 'offcanvas',
+  active: false
+};
+
+export default Navigation;
