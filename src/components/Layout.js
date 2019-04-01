@@ -2,7 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import styled, { ThemeProvider, injectGlobal } from 'styled-components';
 import Nav from './Nav';
-import './all.sass';
+import './all.scss';
 import useSiteMetadata from './SiteMetadata';
 
 const theme = {
@@ -37,17 +37,6 @@ const StyledPage = styled.div`
   &::after {
     bottom: 0;
   }
-`;
-
-const PageContainer = styled.div`
-  background: ${theme.darkGray};
-  min-height: 100vh;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  text-align: center;
-  /* background: url('/assets/images/desktop-large_home-bg.jpg') no-repeat center center; */
-  background-size: cover;
 `;
 
 const TemplateWrapper = ({ children }) => {
@@ -90,10 +79,10 @@ const TemplateWrapper = ({ children }) => {
           <meta property="og:url" content="/" />
           <meta property="og:image" content="/img/og-image.jpg" />
         </Helmet>
-        <PageContainer>
+        <div className="page-container">
           <Nav />
-          <div>{children}</div>
-        </PageContainer>
+          {children}
+        </div>
       </StyledPage>
     </ThemeProvider>
   );

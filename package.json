@@ -1,7 +1,7 @@
 {
-  "name": "zach-townsend-portfolio",
-  "description": "Zach Townsend Web Developer Portfolio",
-  "version": "0.0.1",
+  "name": "zachtownsend-portfolio",
+  "description": "Zach Townsend's Web Developer Portfolio",
+  "version": "0.0.2",
   "author": "Zach Townsend",
   "dependencies": {
     "babel-eslint": "^10.0.1",
@@ -33,6 +33,7 @@
     "lodash-webpack-plugin": "^0.11.4",
     "netlify-cms": "^2.6.1",
     "node-sass": "^4.11.0",
+    "normalize.css": "^8.0.1",
     "parcel-bundler": "^1.9.4",
     "prop-types": "^15.6.0",
     "react": "^16.8.4",
