@@ -30,12 +30,10 @@ collections:
     create: true
     delete: true
     fields:
-      - {
-        label: "Template Key",
-        name: "templateKey",
-        widget: "hidden",
-        default: "single-project",
-      }
+      - label: "Template Key"
+        name: "templateKey"
+        widget: "hidden"
+        default: "single-project"
       - label: "Title"
         name: "title"
         widget: "string"

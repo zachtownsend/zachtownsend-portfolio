@@ -1,4 +1,5 @@
 ---
+templateKey: single-project
 title: Hanro
 thumbnail: /img/hanro-image.jpg
 client: Verb Brands Ltd
@@ -8,4 +9,5 @@ techs:
   - Woocommerce
   - Wordpress
 ---
+
 This is a test

@@ -14,7 +14,7 @@ const theme = {
   darkGray: '#0E0D0D'
 };
 
-const StyledPage = styled.body`
+const StyledPage = styled.div`
   padding: 0 20px;
   background: ${theme.white};
   min-height: 100vh;
