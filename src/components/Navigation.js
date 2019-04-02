@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import classNames from 'classnames';
 import Logo from './Logo';
 import PageTitle from './PageTitle';
 import Hamburger from './Hamburger';
@@ -21,6 +22,12 @@ const StyledNavbar = styled.nav`
   }
 
   .logo {
+    display: inline-block;
+
+    &.centered {
+      transform: translateX(calc(50vw - 52px));
+    }
+
     svg {
       width: 44px;
       height: 44px;
@@ -54,25 +61,38 @@ class Navigation extends Component {
   };
 
   render() {
+    const { location } = this.props;
     const { hamburgerPosition } = this.state;
+    const isHomepage = location === '/';
 
     return (
       <StyledNavbar className="section">
-        <Link className="logo" to="/">
+        <Link
+          data-testid="logo"
+          className={classNames('logo', { centered: isHomepage })}
+          to="/"
+        >
           <Logo />
         </Link>
 
         <PageTitle
+          data-testid="page-title"
           className="page-title"
           siteTitle="Zach Townsend"
           pageTitle="Home"
+          display={!isHomepage}
         />
 
         <Hamburger
-          className="hamburger"
+          visible={!isHomepage}
           onResize={this.getBurgerLinesPositions}
         />
-        <SideNavigation animateTo={hamburgerPosition} />
+
+        <SideNavigation
+          data-testid="side-navigation"
+          animateTo={hamburgerPosition}
+          display={isHomepage}
+        />
       </StyledNavbar>
     );
   }
@@ -81,11 +101,13 @@ class Navigation extends Component {
 Navigation.propTypes = {
   mode: PropTypes.oneOf(['side', 'offcanvas']),
   active: PropTypes.bool,
+  location: PropTypes.string
 };
 
 Navigation.defaultProps = {
   mode: 'offcanvas',
-  active: false
+  active: false,
+  location: '/',
 };
 
 export default Navigation;

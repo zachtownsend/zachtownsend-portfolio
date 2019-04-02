@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const StyledPageTitle = styled.h1`
-  color: ${(props) => props.theme.white};
+  color: ${props => props.theme.white};
   font-size: 24px;
   line-height: 44px;
   text-align: left;
 
   .site-title {
     display: none;
-    color: ${(props) => props.theme.lightGray};
+    color: ${props => props.theme.lightGray};
 
     + .page-title {
       margin-left: 10px;
@@ -18,7 +18,7 @@ const StyledPageTitle = styled.h1`
   }
 
   .page-title::before {
-    content: "/";
+    content: '/';
     color: ${props => props.theme.primary};
     display: inline-block;
     margin-right: 10px;
@@ -34,22 +34,34 @@ const StyledPageTitle = styled.h1`
 `;
 
 function PageTitle(props) {
-  if(!props.pageTitle && !props.siteTitle) return null;
+  if (!props.display) return null;
+
+  if (!props.pageTitle && !props.siteTitle) return null;
 
   return (
     <header className={props.className} data-testid="page-title">
-      <StyledPageTitle>
-        {props.siteTitle && <span className="site-title">{props.siteTitle}</span>}
-        {props.pageTitle && <span className="page-title">{props.pageTitle}</span>}
+      <StyledPageTitle data-testid="htag">
+        {props.siteTitle && (
+          <span className="site-title">{props.siteTitle}</span>
+        )}
+        {props.pageTitle && (
+          <span className="page-title">{props.pageTitle}</span>
+        )}
       </StyledPageTitle>
     </header>
-  )
+  );
 }
 
 PageTitle.propTypes = {
   siteTitle: PropTypes.string,
   pageTitle: PropTypes.string,
+  display: PropTypes.bool
 };
 
-export default PageTitle
+PageTitle.defaultProps = {
+  display: true,
+  siteTitle: '',
+  pageTitle: '',
+};
 
+export default PageTitle;

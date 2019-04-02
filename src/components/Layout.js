@@ -1,11 +1,12 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import styled, { ThemeProvider, injectGlobal } from 'styled-components';
+import { Location } from '@reach/router';
 import Navigation from './Navigation';
 import './all.scss';
 import useSiteMetadata from './SiteMetadata';
 
-const theme = {
+export const siteTheme = {
   primary: '#DA071F',
   black: '#000',
   gray: '#535556',
@@ -17,16 +18,16 @@ const theme = {
     tablet: 769,
     touch: 1023,
     desktop: 1215,
-    widescreen: 1407
+    widescreen: 1407,
   },
   bodyFontFamily: "'Open Sans', sans-serif",
-  displayFontFamily: "'Roboto', sans-serif",
+  displayFontFamily: "'Roboto', sans-serif"
 };
 
-const TemplateWrapper = ({ children }) => {
+const TemplateWrapper = ({ children, location }) => {
   const { title, description } = useSiteMetadata();
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={siteTheme}>
       <div className="page-container">
         <Helmet>
           <html lang="en" />
@@ -63,7 +64,9 @@ const TemplateWrapper = ({ children }) => {
           <meta property="og:url" content="/" />
           <meta property="og:image" content="/img/og-image.jpg" />
         </Helmet>
-        <Navigation />
+        <Location>
+          {({ location }) => <Navigation location={location.pathname} />}
+        </Location>
         {children}
       </div>
     </ThemeProvider>

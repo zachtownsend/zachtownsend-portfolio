@@ -9,6 +9,7 @@ const StyledHamburger = styled.button`
   padding: 8px 5px 7px;
   background: transparent;
   border: 0;
+  visibility: ${props => (props.visible ? 'visible' : 'hidden')};
 
   &:hover {
     cursor: pointer;
@@ -43,13 +44,13 @@ export default class Hamburger extends React.Component {
 
   getBurgerLinesPositions() {
     return Array.from(this.lineWrapper.children).map(
-      line => line.getBoundingClientRect().y
+      line => line.getBoundingClientRect().y,
     );
   }
 
   render() {
     return (
-      <StyledHamburger>
+      <StyledHamburger data-testid="hamburger" visible={this.props.visible}>
         <div
           ref={c => {
             this.lineWrapper = c;
@@ -84,15 +85,15 @@ export default class Hamburger extends React.Component {
 // }
 
 Hamburger.propTypes = {
-  mode: PropTypes.bool,
   active: PropTypes.bool,
-  onResize: PropTypes.func,
+  visible: PropTypes.bool,
+  onResize: PropTypes.func
 };
 
 Hamburger.defaultProps = {
-  mode: PropTypes.oneOf(['side', 'offcanvas']),
   active: false,
-  onResize: () => false,
+  visible: true,
+  onResize: () => false
 };
 
 // export default Hamburger;
