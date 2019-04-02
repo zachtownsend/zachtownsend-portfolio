@@ -32,11 +32,13 @@ const StyledHamburger = styled.button`
 export default class Hamburger extends React.Component {
   componentDidMount = () => {
     const { onResize } = this.props;
+
     onResize(this.getBurgerLinesPositions());
-    // window.addEventListener('resize', () => {
-    //   const positions = this.getBurgerLinesPositions();
-    //   onResize(positions);
-    // });
+
+    window.addEventListener('resize', () => {
+      const positions = this.getBurgerLinesPositions();
+      onResize(positions);
+    });
   };
 
   getBurgerLinesPositions() {

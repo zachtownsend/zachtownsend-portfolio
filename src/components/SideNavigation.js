@@ -28,16 +28,17 @@ const StyledSideNavigation = styled.nav`
         padding-right: ${34 + 20}px;
         position: relative;
 
-        span.line {
+        span {
           display: inline-block;
-          height: 2px;
-          width: 34px;
-          background-color: ${props => props.theme.white};
-          position: absolute;
-          right: 0;
-          top: calc(50% - 1px);
-          /* transform: translateY(0);
-          transition: transform 0.4s ease-out; */
+
+          &.line {
+            height: 2px;
+            width: 34px;
+            background-color: ${props => props.theme.white};
+            position: absolute;
+            right: 0;
+            top: calc(50% - 1px);
+          }
         }
       }
     }
@@ -48,39 +49,65 @@ const Line = posed.span({
   enter: {
     y: 0,
     transition: {
-      duration: 1000,
-      ease: 'easeInOut'
-    },
+      duration: 400,
+      ease: 'easeInOut',
+    }
   },
   exit: {
     y: ({ y }) => y,
     transition: {
-      duration: 1000,
-      ease: 'easeInOut'
-    },
+      duration: 400,
+      ease: 'easeInOut',
+    }
   },
   props: {
     y: 0,
-  }
+    duration: 400
+  },
+});
+
+const FadeOutText = posed.span({
+  enter: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 400,
+      ease: 'easeInOut',
+    }
+  },
+  exit: {
+    y: -20,
+    opacity: 0,
+    transition: {
+      duration: 400,
+      ease: 'easeInOut',
+      delay: ({ delay }) => 0.1 * delay
+    },
+    props: {
+      delay: 0
+    },
+  },
 });
 
 export default class SideNavigation extends Component {
   state = {
-    yPositions: [0, 0, 0, 0],
+    yPositions: [0, 0, 0, 0]
   };
 
   static propTypes = {
     animateTo: PropTypes.arrayOf(PropTypes.number),
-    isVisible: PropTypes.bool
+    isVisible: PropTypes.bool,
   };
 
   static defaultProps = {
     isVisible: true,
-    animateTo: [0, 0, 0, 0],
+    animateTo: [0, 0, 0, 0]
   };
 
   componentDidMount = () => {
-    this.setYPositions();
+    requestAnimationFrame(() => {
+      this.setYPositions();
+    });
 
     window.addEventListener('resize', this.setYPositions);
   };
@@ -98,10 +125,10 @@ export default class SideNavigation extends Component {
     }
     console.dir({ menuItemsPosition, animateTo });
 
-    this.setState({
+    this.setState(() => ({
       ...this.state,
-      yPositions: animateToPositions
-    });
+      yPositions: animateToPositions,
+    }));
   };
 
   render() {
@@ -117,41 +144,53 @@ export default class SideNavigation extends Component {
         >
           <li>
             <Link onClick={this.animate} to="/">
-              Projects
+              <FadeOutText pose={isVisible ? 'enter' : 'exit'} delay={0}>
+                Projects
+              </FadeOutText>
               <Line
                 className="line"
                 pose={isVisible ? 'enter' : 'exit'}
                 y={yPositions[0]}
+                duration={400}
               />
             </Link>
           </li>
           <li>
             <Link to="/">
-              Blog
+              <FadeOutText pose={isVisible ? 'enter' : 'exit'} delay={1}>
+                Blog
+              </FadeOutText>
               <Line
                 className="line"
                 pose={isVisible ? 'enter' : 'exit'}
                 y={yPositions[1]}
+                duration={400}
               />
             </Link>
           </li>
           <li>
             <Link to="/">
-              Workshop
+              <FadeOutText pose={isVisible ? 'enter' : 'exit'} delay={2}>
+                Workshop
+              </FadeOutText>
               <Line
                 className="line"
                 pose={isVisible ? 'enter' : 'exit'}
                 y={yPositions[2]}
+                duration={400}
               />
             </Link>
           </li>
           <li>
             <Link to="/">
-              Contact
+              <FadeOutText pose={isVisible ? 'enter' : 'exit'} delay={3}>
+                Contact
+              </FadeOutText>
               <Line
                 className="line"
                 pose={isVisible ? 'enter' : 'exit'}
                 y={yPositions[3]}
+                duration={400}
               />
             </Link>
           </li>
