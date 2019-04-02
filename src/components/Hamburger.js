@@ -33,15 +33,15 @@ export default class Hamburger extends React.Component {
   componentDidMount = () => {
     const { onResize } = this.props;
     onResize(this.getBurgerLinesPositions());
-    window.addEventListener('resize', () => {
-      const positions = this.getBurgerLinesPositions();
-      onResize(positions);
-    });
+    // window.addEventListener('resize', () => {
+    //   const positions = this.getBurgerLinesPositions();
+    //   onResize(positions);
+    // });
   };
 
   getBurgerLinesPositions() {
     return Array.from(this.lineWrapper.children).map(
-      line => line.getBoundingClientRect().y,
+      line => line.getBoundingClientRect().y
     );
   }
 
@@ -84,13 +84,13 @@ export default class Hamburger extends React.Component {
 Hamburger.propTypes = {
   mode: PropTypes.bool,
   active: PropTypes.bool,
-  onResize: PropTypes.func
+  onResize: PropTypes.func,
 };
 
 Hamburger.defaultProps = {
   mode: PropTypes.oneOf(['side', 'offcanvas']),
   active: false,
-  onResize: () => false
+  onResize: () => false,
 };
 
 // export default Hamburger;

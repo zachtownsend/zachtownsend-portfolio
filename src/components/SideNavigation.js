@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'gatsby';
 import styled from 'styled-components';
+import posed from 'react-pose';
 
 const StyledSideNavigation = styled.nav`
   position: absolute;
@@ -35,40 +36,78 @@ const StyledSideNavigation = styled.nav`
           position: absolute;
           right: 0;
           top: calc(50% - 1px);
-          transform: translateY(0);
-          transition: transform 0.4s ease-out;
+          /* transform: translateY(0);
+          transition: transform 0.4s ease-out; */
         }
       }
     }
   }
 `;
 
+const Line = posed.span({
+  enter: {
+    y: 0,
+    transition: {
+      duration: 1000,
+      ease: 'easeInOut'
+    },
+  },
+  exit: {
+    y: ({ y }) => y,
+    transition: {
+      duration: 1000,
+      ease: 'easeInOut'
+    },
+  },
+  props: {
+    y: 0,
+  }
+});
+
 export default class SideNavigation extends Component {
-  static propTypes = {
-    animateTo: PropTypes.array
+  state = {
+    yPositions: [0, 0, 0, 0],
   };
 
-  animate = e => {
-    e.preventDefault();
+  static propTypes = {
+    animateTo: PropTypes.arrayOf(PropTypes.number),
+    isVisible: PropTypes.bool
+  };
+
+  static defaultProps = {
+    isVisible: true,
+    animateTo: [0, 0, 0, 0],
+  };
+
+  componentDidMount = () => {
+    this.setYPositions();
+
+    window.addEventListener('resize', this.setYPositions);
+  };
+
+  setYPositions = () => {
+    const { animateTo } = this.props;
     const lines = Array.from(this.menuItems.querySelectorAll('span.line'));
     const menuItemsPosition = lines.map(line => {
       return line.getBoundingClientRect().y;
     });
 
-    const animateToPositions = [];
-    let delay = 0;
+    const animateToPositions = [0, 0, 0, 0];
     for (let i = 0; i < menuItemsPosition.length; i++) {
-      lines[i].style = `transform: translateY(-${menuItemsPosition[i] -
-        this.props.animateTo[i]}px); transition-delay: ${delay}s`;
-      delay += 0.1;
+      animateToPositions[i] = -Math.abs(menuItemsPosition[i] - animateTo[i]);
     }
+    console.dir({ menuItemsPosition, animateTo });
 
-    console.dir(menuItemsPosition);
-    console.dir(this.props.animateTo);
-    console.dir(animateToPositions);
+    this.setState({
+      ...this.state,
+      yPositions: animateToPositions
+    });
   };
 
   render() {
+    const { isVisible } = this.props;
+    const { yPositions } = this.state;
+
     return (
       <StyledSideNavigation>
         <ul
@@ -79,25 +118,41 @@ export default class SideNavigation extends Component {
           <li>
             <Link onClick={this.animate} to="/">
               Projects
-              <span className="line" />
+              <Line
+                className="line"
+                pose={isVisible ? 'enter' : 'exit'}
+                y={yPositions[0]}
+              />
             </Link>
           </li>
           <li>
             <Link to="/">
               Blog
-              <span className="line" />
+              <Line
+                className="line"
+                pose={isVisible ? 'enter' : 'exit'}
+                y={yPositions[1]}
+              />
             </Link>
           </li>
           <li>
             <Link to="/">
               Workshop
-              <span className="line" />
+              <Line
+                className="line"
+                pose={isVisible ? 'enter' : 'exit'}
+                y={yPositions[2]}
+              />
             </Link>
           </li>
           <li>
             <Link to="/">
               Contact
-              <span className="line" />
+              <Line
+                className="line"
+                pose={isVisible ? 'enter' : 'exit'}
+                y={yPositions[3]}
+              />
             </Link>
           </li>
         </ul>

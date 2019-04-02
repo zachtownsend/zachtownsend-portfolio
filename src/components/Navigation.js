@@ -40,7 +40,7 @@ class Navigation extends Component {
     this.hamburger = React.createRef();
 
     this.state = {
-      hamburgerPosition: [],
+      hamburgerPosition: []
     };
   }
 
@@ -49,10 +49,12 @@ class Navigation extends Component {
   }
 
   getBurgerLinesPositions = positions => {
-    this.setState({
-      ...this.state,
-      hamburgerPosition: positions,
-    });
+    if (Array.isArray(positions)) {
+      this.setState({
+        ...this.state,
+        hamburgerPosition: positions
+      });
+    }
   };
 
   render() {
@@ -82,12 +84,12 @@ class Navigation extends Component {
 
 Navigation.propTypes = {
   mode: PropTypes.oneOf(['side', 'offcanvas']),
-  active: PropTypes.bool,
+  active: PropTypes.bool
 };
 
 Navigation.defaultProps = {
   mode: 'offcanvas',
-  active: false
+  active: false,
 };
 
 export default Navigation;
