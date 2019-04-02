@@ -67,7 +67,7 @@ const StyledSiteTitle = styled.header`
 
 export const IndexPageTemplate = props => (
   <StyledPageContainer className="section" backgroundimage={props.backgroundimage.childImageSharp.original.src}>
-    <div className="columns">
+    <div className="columns is-multiline">
       <div className="column is-full is-one-third-desktop">
         {props.title &&
           <StyledSiteTitle>
@@ -77,7 +77,7 @@ export const IndexPageTemplate = props => (
           </StyledSiteTitle>
         }
       </div>
-      <div className="column is-one-third-desktop">
+      <div className="column is-full is-one-third-desktop">
         <ContinueArrow />
       </div>
       <div className="column is-one-third-desktop">

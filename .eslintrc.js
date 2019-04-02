@@ -9,7 +9,7 @@ module.exports = {
   ],
   rules: {
     "no-unused-expressions": ["error", {"allowTernary": true}],
-    "comma-dangle": ["always-multiline"],
+    "comma-dangle": [2],
     "react/jsx-filename-extension": true,
     "prettier/prettier": [
       "error",

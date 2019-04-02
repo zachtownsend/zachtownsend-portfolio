@@ -17,8 +17,10 @@ const theme = {
     tablet: 769,
     touch: 1023,
     desktop: 1215,
-    widescreen: 1407,
-  }
+    widescreen: 1407
+  },
+  bodyFontFamily: "'Open Sans', sans-serif",
+  displayFontFamily: "'Roboto', sans-serif",
 };
 
 const TemplateWrapper = ({ children }) => {
