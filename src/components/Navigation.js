@@ -56,7 +56,6 @@ class Navigation extends Component {
   }
 
   getBurgerLinesPositions = positions => {
-    console.log(positions);
     if (Array.isArray(positions)) {
       this.setState({
         ...this.state,
@@ -72,26 +71,27 @@ class Navigation extends Component {
 
     return (
       <StyledNavbar className="section">
-        <Link
+        <div
           data-testid="logo"
           className={classNames('logo', { centered: isHomepage })}
-          to="/"
         >
-          <Logo />
-        </Link>
+          <Link to="/">
+            <Logo />
+          </Link>
+        </div>
 
-        <PageTitle
-          data-testid="page-title"
-          className="page-title"
-          siteTitle="Zach Townsend"
-          pageTitle="Home"
-          display={!isHomepage}
-        />
+        {isHomepage || (
+          <div className="page-title" data-testid="page-title">
+            <PageTitle siteTitle="Zach Townsend" pageTitle="Home" />
+          </div>
+        )}
 
-        <Hamburger
-          visible={!isHomepage}
-          onResize={this.getBurgerLinesPositions}
-        />
+        <div className="hamburger-container" data-testid="hamburger">
+          <Hamburger
+            visible={!isHomepage}
+            onResize={this.getBurgerLinesPositions}
+          />
+        </div>
 
         <Media query={{ minWidth: siteTheme.breakpoints.touch }}>
           {matches =>
@@ -99,7 +99,6 @@ class Navigation extends Component {
               <SideNavigation
                 data-testid="side-navigation"
                 animateTo={hamburgerPosition}
-                display={isHomepage}
               />
             ) : null
           }

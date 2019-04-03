@@ -112,7 +112,13 @@ export default class SideNavigation extends Component {
     window.addEventListener('resize', this.setYPositions);
   };
 
+  /**
+   * Set the positions of the destination span lines in the state
+   */
   setYPositions = () => {
+    /**
+     * Check that the menuItems refs are available
+     */
     if (this.menuItems === null) return;
 
     const { animateTo } = this.props;
@@ -120,15 +126,14 @@ export default class SideNavigation extends Component {
     const menuItemsPosition = lines.map(line => line.getBoundingClientRect().y);
 
     const animateToPositions = [0, 0, 0, 0];
-    for (let i = 0; i < menuItemsPosition.length; i++) {
+    for (let i = 0; i < menuItemsPosition.length; i + 1) {
       animateToPositions[i] = -Math.abs(menuItemsPosition[i] - animateTo[i]);
     }
     console.dir({ menuItemsPosition, animateTo });
 
-    this.setState(() => ({
-      ...this.state,
+    this.setState({
       yPositions: animateToPositions,
-    }));
+    });
   };
 
   render() {

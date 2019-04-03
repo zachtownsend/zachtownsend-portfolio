@@ -8,7 +8,7 @@ import ContinueArrow from '../components/ContinueArrow';
 // import Features from '../components/Features';
 // import BlogRoll from '../components/BlogRoll';
 
-const StyledPageContainer = styled.div`
+export const StyledPageContainer = styled.div`
   background: url(${props => props.backgroundimage});
   padding-top: 20px;
   min-height: calc(100vh - 20px);
@@ -66,22 +66,26 @@ const StyledSiteTitle = styled.header`
 `;
 
 export const IndexPageTemplate = props => (
-  <StyledPageContainer className="section" backgroundimage={props.backgroundimage.childImageSharp.original.src}>
+  <StyledPageContainer
+    className="section"
+    backgroundimage={props.backgroundimage.childImageSharp.original.src}
+  >
     <div className="columns is-multiline">
       <div className="column is-full is-one-third-desktop">
-        {props.title &&
+        {props.title && (
           <StyledSiteTitle>
             <h1>{props.title}</h1>
             {props.subtitle && <p className="subtitle">{props.subtitle}</p>}
-            <Button className="contact-button"><Link to="/contact">Contact Me</Link></Button>
+            <Button className="contact-button">
+              <Link to="/contact">Contact Me</Link>
+            </Button>
           </StyledSiteTitle>
-        }
+        )}
       </div>
       <div className="column is-full is-one-third-desktop">
         <ContinueArrow />
       </div>
-      <div className="column is-one-third-desktop">
-      </div>
+      <div className="column is-one-third-desktop" />
     </div>
   </StyledPageContainer>
 );
@@ -107,9 +111,9 @@ const IndexPage = ({ data }) => {
   return (
     <Layout>
       <IndexPageTemplate
-      backgroundimage={backgroundimage}
-      title={title}
-      subtitle={subtitle}
+        backgroundimage={backgroundimage}
+        title={title}
+        subtitle={subtitle}
       />
     </Layout>
   );

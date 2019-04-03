@@ -34,8 +34,6 @@ const StyledPageTitle = styled.h1`
 `;
 
 function PageTitle({ display, pageTitle, siteTitle, className }) {
-  if (!display) return null;
-
   if (!pageTitle && !siteTitle) return null;
 
   return (
@@ -51,12 +49,10 @@ function PageTitle({ display, pageTitle, siteTitle, className }) {
 PageTitle.propTypes = {
   siteTitle: PropTypes.string,
   pageTitle: PropTypes.string,
-  display: PropTypes.bool,
   className: PropTypes.string,
 };
 
 PageTitle.defaultProps = {
-  display: true,
   siteTitle: '',
   pageTitle: '',
   className: null,
