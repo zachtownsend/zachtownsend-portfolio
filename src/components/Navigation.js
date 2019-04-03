@@ -10,6 +10,8 @@ import Hamburger from './Hamburger';
 import SideNavigation from './SideNavigation';
 import { siteTheme } from './Layout';
 
+const pageTransitionEvent = 'gatsby-plugin-page-transition::exit';
+
 const StyledNavbar = styled.nav`
   position: fixed;
   top: 20px;
@@ -49,11 +51,30 @@ class Navigation extends Component {
     super(props);
 
     this.hamburger = React.createRef();
+    this.listenHandler.bind(this);
 
     this.state = {
       hamburgerPosition: [],
+      transitioning: false,
     };
   }
+
+  componentDidMount = () => {
+    window.addEventListener(pageTransitionEvent, this.listenHandler);
+    this.setState({
+      transitioning: false,
+    });
+  };
+
+  componentWillUnmount = () => {
+    window.removeEventListener(pageTransitionEvent, this.listenHandler);
+  };
+
+  listenHandler = () => {
+    this.setState({
+      transitioning: true,
+    });
+  };
 
   getBurgerLinesPositions = positions => {
     if (Array.isArray(positions)) {
@@ -66,8 +87,8 @@ class Navigation extends Component {
 
   render() {
     const { location } = this.props;
-    const { hamburgerPosition } = this.state;
-    const isHomepage = location === '/';
+    const { hamburgerPosition, transitioning } = this.state;
+    const isHomepage = location === '/' && !transitioning;
 
     return (
       <StyledNavbar className="section">

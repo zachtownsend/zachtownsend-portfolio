@@ -21,7 +21,7 @@ export const siteTheme = {
     widescreen: 1407,
   },
   bodyFontFamily: "'Open Sans', sans-serif",
-  displayFontFamily: "'Roboto', sans-serif"
+  displayFontFamily: "'Roboto', sans-serif",
 };
 
 const TemplateWrapper = ({ children, location }) => {

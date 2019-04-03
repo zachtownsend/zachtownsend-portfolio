@@ -187,7 +187,7 @@ export default class SideNavigation extends Component {
             </Link>
           </li>
           <li>
-            <Link to="/">
+            <Link to="/contact">
               <FadeOutText pose={isVisible ? 'enter' : 'exit'} delay={3}>
                 Contact
               </FadeOutText>
