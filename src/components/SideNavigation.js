@@ -51,18 +51,18 @@ const Line = posed.span({
     transition: {
       duration: 400,
       ease: 'easeInOut',
-    }
+    },
   },
   exit: {
     y: ({ y }) => y,
     transition: {
       duration: 400,
       ease: 'easeInOut',
-    }
+    },
   },
   props: {
     y: 0,
-    duration: 400
+    duration: 400,
   },
 });
 
@@ -73,7 +73,7 @@ const FadeOutText = posed.span({
     transition: {
       duration: 400,
       ease: 'easeInOut',
-    }
+    },
   },
   exit: {
     y: -20,
@@ -81,17 +81,17 @@ const FadeOutText = posed.span({
     transition: {
       duration: 400,
       ease: 'easeInOut',
-      delay: ({ delay }) => 0.1 * delay
+      delay: ({ delay }) => 0.1 * delay,
     },
     props: {
-      delay: 0
+      delay: 0,
     },
   },
 });
 
 export default class SideNavigation extends Component {
   state = {
-    yPositions: [0, 0, 0, 0]
+    yPositions: [0, 0, 0, 0],
   };
 
   static propTypes = {
@@ -101,7 +101,7 @@ export default class SideNavigation extends Component {
 
   static defaultProps = {
     isVisible: true,
-    animateTo: [0, 0, 0, 0]
+    animateTo: [0, 0, 0, 0],
   };
 
   componentDidMount = () => {
@@ -113,11 +113,11 @@ export default class SideNavigation extends Component {
   };
 
   setYPositions = () => {
+    if (this.menuItems === null) return;
+
     const { animateTo } = this.props;
     const lines = Array.from(this.menuItems.querySelectorAll('span.line'));
-    const menuItemsPosition = lines.map(line => {
-      return line.getBoundingClientRect().y;
-    });
+    const menuItemsPosition = lines.map(line => line.getBoundingClientRect().y);
 
     const animateToPositions = [0, 0, 0, 0];
     for (let i = 0; i < menuItemsPosition.length; i++) {

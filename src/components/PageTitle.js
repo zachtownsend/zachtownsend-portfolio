@@ -52,7 +52,7 @@ PageTitle.propTypes = {
   siteTitle: PropTypes.string,
   pageTitle: PropTypes.string,
   display: PropTypes.bool,
-  className: PropTypes.oneOf([null, PropTypes.string]),
+  className: PropTypes.string,
 };
 
 PageTitle.defaultProps = {

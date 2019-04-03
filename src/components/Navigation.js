@@ -3,10 +3,12 @@ import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import classNames from 'classnames';
+import Media from 'react-media';
 import Logo from './Logo';
 import PageTitle from './PageTitle';
 import Hamburger from './Hamburger';
 import SideNavigation from './SideNavigation';
+import { siteTheme } from './Layout';
 
 const StyledNavbar = styled.nav`
   position: fixed;
@@ -49,15 +51,16 @@ class Navigation extends Component {
     this.hamburger = React.createRef();
 
     this.state = {
-      hamburgerPosition: []
+      hamburgerPosition: [],
     };
   }
 
   getBurgerLinesPositions = positions => {
+    console.log(positions);
     if (Array.isArray(positions)) {
       this.setState({
         ...this.state,
-        hamburgerPosition: positions
+        hamburgerPosition: positions,
       });
     }
   };
@@ -90,11 +93,17 @@ class Navigation extends Component {
           onResize={this.getBurgerLinesPositions}
         />
 
-        <SideNavigation
-          data-testid="side-navigation"
-          animateTo={hamburgerPosition}
-          display={isHomepage}
-        />
+        <Media query={{ minWidth: siteTheme.breakpoints.touch }}>
+          {matches =>
+            matches ? (
+              <SideNavigation
+                data-testid="side-navigation"
+                animateTo={hamburgerPosition}
+                display={isHomepage}
+              />
+            ) : null
+          }
+        </Media>
       </StyledNavbar>
     );
   }
@@ -109,7 +118,7 @@ Navigation.propTypes = {
 Navigation.defaultProps = {
   mode: 'offcanvas',
   active: false,
-  location: '/'
+  location: '/',
 };
 
 export default Navigation;

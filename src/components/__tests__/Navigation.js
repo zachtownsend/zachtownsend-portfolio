@@ -6,6 +6,11 @@ import Navigation from '../Navigation';
 
 afterEach(cleanup);
 
+window.matchMedia = () => ({
+  addListener: () => {},
+  removeListener: () => {},
+});
+
 const renderComponent = props =>
   render(
     <ThemeProvider theme={siteTheme}>
@@ -14,7 +19,7 @@ const renderComponent = props =>
   );
 
 describe('Functionality on the Home Page', () => {
-  const { queryByTestId, getByTestId } = renderComponent({ location: '/' });
+  const { queryByTestId } = renderComponent({ location: '/' });
   it("adds special classes to logo, hamburger is hidden and page title doesn't exist", () => {
     expect(queryByTestId('logo')).toHaveClass('centered');
     expect(queryByTestId('page-title')).toBeNull();
