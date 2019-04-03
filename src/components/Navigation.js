@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'gatsby';
+import Link, { TransitionState } from 'gatsby-plugin-transition-link';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import classNames from 'classnames';
@@ -10,8 +10,6 @@ import Hamburger from './Hamburger';
 import SideNavigation from './SideNavigation';
 import { siteTheme } from './Layout';
 
-const pageTransitionEvent = 'gatsby-plugin-page-transition::exit';
-
 const StyledNavbar = styled.nav`
   position: fixed;
   top: 20px;
@@ -21,7 +19,7 @@ const StyledNavbar = styled.nav`
   justify-content: space-between;
 
   .logo,
-  .hamburger {
+  .hamburger-container {
     flex: 0 1 auto;
   }
 
@@ -44,6 +42,14 @@ const StyledNavbar = styled.nav`
     flex: 1 1 auto;
     text-align: left;
   }
+
+  .hamburger-container {
+    visibility: visible;
+
+    &.isHomepage {
+      visibility: hidden;
+    }
+  }
 `;
 
 class Navigation extends Component {
@@ -51,28 +57,18 @@ class Navigation extends Component {
     super(props);
 
     this.hamburger = React.createRef();
-    this.listenHandler.bind(this);
 
     this.state = {
       hamburgerPosition: [],
-      transitioning: false,
+      isHomepage: props.location === '/',
     };
   }
 
   componentDidMount = () => {
-    window.addEventListener(pageTransitionEvent, this.listenHandler);
-    this.setState({
-      transitioning: false,
-    });
-  };
+    const { location } = this.props;
 
-  componentWillUnmount = () => {
-    window.removeEventListener(pageTransitionEvent, this.listenHandler);
-  };
-
-  listenHandler = () => {
     this.setState({
-      transitioning: true,
+      isHomepage: location === '/',
     });
   };
 
@@ -87,44 +83,51 @@ class Navigation extends Component {
 
   render() {
     const { location } = this.props;
-    const { hamburgerPosition, transitioning } = this.state;
-    const isHomepage = location === '/' && !transitioning;
+    const { hamburgerPosition, isHomepage } = this.state;
 
     return (
-      <StyledNavbar className="section">
-        <div
-          data-testid="logo"
-          className={classNames('logo', { centered: isHomepage })}
-        >
-          <Link to="/">
-            <Logo />
-          </Link>
-        </div>
+      <TransitionState>
+        {props => (
+          <StyledNavbar className="section">
+            <div
+              data-testid="logo"
+              className={classNames('logo', { centered: isHomepage })}
+            >
+              <Link to="/">
+                <Logo />
+              </Link>
+            </div>
 
-        {isHomepage || (
-          <div className="page-title" data-testid="page-title">
-            <PageTitle siteTitle="Zach Townsend" pageTitle="Home" />
-          </div>
+            {isHomepage || (
+              <div className="page-title" data-testid="page-title">
+                <PageTitle siteTitle="Zach Townsend" pageTitle="Home" />
+              </div>
+            )}
+
+            <div
+              className={classNames(
+                'hamburger-container',
+                props.transitionStatus,
+                { isHomepage }
+              )}
+              data-testid="hamburger"
+            >
+              <Hamburger visible onResize={this.getBurgerLinesPositions} />
+            </div>
+
+            <Media query={{ minWidth: siteTheme.breakpoints.touch }}>
+              {matches =>
+                matches ? (
+                  <SideNavigation
+                    data-testid="side-navigation"
+                    animateTo={hamburgerPosition}
+                  />
+                ) : null
+              }
+            </Media>
+          </StyledNavbar>
         )}
-
-        <div className="hamburger-container" data-testid="hamburger">
-          <Hamburger
-            visible={!isHomepage}
-            onResize={this.getBurgerLinesPositions}
-          />
-        </div>
-
-        <Media query={{ minWidth: siteTheme.breakpoints.touch }}>
-          {matches =>
-            matches ? (
-              <SideNavigation
-                data-testid="side-navigation"
-                animateTo={hamburgerPosition}
-              />
-            ) : null
-          }
-        </Media>
-      </StyledNavbar>
+      </TransitionState>
     );
   }
 }

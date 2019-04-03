@@ -9,7 +9,7 @@ const StyledHamburger = styled.button`
   padding: 8px 5px 7px;
   background: transparent;
   border: 0;
-  visibility: ${props => (props.visible ? 'visible' : 'hidden')};
+  /* visibility: ${props => (props.visible ? 'visible' : 'hidden')}; */
 
   &:hover {
     cursor: pointer;
@@ -87,13 +87,13 @@ export default class Hamburger extends React.Component {
 Hamburger.propTypes = {
   active: PropTypes.bool,
   visible: PropTypes.bool,
-  onResize: PropTypes.func
+  onResize: PropTypes.func,
 };
 
 Hamburger.defaultProps = {
   active: false,
   visible: true,
-  onResize: () => false
+  onResize: () => false,
 };
 
 // export default Hamburger;

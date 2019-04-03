@@ -1,5 +1,5 @@
 import React from 'react';
-import { navigate } from 'gatsby-link';
+// import { navigate } from 'gatsby-link';
 import styled from 'styled-components';
 import Layout from '../../components/Layout';
 import { StyledPageContainer } from '../../templates/index-page';
@@ -10,7 +10,10 @@ import { StyledPageContainer } from '../../templates/index-page';
 //     .join('&')
 // }
 const ContactPageContainer = styled(StyledPageContainer)`
-  background-color: ${({ darkGray }) => darkGray};
+  background-color: ${({ theme }) => theme.darkGray};
+  .hamburger-container {
+    visibility: visible;
+  }
 `;
 
 export default class Index extends React.Component {

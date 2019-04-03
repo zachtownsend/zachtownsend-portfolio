@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import posed from 'react-pose';
-import TransitionLink from 'gatsby-plugin-transition-link';
+import TransitionLink, { TransitionState } from 'gatsby-plugin-transition-link';
 
 const StyledSideNavigation = styled.nav`
   position: absolute;
@@ -89,6 +89,21 @@ const FadeOutText = posed.span({
   },
 });
 
+const transitionProps = {
+  exit: {
+    length: 2,
+    state: {
+      foo: 'exit',
+    },
+  },
+  entry: {
+    delay: 2,
+    state: {
+      foo: 'enter',
+    },
+  },
+};
+
 export default class SideNavigation extends Component {
   state = {
     yPositions: [0, 0, 0, 0],
@@ -126,7 +141,7 @@ export default class SideNavigation extends Component {
     const menuItemsPosition = lines.map(line => line.getBoundingClientRect().y);
 
     const animateToPositions = [0, 0, 0, 0];
-    for (let i = 0; i < menuItemsPosition.length; i + 1) {
+    for (let i = 0; i < menuItemsPosition.length; i += 1) {
       animateToPositions[i] = -Math.abs(menuItemsPosition[i] - animateTo[i]);
     }
     console.dir({ menuItemsPosition, animateTo });
@@ -142,97 +157,84 @@ export default class SideNavigation extends Component {
 
     return (
       <StyledSideNavigation>
-        <ul
-          ref={c => {
-            this.menuItems = c;
+        <TransitionState exit={{ length: 0.5 }} entry={{ delay: 0.5 }}>
+          {({ exit, transitionStatus }) => {
+            console.log(transitionStatus);
+            const transitioning = transitionStatus !== 'exiting';
+            return (
+              <ul
+                ref={c => {
+                  this.menuItems = c;
+                }}
+              >
+                <li>
+                  <TransitionLink to="/" {...transitionProps}>
+                    <FadeOutText
+                      pose={transitioning ? 'enter' : 'exit'}
+                      delay={0}
+                    >
+                      Projects
+                    </FadeOutText>
+                    <Line
+                      className="line"
+                      pose={transitioning ? 'enter' : 'exit'}
+                      y={yPositions[0]}
+                      duration={400}
+                    />
+                  </TransitionLink>
+                </li>
+                <li>
+                  <TransitionLink to="/" {...transitionProps}>
+                    <FadeOutText
+                      pose={transitioning ? 'enter' : 'exit'}
+                      delay={1}
+                    >
+                      Blog
+                    </FadeOutText>
+                    <Line
+                      className="line"
+                      pose={transitioning ? 'enter' : 'exit'}
+                      y={yPositions[1]}
+                      duration={400}
+                    />
+                  </TransitionLink>
+                </li>
+                <li>
+                  <TransitionLink to="/" {...transitionProps}>
+                    <FadeOutText
+                      pose={transitioning ? 'enter' : 'exit'}
+                      delay={2}
+                    >
+                      Workshop
+                    </FadeOutText>
+                    <Line
+                      className="line"
+                      pose={transitioning ? 'enter' : 'exit'}
+                      y={yPositions[2]}
+                      duration={400}
+                    />
+                  </TransitionLink>
+                </li>
+                <li>
+                  <TransitionLink to="/contact" {...transitionProps}>
+                    <FadeOutText
+                      pose={transitioning ? 'enter' : 'exit'}
+                      delay={3}
+                    >
+                      Contact
+                    </FadeOutText>
+                    <Line
+                      className="line"
+                      pose={transitioning ? 'enter' : 'exit'}
+                      y={yPositions[3]}
+                      duration={400}
+                    />
+                  </TransitionLink>
+                </li>
+              </ul>
+            );
           }}
-        >
-          <li>
-            <TransitionLink
-              onClick={this.animate}
-              to="/"
-              exit={{
-                length: 1,
-              }}
-              entry={{
-                delay: 0.6,
-              }}
-            >
-              <FadeOutText pose={isVisible ? 'enter' : 'exit'} delay={0}>
-                Projects
-              </FadeOutText>
-              <Line
-                className="line"
-                pose={isVisible ? 'enter' : 'exit'}
-                y={yPositions[0]}
-                duration={400}
-              />
-            </TransitionLink>
-          </li>
-          <li>
-            <TransitionLink
-              to="/"
-              exit={{
-                length: 1,
-              }}
-              entry={{
-                delay: 0.6,
-              }}
-            >
-              <FadeOutText pose={isVisible ? 'enter' : 'exit'} delay={1}>
-                Blog
-              </FadeOutText>
-              <Line
-                className="line"
-                pose={isVisible ? 'enter' : 'exit'}
-                y={yPositions[1]}
-                duration={400}
-              />
-            </TransitionLink>
-          </li>
-          <li>
-            <TransitionLink
-              to="/"
-              exit={{
-                length: 1,
-              }}
-              entry={{
-                delay: 0.6,
-              }}
-            >
-              <FadeOutText pose={isVisible ? 'enter' : 'exit'} delay={2}>
-                Workshop
-              </FadeOutText>
-              <Line
-                className="line"
-                pose={isVisible ? 'enter' : 'exit'}
-                y={yPositions[2]}
-                duration={400}
-              />
-            </TransitionLink>
-          </li>
-          <li>
-            <TransitionLink
-              to="/"
-              exit={{
-                length: 1,
-              }}
-              entry={{
-                delay: 0.6,
-              }}
-            >
-              <FadeOutText pose={isVisible ? 'enter' : 'exit'} delay={3}>
-                Contact
-              </FadeOutText>
-              <Line
-                className="line"
-                pose={isVisible ? 'enter' : 'exit'}
-                y={yPositions[3]}
-                duration={400}
-              />
-            </TransitionLink>
-          </li>
-        </ul>
+        </TransitionState>
       </StyledSideNavigation>
     );
   }

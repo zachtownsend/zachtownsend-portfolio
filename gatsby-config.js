@@ -10,13 +10,12 @@ module.exports = {
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-styled-components',
     'gatsby-plugin-sass',
-    'gatsby-plugin-transition-link',
-    // {
-    //   resolve: `gatsby-plugin-layout`,
-    //   options: {
-    //     component: `${__dirname}/src/components/TemplateWrapper`,
-    //   },
-    // },
+    {
+      resolve: 'gatsby-plugin-transition-link',
+      options: {
+        component: require.resolve('./src/components/Layout.js'),
+      },
+    },
     {
       // keep as first gatsby-source-filesystem plugin for gatsby image support
       resolve: 'gatsby-source-filesystem',
