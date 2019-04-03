@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'gatsby';
 import styled from 'styled-components';
 import posed from 'react-pose';
+import TransitionLink from 'gatsby-plugin-transition-link';
 
 const StyledSideNavigation = styled.nav`
   position: absolute;
@@ -148,7 +148,16 @@ export default class SideNavigation extends Component {
           }}
         >
           <li>
-            <Link onClick={this.animate} to="/">
+            <TransitionLink
+              onClick={this.animate}
+              to="/"
+              exit={{
+                length: 1,
+              }}
+              entry={{
+                delay: 0.6,
+              }}
+            >
               <FadeOutText pose={isVisible ? 'enter' : 'exit'} delay={0}>
                 Projects
               </FadeOutText>
@@ -158,10 +167,18 @@ export default class SideNavigation extends Component {
                 y={yPositions[0]}
                 duration={400}
               />
-            </Link>
+            </TransitionLink>
           </li>
           <li>
-            <Link to="/">
+            <TransitionLink
+              to="/"
+              exit={{
+                length: 1,
+              }}
+              entry={{
+                delay: 0.6,
+              }}
+            >
               <FadeOutText pose={isVisible ? 'enter' : 'exit'} delay={1}>
                 Blog
               </FadeOutText>
@@ -171,10 +188,18 @@ export default class SideNavigation extends Component {
                 y={yPositions[1]}
                 duration={400}
               />
-            </Link>
+            </TransitionLink>
           </li>
           <li>
-            <Link to="/">
+            <TransitionLink
+              to="/"
+              exit={{
+                length: 1,
+              }}
+              entry={{
+                delay: 0.6,
+              }}
+            >
               <FadeOutText pose={isVisible ? 'enter' : 'exit'} delay={2}>
                 Workshop
               </FadeOutText>
@@ -184,10 +209,18 @@ export default class SideNavigation extends Component {
                 y={yPositions[2]}
                 duration={400}
               />
-            </Link>
+            </TransitionLink>
           </li>
           <li>
-            <Link to="/contact">
+            <TransitionLink
+              to="/"
+              exit={{
+                length: 1,
+              }}
+              entry={{
+                delay: 0.6,
+              }}
+            >
               <FadeOutText pose={isVisible ? 'enter' : 'exit'} delay={3}>
                 Contact
               </FadeOutText>
@@ -197,7 +230,7 @@ export default class SideNavigation extends Component {
                 y={yPositions[3]}
                 duration={400}
               />
-            </Link>
+            </TransitionLink>
           </li>
         </ul>
       </StyledSideNavigation>
