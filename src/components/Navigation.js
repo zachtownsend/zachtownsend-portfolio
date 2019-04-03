@@ -42,14 +42,6 @@ const StyledNavbar = styled.nav`
     flex: 1 1 auto;
     text-align: left;
   }
-
-  .hamburger-container {
-    visibility: visible;
-
-    &.isHomepage {
-      visibility: hidden;
-    }
-  }
 `;
 
 class Navigation extends Component {
@@ -104,27 +96,25 @@ class Navigation extends Component {
               </div>
             )}
 
-            <div
-              className={classNames(
-                'hamburger-container',
-                props.transitionStatus,
-                { isHomepage }
-              )}
-              data-testid="hamburger"
-            >
-              <Hamburger visible onResize={this.getBurgerLinesPositions} />
+            <div className="hamburger-container" data-testid="hamburger">
+              <Hamburger
+                visible={!isHomepage}
+                onResize={this.getBurgerLinesPositions}
+              />
             </div>
 
-            <Media query={{ minWidth: siteTheme.breakpoints.touch }}>
-              {matches =>
-                matches ? (
-                  <SideNavigation
-                    data-testid="side-navigation"
-                    animateTo={hamburgerPosition}
-                  />
-                ) : null
-              }
-            </Media>
+            {isHomepage && (
+              <Media query={{ minWidth: siteTheme.breakpoints.touch }}>
+                {matches =>
+                  matches ? (
+                    <SideNavigation
+                      data-testid="side-navigation"
+                      animateTo={hamburgerPosition}
+                    />
+                  ) : null
+                }
+              </Media>
+            )}
           </StyledNavbar>
         )}
       </TransitionState>

@@ -49,20 +49,20 @@ const Line = posed.span({
   enter: {
     y: 0,
     transition: {
-      duration: 400,
+      duration: 800,
       ease: 'easeInOut',
     },
   },
   exit: {
     y: ({ y }) => y,
     transition: {
-      duration: 400,
+      duration: 800,
       ease: 'easeInOut',
     },
   },
   props: {
     y: 0,
-    duration: 400,
+    duration: 800,
   },
 });
 
@@ -71,15 +71,16 @@ const FadeOutText = posed.span({
     y: 0,
     opacity: 1,
     transition: {
-      duration: 400,
+      duration: 800,
       ease: 'easeInOut',
+      delay: ({ delay }) => 0.1 * delay,
     },
   },
   exit: {
     y: -20,
     opacity: 0,
     transition: {
-      duration: 400,
+      duration: 800,
       ease: 'easeInOut',
       delay: ({ delay }) => 0.1 * delay,
     },
@@ -97,7 +98,7 @@ const transitionProps = {
     },
   },
   entry: {
-    delay: 2,
+    delay: 0.8,
     state: {
       foo: 'enter',
     },
@@ -106,7 +107,7 @@ const transitionProps = {
 
 export default class SideNavigation extends Component {
   state = {
-    yPositions: [0, 0, 0, 0],
+    yPositions: this.setLinePositions() || [0, 0, 0, 0],
   };
 
   static propTypes = {
@@ -121,16 +122,16 @@ export default class SideNavigation extends Component {
 
   componentDidMount = () => {
     requestAnimationFrame(() => {
-      this.setYPositions();
+      this.setLinePositions();
     });
 
-    window.addEventListener('resize', this.setYPositions);
+    window.addEventListener('resize', this.setLinePositions);
   };
 
   /**
    * Set the positions of the destination span lines in the state
    */
-  setYPositions = () => {
+  setLinePositions = () => {
     /**
      * Check that the menuItems refs are available
      */
@@ -158,9 +159,11 @@ export default class SideNavigation extends Component {
     return (
       <StyledSideNavigation>
         <TransitionState exit={{ length: 0.5 }} entry={{ delay: 0.5 }}>
-          {({ exit, transitionStatus }) => {
-            console.log(transitionStatus);
-            const transitioning = transitionStatus !== 'exiting';
+          {({ transitionStatus }) => {
+            const transitioning = ['entering', 'entered'].includes(
+              transitionStatus
+            );
+
             return (
               <ul
                 ref={c => {
