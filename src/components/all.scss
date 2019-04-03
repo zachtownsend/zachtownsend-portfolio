@@ -3,6 +3,31 @@
 // @import "~bulma/sass/components/container";
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i|Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i");
 
+body {
+  padding: 0 20px;
+  background: $white;
+  min-height: 100vh;
+
+  &::before,
+  &::after {
+    content: "";
+    display: block;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background-color: #fff;
+    z-index: 1000;
+  }
+
+  &::before {
+    top: 0;
+  }
+
+  &::after {
+    bottom: 0;
+  }
+}
 
 /* Typography */
 h1,
