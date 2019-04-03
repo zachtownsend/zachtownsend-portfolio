@@ -44,7 +44,7 @@ export default class Hamburger extends React.Component {
 
   getBurgerLinesPositions() {
     return Array.from(this.lineWrapper.children).map(
-      line => line.getBoundingClientRect().y,
+      line => line.getBoundingClientRect().y
     );
   }
 

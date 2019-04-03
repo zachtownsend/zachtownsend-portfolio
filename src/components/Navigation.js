@@ -24,8 +24,10 @@ const StyledNavbar = styled.nav`
   .logo {
     display: inline-block;
 
-    &.centered {
-      transform: translateX(calc(50vw - 52px));
+    @media (min-width: ${({ theme }) => theme.breakpoints.touch}px) {
+      &.centered {
+        transform: translateX(calc(50vw - 52px));
+      }
     }
 
     svg {
@@ -47,7 +49,7 @@ class Navigation extends Component {
     this.hamburger = React.createRef();
 
     this.state = {
-      hamburgerPosition: [],
+      hamburgerPosition: []
     };
   }
 
@@ -55,7 +57,7 @@ class Navigation extends Component {
     if (Array.isArray(positions)) {
       this.setState({
         ...this.state,
-        hamburgerPosition: positions,
+        hamburgerPosition: positions
       });
     }
   };
@@ -101,13 +103,13 @@ class Navigation extends Component {
 Navigation.propTypes = {
   mode: PropTypes.oneOf(['side', 'offcanvas']),
   active: PropTypes.bool,
-  location: PropTypes.string
+  location: PropTypes.string,
 };
 
 Navigation.defaultProps = {
   mode: 'offcanvas',
   active: false,
-  location: '/',
+  location: '/'
 };
 
 export default Navigation;

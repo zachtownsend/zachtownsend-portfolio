@@ -33,20 +33,16 @@ const StyledPageTitle = styled.h1`
   }
 `;
 
-function PageTitle(props) {
-  if (!props.display) return null;
+function PageTitle({ display, pageTitle, siteTitle, className }) {
+  if (!display) return null;
 
-  if (!props.pageTitle && !props.siteTitle) return null;
+  if (!pageTitle && !siteTitle) return null;
 
   return (
-    <header className={props.className} data-testid="page-title">
+    <header className={className} data-testid="page-title">
       <StyledPageTitle data-testid="htag">
-        {props.siteTitle && (
-          <span className="site-title">{props.siteTitle}</span>
-        )}
-        {props.pageTitle && (
-          <span className="page-title">{props.pageTitle}</span>
-        )}
+        {siteTitle && <span className="site-title">{siteTitle}</span>}
+        {pageTitle && <span className="page-title">{pageTitle}</span>}
       </StyledPageTitle>
     </header>
   );
@@ -55,13 +51,15 @@ function PageTitle(props) {
 PageTitle.propTypes = {
   siteTitle: PropTypes.string,
   pageTitle: PropTypes.string,
-  display: PropTypes.bool
+  display: PropTypes.bool,
+  className: PropTypes.oneOf([null, PropTypes.string]),
 };
 
 PageTitle.defaultProps = {
   display: true,
   siteTitle: '',
   pageTitle: '',
+  className: null,
 };
 
 export default PageTitle;
