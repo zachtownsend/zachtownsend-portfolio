@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import styled, { ThemeProvider, injectGlobal } from 'styled-components';
-import { Location } from '@reach/router';
+import { Location, Router } from '@reach/router';
 import Navigation from './Navigation';
 import './all.scss';
 import useSiteMetadata from './SiteMetadata';

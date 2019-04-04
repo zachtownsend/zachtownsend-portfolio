@@ -48,10 +48,11 @@ const StyledSideNavigation = styled.nav`
 const Line = posed.span({
   enter: {
     y: 0,
-    transition: {
+    transition: ({ y }) => ({
       duration: 800,
       ease: 'easeInOut',
-    },
+      from: y,
+    }),
   },
   exit: {
     y: ({ y }) => y,
@@ -59,10 +60,12 @@ const Line = posed.span({
       duration: 800,
       ease: 'easeInOut',
     },
+    onPoseComplete: e => {
+      console.log(e.element.getBoundingClientRect());
+    },
   },
   props: {
     y: 0,
-    duration: 800,
   },
 });
 
@@ -70,19 +73,19 @@ const FadeOutText = posed.span({
   enter: {
     y: 0,
     opacity: 1,
+    delay: ({ delay }) => 0.1 * delay,
     transition: {
       duration: 800,
       ease: 'easeInOut',
-      delay: ({ delay }) => 0.1 * delay,
     },
   },
   exit: {
     y: -20,
     opacity: 0,
+    delay: ({ delay }) => 0.1 * delay,
     transition: {
       duration: 800,
       ease: 'easeInOut',
-      delay: ({ delay }) => 0.1 * delay,
     },
     props: {
       delay: 0,
@@ -90,35 +93,44 @@ const FadeOutText = posed.span({
   },
 });
 
-const transitionProps = {
-  exit: {
-    length: 2,
-    state: {
-      foo: 'exit',
-    },
-  },
-  entry: {
-    delay: 0.8,
-    state: {
-      foo: 'enter',
-    },
-  },
-};
-
 export default class SideNavigation extends Component {
-  state = {
-    yPositions: this.setLinePositions() || [0, 0, 0, 0],
-  };
-
   static propTypes = {
     animateTo: PropTypes.arrayOf(PropTypes.number),
     isVisible: PropTypes.bool,
+    location: PropTypes.string,
+    transition: PropTypes.oneOf(['enter', 'exit']),
   };
 
   static defaultProps = {
     isVisible: true,
     animateTo: [0, 0, 0, 0],
+    location: '/',
+    transition: 'enter',
   };
+
+  constructor(props) {
+    super(props);
+
+    const { location } = props;
+    this.state = {
+      yPositions: this.state.yPositions || [0, 0, 0, 0],
+    };
+
+    this.transitionProps = {
+      exit: {
+        length: 2,
+        state: {
+          location,
+        },
+      },
+      entry: {
+        delay: 0.8,
+        state: {
+          location,
+        },
+      },
+    };
+  }
 
   componentDidMount = () => {
     requestAnimationFrame(() => {
@@ -128,6 +140,10 @@ export default class SideNavigation extends Component {
     window.addEventListener('resize', this.setLinePositions);
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.yPositions === this.state.yPositions;
+  }
+
   /**
    * Set the positions of the destination span lines in the state
    */
@@ -135,7 +151,7 @@ export default class SideNavigation extends Component {
     /**
      * Check that the menuItems refs are available
      */
-    if (this.menuItems === null) return;
+    if (!this.menuItems) return;
 
     const { animateTo } = this.props;
     const lines = Array.from(this.menuItems.querySelectorAll('span.line'));
@@ -145,15 +161,22 @@ export default class SideNavigation extends Component {
     for (let i = 0; i < menuItemsPosition.length; i += 1) {
       animateToPositions[i] = -Math.abs(menuItemsPosition[i] - animateTo[i]);
     }
-    console.dir({ menuItemsPosition, animateTo });
 
-    this.setState({
-      yPositions: animateToPositions,
-    });
+    this.setState(
+      {
+        yPositions: animateToPositions,
+      },
+      () => {
+        console.log(this.state.yPositions);
+      }
+    );
+
+    return animateToPositions;
   };
 
   render() {
-    const { isVisible } = this.props;
+    const { transitionProps } = this;
+    const { isVisible, transition } = this.props;
     const { yPositions } = this.state;
 
     return (
@@ -163,6 +186,9 @@ export default class SideNavigation extends Component {
             const transitioning = ['entering', 'entered'].includes(
               transitionStatus
             );
+            const shouldTransition =
+              this.props.location === '/' &&
+              ['entered', 'entering', 'exiting'].includes(transitionStatus);
 
             return (
               <ul
@@ -172,15 +198,12 @@ export default class SideNavigation extends Component {
               >
                 <li>
                   <TransitionLink to="/" {...transitionProps}>
-                    <FadeOutText
-                      pose={transitioning ? 'enter' : 'exit'}
-                      delay={0}
-                    >
+                    <FadeOutText pose={transition} delay={0}>
                       Projects
                     </FadeOutText>
                     <Line
                       className="line"
-                      pose={transitioning ? 'enter' : 'exit'}
+                      pose={transition}
                       y={yPositions[0]}
                       duration={400}
                     />
@@ -188,15 +211,12 @@ export default class SideNavigation extends Component {
                 </li>
                 <li>
                   <TransitionLink to="/" {...transitionProps}>
-                    <FadeOutText
-                      pose={transitioning ? 'enter' : 'exit'}
-                      delay={1}
-                    >
+                    <FadeOutText pose={transition} delay={1}>
                       Blog
                     </FadeOutText>
                     <Line
                       className="line"
-                      pose={transitioning ? 'enter' : 'exit'}
+                      pose={transition}
                       y={yPositions[1]}
                       duration={400}
                     />
@@ -204,15 +224,12 @@ export default class SideNavigation extends Component {
                 </li>
                 <li>
                   <TransitionLink to="/" {...transitionProps}>
-                    <FadeOutText
-                      pose={transitioning ? 'enter' : 'exit'}
-                      delay={2}
-                    >
+                    <FadeOutText pose={transition} delay={2}>
                       Workshop
                     </FadeOutText>
                     <Line
                       className="line"
-                      pose={transitioning ? 'enter' : 'exit'}
+                      pose={transition}
                       y={yPositions[2]}
                       duration={400}
                     />
@@ -220,15 +237,12 @@ export default class SideNavigation extends Component {
                 </li>
                 <li>
                   <TransitionLink to="/contact" {...transitionProps}>
-                    <FadeOutText
-                      pose={transitioning ? 'enter' : 'exit'}
-                      delay={3}
-                    >
+                    <FadeOutText pose={transition} delay={3}>
                       Contact
                     </FadeOutText>
                     <Line
                       className="line"
-                      pose={transitioning ? 'enter' : 'exit'}
+                      pose={transition}
                       y={yPositions[3]}
                       duration={400}
                     />
