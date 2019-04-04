@@ -47,7 +47,7 @@ const StyledNavbar = styled.nav`
 
 const CenteredLogo = posed.div({
   centered: {
-    x: 'calc(50vw - 52px)',
+    x: '50vw',
     transition: {
       duration: 800,
       ease: 'easeInOut',
@@ -150,7 +150,7 @@ class Navigation extends Component {
 
             <div className="hamburger-container" data-testid="hamburger">
               <Hamburger
-                visible={!isHomepage}
+                visible={!isHomepage && transitionStatus !== 'exiting'}
                 onResize={this.getBurgerLinesPositions}
               />
             </div>

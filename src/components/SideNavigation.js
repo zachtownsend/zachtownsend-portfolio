@@ -61,7 +61,7 @@ const Line = posed.span({
       ease: 'easeInOut',
     },
     onPoseComplete: e => {
-      console.log(e.element.getBoundingClientRect());
+      console.log(e);
     },
   },
   props: {
@@ -113,7 +113,7 @@ export default class SideNavigation extends Component {
 
     const { location } = props;
     this.state = {
-      yPositions: this.state.yPositions || [0, 0, 0, 0],
+      yPositions: [0, 0, 0, 0],
     };
 
     this.transitionProps = {
