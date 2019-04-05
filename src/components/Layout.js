@@ -1,8 +1,8 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import styled, { ThemeProvider, injectGlobal } from 'styled-components';
-import { Location, Router } from '@reach/router';
-import { TransitionPortal } from 'gatsby-plugin-transition-link';
+import styled, { ThemeProvider } from 'styled-components';
+import { Location } from '@reach/router';
+import styled from 'styled-components';
 import Navigation from './Navigation';
 import './all.scss';
 import useSiteMetadata from './SiteMetadata';
@@ -24,6 +24,21 @@ export const siteTheme = {
   bodyFontFamily: "'Open Sans', sans-serif",
   displayFontFamily: "'Roboto', sans-serif",
 };
+
+export const StyledPageContainer = styled.div`
+  background: ${siteTheme.darkGray};
+  padding-top: 20px;
+  min-height: calc(100vh - 20px);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  background-size: cover;
+
+  > .columns {
+    flex: 1 1 100%;
+  }
+`;
 
 const TemplateWrapper = ({ children }) => {
   const { title, description } = useSiteMetadata();
@@ -68,7 +83,9 @@ const TemplateWrapper = ({ children }) => {
         <Location>
           {({ location }) => <Navigation location={location.pathname} />}
         </Location>
-        {children}
+        <StyledPageContainer>
+          {children}
+        </StyledPageContainer>
       </div>
     </ThemeProvider>
   );

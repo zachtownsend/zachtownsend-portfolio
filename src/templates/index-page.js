@@ -8,21 +8,8 @@ import ContinueArrow from '../components/ContinueArrow';
 // import Features from '../components/Features';
 // import BlogRoll from '../components/BlogRoll';
 
-export const StyledPageContainer = styled.div`
-  background: url(${props => props.backgroundimage})
-    ${props => props.theme.darkGray};
-  padding-top: 20px;
-  min-height: calc(100vh - 20px);
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  text-align: center;
-  /* background: url('/assets/images/desktop-large_home-bg.jpg') no-repeat center center; */
-  background-size: cover;
-
-  > .columns {
-    flex: 1 1 100%;
-  }
+const HomePageContainer = styled.div`
+  background: url(${props => props.backgroundimage});
 `;
 
 const StyledSiteTitle = styled.header`
