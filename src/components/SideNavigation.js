@@ -85,9 +85,6 @@ export default class SideNavigation extends Component {
         },
       },
       entry: {
-        trigger: p => {
-          console.log(p);
-        },
         delay: 0.8,
         state: {
           location,
@@ -133,7 +130,7 @@ export default class SideNavigation extends Component {
     TweenMax.staggerFromTo(
       this.menuLines,
       0.4,
-      { cycle: { y: yPositions.reverse() } },
+      { cycle: { y: yPositions } },
       { cycle: { y: [0, 0, 0, 0] } },
       0.1
     );
@@ -181,11 +178,6 @@ export default class SideNavigation extends Component {
       <StyledSideNavigation>
         <TransitionState>
           {({ transitionStatus }) => {
-            console.log(
-              this.props.location === '/',
-              transitionStatus,
-              TweenMax.isTweening(this.lines)
-            );
             if (
               this.props.location === '/' &&
               ['exiting', 'exited'].includes(transitionStatus) &&
@@ -193,14 +185,9 @@ export default class SideNavigation extends Component {
             ) {
               if (this.menuLines !== null) {
                 this.animateIn();
-                console.log('render', TweenMax.isTweening(this.menuLines));
               }
             }
             return (
-              // if (!isHomepage && transitionStatus === 'exiting') {
-              //   this.animateOut();
-              // }
-
               <ul
                 ref={c => {
                   this.menu = c;
