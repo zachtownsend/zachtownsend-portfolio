@@ -5,10 +5,11 @@ import styled from 'styled-components';
 import Layout from '../components/Layout';
 import Button from '../components/Button';
 import ContinueArrow from '../components/ContinueArrow';
+import StyledPageContainer from '../styles/StyledPageContainer';
 // import Features from '../components/Features';
 // import BlogRoll from '../components/BlogRoll';
 
-const HomePageContainer = styled.div`
+const HomePageContainer = styled(StyledPageContainer)`
   background: url(${props => props.backgroundimage});
 `;
 
@@ -54,7 +55,7 @@ const StyledSiteTitle = styled.header`
 `;
 
 export const IndexPageTemplate = props => (
-  <StyledPageContainer
+  <HomePageContainer
     className="section"
     backgroundimage={props.backgroundimage.childImageSharp.original.src}
   >
@@ -75,7 +76,7 @@ export const IndexPageTemplate = props => (
       </div>
       <div className="column is-one-third-desktop" />
     </div>
-  </StyledPageContainer>
+  </HomePageContainer>
 );
 
 IndexPageTemplate.propTypes = {

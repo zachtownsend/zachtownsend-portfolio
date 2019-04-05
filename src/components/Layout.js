@@ -2,7 +2,6 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import styled, { ThemeProvider } from 'styled-components';
 import { Location } from '@reach/router';
-import styled from 'styled-components';
 import Navigation from './Navigation';
 import './all.scss';
 import useSiteMetadata from './SiteMetadata';
@@ -29,15 +28,6 @@ export const StyledPageContainer = styled.div`
   background: ${siteTheme.darkGray};
   padding-top: 20px;
   min-height: calc(100vh - 20px);
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  text-align: center;
-  background-size: cover;
-
-  > .columns {
-    flex: 1 1 100%;
-  }
 `;
 
 const TemplateWrapper = ({ children }) => {
@@ -83,9 +73,7 @@ const TemplateWrapper = ({ children }) => {
         <Location>
           {({ location }) => <Navigation location={location.pathname} />}
         </Location>
-        <StyledPageContainer>
-          {children}
-        </StyledPageContainer>
+        <StyledPageContainer>{children}</StyledPageContainer>
       </div>
     </ThemeProvider>
   );

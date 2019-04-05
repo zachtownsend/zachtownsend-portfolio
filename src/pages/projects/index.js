@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Layout from '../../components/Layout';
-import { StyledPageContainer } from '../../templates/index-page';
+import StyledPageContainer from '../../styles/StyledPageContainer';
 
 export default class ProjectIndexPage extends React.Component {
   render() {
