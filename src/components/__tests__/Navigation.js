@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, cleanup, getByTestId } from 'react-testing-library';
+import { render, cleanup } from 'react-testing-library';
 import { ThemeProvider } from 'styled-components';
 import { siteTheme } from '../Layout';
 import Navigation from '../Navigation';
@@ -19,19 +19,34 @@ const renderComponent = props =>
   );
 
 describe('Functionality on the Home Page', () => {
-  const { queryByTestId } = renderComponent({ location: '/' });
+  const { container, queryByTestId } = renderComponent({
+    location: '/',
+  });
+
   it("adds special classes to logo, hamburger is hidden and page title doesn't exist", () => {
-    expect(queryByTestId('logo')).toHaveClass('centered');
-    expect(queryByTestId('page-title')).toBeNull();
-    expect(queryByTestId('side-navigation')).toBeDefined();
-    expect(getComputedStyle(queryByTestId('hamburger')).visibility).toBe(
-      'hidden'
-    );
+    requestAnimationFrame(() => {
+      expect(queryByTestId('logo')).toHaveClass('centered');
+      expect(queryByTestId('page-title')).not.toBeInTheDocument();
+      expect(queryByTestId('side-navigation')).toBeDefined();
+      expect(queryByTestId('hamburger')).not.toBeVisible();
+      expect(container).toMatchSnapshot();
+    });
   });
 });
 
 describe('Functionality on other pages', () => {
-  it('does not display the side navigation, nor does it have the special classes', () => {});
+  const { container, queryByTestId } = renderComponent({
+    location: '/contact',
+  });
+  it('does not render the side navigation, nor does it have the special classes', () => {
+    requestAnimationFrame(() => {
+      expect(queryByTestId('logo')).not.toHaveClass('centered');
+      expect(queryByTestId('page-title')).toBeDefined();
+      expect(queryByTestId('hamburger')).toBeVisible();
+      expect(queryByTestId('side-navigation')).toBeNull();
+      expect(container).toMatchSnapshot();
+    });
+  });
 });
 /**
  * Functionality

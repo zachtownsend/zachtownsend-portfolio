@@ -43,6 +43,7 @@ export default class Hamburger extends React.Component {
   };
 
   getBurgerLinesPositions() {
+    if (this.lineWrapper === null) return;
     return Array.from(this.lineWrapper.children).map(
       line => line.getBoundingClientRect().y
     );
@@ -87,13 +88,13 @@ export default class Hamburger extends React.Component {
 Hamburger.propTypes = {
   active: PropTypes.bool,
   visible: PropTypes.bool,
-  onResize: PropTypes.func
+  onResize: PropTypes.func,
 };
 
 Hamburger.defaultProps = {
   active: false,
   visible: true,
-  onResize: () => false
+  onResize: () => false,
 };
 
 // export default Hamburger;

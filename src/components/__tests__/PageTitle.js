@@ -67,20 +67,4 @@ describe('PageTitle', () => {
     const { queryByTestId } = Test;
     expect(queryByTestId('page-title')).toBeNull();
   });
-
-  it('displays null if display is false', () => {
-    const Test = renderComponent({ display: false });
-    const { queryByTestId } = Test;
-    expect(queryByTestId('page-title')).toBeNull();
-  });
-
-  it('displays null if display is false, even if other props are passed', () => {
-    const Test = renderComponent({
-      pageTitle: 'Projects',
-      siteTitle: 'Zach Townsend',
-      display: false
-    });
-    const { queryByTestId } = Test;
-    expect(queryByTestId('page-title')).toBeNull();
-  });
 });

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'gatsby';
 import styled from 'styled-components';
 import posed from 'react-pose';
+import { TweenMax } from 'gsap/TweenMax';
+import TransitionLink, { TransitionState } from 'gatsby-plugin-transition-link';
 
 const StyledSideNavigation = styled.nav`
   position: absolute;
@@ -45,156 +46,181 @@ const StyledSideNavigation = styled.nav`
   }
 `;
 
-const Line = posed.span({
-  enter: {
-    y: 0,
-    transition: {
-      duration: 400,
-      ease: 'easeInOut',
-    },
-  },
-  exit: {
-    y: ({ y }) => y,
-    transition: {
-      duration: 400,
-      ease: 'easeInOut',
-    },
-  },
-  props: {
-    y: 0,
-    duration: 400,
-  },
-});
-
-const FadeOutText = posed.span({
-  enter: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 400,
-      ease: 'easeInOut',
-    },
-  },
-  exit: {
-    y: -20,
-    opacity: 0,
-    transition: {
-      duration: 400,
-      ease: 'easeInOut',
-      delay: ({ delay }) => 0.1 * delay,
-    },
-    props: {
-      delay: 0,
-    },
-  },
-});
-
 export default class SideNavigation extends Component {
-  state = {
-    yPositions: [0, 0, 0, 0],
-  };
-
   static propTypes = {
     animateTo: PropTypes.arrayOf(PropTypes.number),
     isVisible: PropTypes.bool,
+    location: PropTypes.string,
+    transition: PropTypes.oneOf(['enter', 'exit']),
   };
 
   static defaultProps = {
     isVisible: true,
     animateTo: [0, 0, 0, 0],
+    location: '/',
+    transition: 'enter',
   };
+
+  constructor(props) {
+    super(props);
+    const { location } = props;
+    this.state = {
+      yPositions: [0, 0, 0, 0],
+    };
+
+    this.transitionProps = {
+      exit: {
+        trigger: ({ e }) => {
+          const { pathname } = e.target.closest('a');
+          if (pathname === '/') {
+            this.animateIn();
+          } else {
+            this.animateOut();
+          }
+          // console.dir(pathname);
+        },
+        length: 2,
+        state: {
+          location,
+        },
+      },
+      entry: {
+        delay: 0.8,
+        state: {
+          location,
+        },
+      },
+    };
+
+    this.menu = null;
+    this.menuTitles = null;
+    this.menuLines = null;
+    this.lineTween = null;
+    this.titleTween = null;
+  }
 
   componentDidMount = () => {
     requestAnimationFrame(() => {
-      this.setYPositions();
+      this.setLinePositions(() => {
+        this.menuTitles = this.menu.querySelectorAll('span.text-wrapper');
+        this.menuLines = this.menu.querySelectorAll('span.line');
+      });
     });
 
-    window.addEventListener('resize', this.setYPositions);
+    window.addEventListener('resize', this.setLinePositions);
   };
 
-  setYPositions = () => {
-    if (this.menuItems === null) return;
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   const { yPositions } = this.state;
+  //   return nextState.yPositions === yPositions;
+  // }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.setLinePositions);
+  }
+
+  animateOut = () => {
+    const { yPositions } = this.state;
+    TweenMax.staggerTo(this.menuLines, 0.4, { cycle: { y: yPositions } }, 0.1);
+    TweenMax.staggerTo(this.menuTitles, 0.4, { y: -50, alpha: 0 }, 0.1);
+  };
+
+  animateIn = () => {
+    const { yPositions } = this.state;
+    TweenMax.staggerFromTo(
+      this.menuLines,
+      0.4,
+      { cycle: { y: yPositions } },
+      { cycle: { y: [0, 0, 0, 0] } },
+      0.1
+    );
+    TweenMax.staggerFrom(this.menuTitles, 0.4, { y: -50, alpha: 0 }, 0.1);
+  };
+
+  /**
+   * Set the positions of the destination span lines in the state
+   */
+  setLinePositions = callback => {
+    /**
+     * Check that the menuItems refs are available
+     */
+    if (!this.menu) return;
 
     const { animateTo } = this.props;
-    const lines = Array.from(this.menuItems.querySelectorAll('span.line'));
+    const lines = Array.from(this.menu.querySelectorAll('span.line'));
     const menuItemsPosition = lines.map(line => line.getBoundingClientRect().y);
 
     const animateToPositions = [0, 0, 0, 0];
-    for (let i = 0; i < menuItemsPosition.length; i++) {
+    for (let i = 0; i < menuItemsPosition.length; i += 1) {
       animateToPositions[i] = -Math.abs(menuItemsPosition[i] - animateTo[i]);
     }
-    console.dir({ menuItemsPosition, animateTo });
 
-    this.setState(() => ({
-      ...this.state,
-      yPositions: animateToPositions,
-    }));
+    this.setState(
+      {
+        yPositions: animateToPositions,
+      },
+      () => {
+        if (typeof callback === 'function') {
+          callback();
+        }
+      }
+    );
+
+    return animateToPositions;
   };
 
   render() {
-    const { isVisible } = this.props;
-    const { yPositions } = this.state;
+    const { transitionProps } = this;
+    const { location } = this.props;
+    const isHomepage = location === '/';
 
     return (
       <StyledSideNavigation>
-        <ul
-          ref={c => {
-            this.menuItems = c;
+        <TransitionState>
+          {({ transitionStatus }) => {
+            if (
+              this.props.location === '/' &&
+              ['exiting', 'exited'].includes(transitionStatus) &&
+              !TweenMax.isTweening(this.menuLines)
+            ) {
+              if (this.menuLines !== null) {
+                this.animateIn();
+              }
+            }
+            return (
+              <ul
+                ref={c => {
+                  this.menu = c;
+                }}
+              >
+                <li>
+                  <TransitionLink to="/" {...transitionProps}>
+                    <span className="text-wrapper">Projects</span>
+                    <span className="line" />
+                  </TransitionLink>
+                </li>
+                <li>
+                  <TransitionLink to="/" {...transitionProps}>
+                    <span className="text-wrapper">Blog</span>
+                    <span className="line" />
+                  </TransitionLink>
+                </li>
+                <li>
+                  <TransitionLink to="/" {...transitionProps}>
+                    <span className="text-wrapper">Workshop</span>
+                    <span className="line" />
+                  </TransitionLink>
+                </li>
+                <li>
+                  <TransitionLink to="/contact" {...transitionProps}>
+                    <span className="text-wrapper">Contact</span>
+                    <span className="line" />
+                  </TransitionLink>
+                </li>
+              </ul>
+            );
           }}
-        >
-          <li>
-            <Link onClick={this.animate} to="/">
-              <FadeOutText pose={isVisible ? 'enter' : 'exit'} delay={0}>
-                Projects
-              </FadeOutText>
-              <Line
-                className="line"
-                pose={isVisible ? 'enter' : 'exit'}
-                y={yPositions[0]}
-                duration={400}
-              />
-            </Link>
-          </li>
-          <li>
-            <Link to="/">
-              <FadeOutText pose={isVisible ? 'enter' : 'exit'} delay={1}>
-                Blog
-              </FadeOutText>
-              <Line
-                className="line"
-                pose={isVisible ? 'enter' : 'exit'}
-                y={yPositions[1]}
-                duration={400}
-              />
-            </Link>
-          </li>
-          <li>
-            <Link to="/">
-              <FadeOutText pose={isVisible ? 'enter' : 'exit'} delay={2}>
-                Workshop
-              </FadeOutText>
-              <Line
-                className="line"
-                pose={isVisible ? 'enter' : 'exit'}
-                y={yPositions[2]}
-                duration={400}
-              />
-            </Link>
-          </li>
-          <li>
-            <Link to="/">
-              <FadeOutText pose={isVisible ? 'enter' : 'exit'} delay={3}>
-                Contact
-              </FadeOutText>
-              <Line
-                className="line"
-                pose={isVisible ? 'enter' : 'exit'}
-                y={yPositions[3]}
-                duration={400}
-              />
-            </Link>
-          </li>
-        </ul>
+        </TransitionState>
       </StyledSideNavigation>
     );
   }

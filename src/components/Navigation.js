@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'gatsby';
+import TransitionLink, { TransitionState } from 'gatsby-plugin-transition-link';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import classNames from 'classnames';
 import Media from 'react-media';
+import posed from 'react-pose';
 import Logo from './Logo';
 import PageTitle from './PageTitle';
 import Hamburger from './Hamburger';
@@ -19,18 +20,18 @@ const StyledNavbar = styled.nav`
   justify-content: space-between;
 
   .logo,
-  .hamburger {
+  .hamburger-container {
     flex: 0 1 auto;
   }
 
   .logo {
     display: inline-block;
 
-    @media (min-width: ${({ theme }) => theme.breakpoints.touch}px) {
+    /* @media (min-width: ${({ theme }) => theme.breakpoints.touch}px) {
       &.centered {
         transform: translateX(calc(50vw - 52px));
       }
-    }
+    } */
 
     svg {
       width: 44px;
@@ -44,6 +45,38 @@ const StyledNavbar = styled.nav`
   }
 `;
 
+const CenteredLogo = posed.div({
+  centered: {
+    x: '50vw',
+    transition: {
+      duration: 800,
+      ease: 'easeInOut',
+    },
+  },
+  normal: {
+    x: 0,
+    transition: {
+      duration: 800,
+      ease: 'easeInOut',
+    },
+  },
+});
+
+const transitionProps = {
+  exit: {
+    length: 0.8,
+    state: {
+      foo: 'exit',
+    },
+  },
+  entry: {
+    delay: 0.8,
+    state: {
+      foo: 'enter',
+    },
+  },
+};
+
 class Navigation extends Component {
   constructor(props) {
     super(props);
@@ -52,14 +85,27 @@ class Navigation extends Component {
 
     this.state = {
       hamburgerPosition: [],
+      isHomepage: props.location === '/',
     };
   }
 
+  componentDidMount = () => {
+    const { location } = this.props;
+
+    this.setState({
+      isHomepage: location === '/',
+    });
+
+    console.log('navigation mounted');
+  };
+
+  componentWillUnmount() {
+    console.log('navigation unmounted');
+  }
+
   getBurgerLinesPositions = positions => {
-    console.log(positions);
     if (Array.isArray(positions)) {
       this.setState({
-        ...this.state,
         hamburgerPosition: positions,
       });
     }
@@ -67,44 +113,77 @@ class Navigation extends Component {
 
   render() {
     const { location } = this.props;
-    const { hamburgerPosition } = this.state;
-    const isHomepage = location === '/';
+    const { hamburgerPosition, isHomepage } = this.state;
 
     return (
-      <StyledNavbar className="section">
-        <Link
-          data-testid="logo"
-          className={classNames('logo', { centered: isHomepage })}
-          to="/"
-        >
-          <Logo />
-        </Link>
+      <TransitionState>
+        {({ transitionStatus, current, entry, exit }) => {
+          const showSideNav =
+            (isHomepage &&
+              ['entered', 'entering', 'exiting'].includes(transitionStatus)) ||
+            (!isHomepage && transitionStatus === 'exiting');
+          return (
+            <StyledNavbar className="section">
+              <CenteredLogo
+                data-testid="logo"
+                className={classNames('logo', { centered: isHomepage })}
+                pose={location === '/' ? 'centered' : 'normal'}
+              >
+                <TransitionLink
+                  to="/"
+                  exit={{
+                    length: 2,
+                    trigger: props => {
+                      console.dir(props);
+                    },
+                  }}
+                  entry={{
+                    delay: 0.8,
+                    state: {
+                      location,
+                    },
+                  }}
+                >
+                  <Logo />
+                </TransitionLink>
+              </CenteredLogo>
 
-        <PageTitle
-          data-testid="page-title"
-          className="page-title"
-          siteTitle="Zach Townsend"
-          pageTitle="Home"
-          display={!isHomepage}
-        />
+              {isHomepage || (
+                <div className="page-title" data-testid="page-title">
+                  <PageTitle siteTitle="Zach Townsend" pageTitle="Home" />
+                </div>
+              )}
 
-        <Hamburger
-          visible={!isHomepage}
-          onResize={this.getBurgerLinesPositions}
-        />
+              <div className="hamburger-container" data-testid="hamburger">
+                <Hamburger
+                  visible={!showSideNav}
+                  onResize={this.getBurgerLinesPositions}
+                />
+              </div>
 
-        <Media query={{ minWidth: siteTheme.breakpoints.touch }}>
-          {matches =>
-            matches ? (
-              <SideNavigation
-                data-testid="side-navigation"
-                animateTo={hamburgerPosition}
-                display={isHomepage}
-              />
-            ) : null
-          }
-        </Media>
-      </StyledNavbar>
+              <Media query={{ minWidth: siteTheme.breakpoints.touch }}>
+                {matches =>
+                  matches ? (
+                    <div
+                      className="side-navigation-wrapper"
+                      style={{
+                        visibility: showSideNav ? 'visible' : 'hidden',
+                      }}
+                    >
+                      <SideNavigation
+                        data-testid="side-navigation"
+                        animateTo={hamburgerPosition}
+                        location={location}
+                        transition={location === '/' ? 'enter' : 'exit'}
+                      />
+                    </div>
+                  ) : null
+                }
+              </Media>
+            </StyledNavbar>
+          );
+        }}
+      </TransitionState>
     );
   }
 }
@@ -113,12 +192,14 @@ Navigation.propTypes = {
   mode: PropTypes.oneOf(['side', 'offcanvas']),
   active: PropTypes.bool,
   location: PropTypes.string,
+  test: PropTypes.object,
 };
 
 Navigation.defaultProps = {
   mode: 'offcanvas',
   active: false,
   location: '/',
+  test: null,
 };
 
 export default Navigation;
