@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import posed from 'react-pose';
+import { TweenMax } from 'gsap/TweenMax';
 import TransitionLink, { TransitionState } from 'gatsby-plugin-transition-link';
 
 const StyledSideNavigation = styled.nav`
@@ -45,54 +46,6 @@ const StyledSideNavigation = styled.nav`
   }
 `;
 
-const Line = posed.span({
-  enter: {
-    y: 0,
-    transition: ({ y }) => ({
-      duration: 800,
-      ease: 'easeInOut',
-      from: y,
-    }),
-  },
-  exit: {
-    y: ({ y }) => y,
-    transition: {
-      duration: 800,
-      ease: 'easeInOut',
-    },
-    onPoseComplete: e => {
-      console.log(e);
-    },
-  },
-  props: {
-    y: 0,
-  },
-});
-
-const FadeOutText = posed.span({
-  enter: {
-    y: 0,
-    opacity: 1,
-    delay: ({ delay }) => 0.1 * delay,
-    transition: {
-      duration: 800,
-      ease: 'easeInOut',
-    },
-  },
-  exit: {
-    y: -20,
-    opacity: 0,
-    delay: ({ delay }) => 0.1 * delay,
-    transition: {
-      duration: 800,
-      ease: 'easeInOut',
-    },
-    props: {
-      delay: 0,
-    },
-  },
-});
-
 export default class SideNavigation extends Component {
   static propTypes = {
     animateTo: PropTypes.arrayOf(PropTypes.number),
@@ -130,31 +83,58 @@ export default class SideNavigation extends Component {
         },
       },
     };
+
+    this.menu = null;
+    this.menuTitles = null;
+    this.menuLines = null;
+    this.lineTween = null;
+    this.titleTween = null;
   }
 
   componentDidMount = () => {
     requestAnimationFrame(() => {
       this.setLinePositions();
+      this.menuTitles = this.menu.querySelectorAll('span.text-wrapper');
+      this.menuLines = this.menu.querySelectorAll('span.line');
     });
 
     window.addEventListener('resize', this.setLinePositions);
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextState.yPositions === this.state.yPositions;
-  }
+  animateOut = () => {
+    const { yPositions } = this.state;
+    TweenMax.staggerTo(this.menuLines, 0.4, { cycle: { y: yPositions } }, 0.1);
+    TweenMax.staggerTo(this.menuTitles, 0.4, { y: -50, alpha: 0 }, 0.1);
+  };
+
+  animateIn = () => {
+    const { yPositions } = this.state;
+    TweenMax.staggerFromTo(
+      this.menuLines,
+      0.4,
+      { cycle: { y: yPositions.reverse() } },
+      { cycle: { y: [0, 0, 0, 0] } },
+      0.1
+    );
+    TweenMax.staggerFrom(this.menuTitles, 0.4, { y: -50, alpha: 0 }, 0.1);
+  };
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   const { yPositions } = this.state;
+  //   return nextState.yPositions === yPositions;
+  // }
 
   /**
    * Set the positions of the destination span lines in the state
    */
-  setLinePositions = () => {
+  setLinePositions = callback => {
     /**
      * Check that the menuItems refs are available
      */
-    if (!this.menuItems) return;
+    if (!this.menu) return;
 
     const { animateTo } = this.props;
-    const lines = Array.from(this.menuItems.querySelectorAll('span.line'));
+    const lines = Array.from(this.menu.querySelectorAll('span.line'));
     const menuItemsPosition = lines.map(line => line.getBoundingClientRect().y);
 
     const animateToPositions = [0, 0, 0, 0];
@@ -166,9 +146,7 @@ export default class SideNavigation extends Component {
       {
         yPositions: animateToPositions,
       },
-      () => {
-        console.log(this.state.yPositions);
-      }
+      callback
     );
 
     return animateToPositions;
@@ -176,76 +154,49 @@ export default class SideNavigation extends Component {
 
   render() {
     const { transitionProps } = this;
-    const { isVisible, transition } = this.props;
-    const { yPositions } = this.state;
+    const { location } = this.props;
+    const isHomepage = location === '/';
 
     return (
       <StyledSideNavigation>
-        <TransitionState exit={{ length: 0.5 }} entry={{ delay: 0.5 }}>
+        <TransitionState exit={{ length: 1 }} entry={{ delay: 1 }}>
           {({ transitionStatus }) => {
-            const transitioning = ['entering', 'entered'].includes(
-              transitionStatus
-            );
-            const shouldTransition =
-              this.props.location === '/' &&
-              ['entered', 'entering', 'exiting'].includes(transitionStatus);
+            if (!isHomepage && transitionStatus === 'exiting') {
+              this.animateOut();
+            }
+
+            if (isHomepage && transitionStatus === 'exiting') {
+              this.animateIn();
+            }
 
             return (
               <ul
                 ref={c => {
-                  this.menuItems = c;
+                  this.menu = c;
                 }}
               >
                 <li>
                   <TransitionLink to="/" {...transitionProps}>
-                    <FadeOutText pose={transition} delay={0}>
-                      Projects
-                    </FadeOutText>
-                    <Line
-                      className="line"
-                      pose={transition}
-                      y={yPositions[0]}
-                      duration={400}
-                    />
+                    <span className="text-wrapper">Projects</span>
+                    <span className="line" />
                   </TransitionLink>
                 </li>
                 <li>
                   <TransitionLink to="/" {...transitionProps}>
-                    <FadeOutText pose={transition} delay={1}>
-                      Blog
-                    </FadeOutText>
-                    <Line
-                      className="line"
-                      pose={transition}
-                      y={yPositions[1]}
-                      duration={400}
-                    />
+                    <span className="text-wrapper">Blog</span>
+                    <span className="line" />
                   </TransitionLink>
                 </li>
                 <li>
                   <TransitionLink to="/" {...transitionProps}>
-                    <FadeOutText pose={transition} delay={2}>
-                      Workshop
-                    </FadeOutText>
-                    <Line
-                      className="line"
-                      pose={transition}
-                      y={yPositions[2]}
-                      duration={400}
-                    />
+                    <span className="text-wrapper">Workshop</span>
+                    <span className="line" />
                   </TransitionLink>
                 </li>
                 <li>
                   <TransitionLink to="/contact" {...transitionProps}>
-                    <FadeOutText pose={transition} delay={3}>
-                      Contact
-                    </FadeOutText>
-                    <Line
-                      className="line"
-                      pose={transition}
-                      y={yPositions[3]}
-                      duration={400}
-                    />
+                    <span className="text-wrapper">Contact</span>
+                    <span className="line" />
                   </TransitionLink>
                 </li>
               </ul>

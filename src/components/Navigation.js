@@ -111,7 +111,6 @@ class Navigation extends Component {
 
   render() {
     const { location } = this.props;
-    const isDestinationHomepage = location === '/';
     const { hamburgerPosition, isHomepage } = this.state;
 
     return (
