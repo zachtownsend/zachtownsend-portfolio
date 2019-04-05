@@ -194,19 +194,19 @@ export default class SideNavigation extends Component {
                 }}
               >
                 <li>
-                  <TransitionLink to="/" {...transitionProps}>
+                  <TransitionLink to="/projects" {...transitionProps}>
                     <span className="text-wrapper">Projects</span>
                     <span className="line" />
                   </TransitionLink>
                 </li>
                 <li>
-                  <TransitionLink to="/" {...transitionProps}>
+                  <TransitionLink to="/blog" {...transitionProps}>
                     <span className="text-wrapper">Blog</span>
                     <span className="line" />
                   </TransitionLink>
                 </li>
                 <li>
-                  <TransitionLink to="/" {...transitionProps}>
+                  <TransitionLink to="/workshop" {...transitionProps}>
                     <span className="text-wrapper">Workshop</span>
                     <span className="line" />
                   </TransitionLink>

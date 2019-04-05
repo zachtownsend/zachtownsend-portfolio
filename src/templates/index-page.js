@@ -9,7 +9,8 @@ import ContinueArrow from '../components/ContinueArrow';
 // import BlogRoll from '../components/BlogRoll';
 
 export const StyledPageContainer = styled.div`
-  background: url(${props => props.backgroundimage});
+  background: url(${props => props.backgroundimage})
+    ${props => props.theme.darkGray};
   padding-top: 20px;
   min-height: calc(100vh - 20px);
   display: flex;
