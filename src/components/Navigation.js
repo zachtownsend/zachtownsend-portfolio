@@ -95,11 +95,13 @@ class Navigation extends Component {
     this.setState({
       isHomepage: location === '/',
     });
+
+    console.log('navigation mounted');
   };
 
-  // componentWillUnmount = () => {
-  //   alert('unmounting');
-  // };
+  componentWillUnmount() {
+    console.log('navigation unmounted');
+  }
 
   getBurgerLinesPositions = positions => {
     if (Array.isArray(positions)) {
@@ -131,8 +133,8 @@ class Navigation extends Component {
                   to="/"
                   exit={{
                     length: 2,
-                    state: {
-                      location,
+                    trigger: props => {
+                      console.dir(props);
                     },
                   }}
                   entry={{
@@ -164,7 +166,9 @@ class Navigation extends Component {
                   matches ? (
                     <div
                       className="side-navigation-wrapper"
-                      style={{ visibility: showSideNav ? 'visible' : 'hidden' }}
+                      style={{
+                        visibility: showSideNav ? 'visible' : 'hidden',
+                      }}
                     >
                       <SideNavigation
                         data-testid="side-navigation"
@@ -188,12 +192,14 @@ Navigation.propTypes = {
   mode: PropTypes.oneOf(['side', 'offcanvas']),
   active: PropTypes.bool,
   location: PropTypes.string,
+  test: PropTypes.object,
 };
 
 Navigation.defaultProps = {
   mode: 'offcanvas',
   active: false,
   location: '/',
+  test: null,
 };
 
 export default Navigation;

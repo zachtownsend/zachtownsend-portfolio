@@ -2,6 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import styled, { ThemeProvider, injectGlobal } from 'styled-components';
 import { Location, Router } from '@reach/router';
+import { TransitionPortal } from 'gatsby-plugin-transition-link';
 import Navigation from './Navigation';
 import './all.scss';
 import useSiteMetadata from './SiteMetadata';
@@ -24,7 +25,7 @@ export const siteTheme = {
   displayFontFamily: "'Roboto', sans-serif",
 };
 
-const TemplateWrapper = ({ children, location }) => {
+const TemplateWrapper = ({ children }) => {
   const { title, description } = useSiteMetadata();
   return (
     <ThemeProvider theme={siteTheme}>

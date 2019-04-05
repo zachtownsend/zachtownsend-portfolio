@@ -63,7 +63,6 @@ export default class SideNavigation extends Component {
 
   constructor(props) {
     super(props);
-
     const { location } = props;
     this.state = {
       yPositions: [0, 0, 0, 0],
@@ -71,12 +70,24 @@ export default class SideNavigation extends Component {
 
     this.transitionProps = {
       exit: {
+        trigger: ({ e }) => {
+          const { pathname } = e.target.closest('a');
+          if (pathname === '/') {
+            this.animateIn();
+          } else {
+            this.animateOut();
+          }
+          // console.dir(pathname);
+        },
         length: 2,
         state: {
           location,
         },
       },
       entry: {
+        trigger: p => {
+          console.log(p);
+        },
         delay: 0.8,
         state: {
           location,
@@ -93,13 +104,23 @@ export default class SideNavigation extends Component {
 
   componentDidMount = () => {
     requestAnimationFrame(() => {
-      this.setLinePositions();
-      this.menuTitles = this.menu.querySelectorAll('span.text-wrapper');
-      this.menuLines = this.menu.querySelectorAll('span.line');
+      this.setLinePositions(() => {
+        this.menuTitles = this.menu.querySelectorAll('span.text-wrapper');
+        this.menuLines = this.menu.querySelectorAll('span.line');
+      });
     });
 
     window.addEventListener('resize', this.setLinePositions);
   };
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   const { yPositions } = this.state;
+  //   return nextState.yPositions === yPositions;
+  // }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.setLinePositions);
+  }
 
   animateOut = () => {
     const { yPositions } = this.state;
@@ -118,11 +139,6 @@ export default class SideNavigation extends Component {
     );
     TweenMax.staggerFrom(this.menuTitles, 0.4, { y: -50, alpha: 0 }, 0.1);
   };
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   const { yPositions } = this.state;
-  //   return nextState.yPositions === yPositions;
-  // }
 
   /**
    * Set the positions of the destination span lines in the state
@@ -146,7 +162,11 @@ export default class SideNavigation extends Component {
       {
         yPositions: animateToPositions,
       },
-      callback
+      () => {
+        if (typeof callback === 'function') {
+          callback();
+        }
+      }
     );
 
     return animateToPositions;
@@ -159,17 +179,28 @@ export default class SideNavigation extends Component {
 
     return (
       <StyledSideNavigation>
-        <TransitionState exit={{ length: 1 }} entry={{ delay: 1 }}>
+        <TransitionState>
           {({ transitionStatus }) => {
-            if (!isHomepage && transitionStatus === 'exiting') {
-              this.animateOut();
+            console.log(
+              this.props.location === '/',
+              transitionStatus,
+              TweenMax.isTweening(this.lines)
+            );
+            if (
+              this.props.location === '/' &&
+              ['exiting', 'exited'].includes(transitionStatus) &&
+              !TweenMax.isTweening(this.menuLines)
+            ) {
+              if (this.menuLines !== null) {
+                this.animateIn();
+                console.log('render', TweenMax.isTweening(this.menuLines));
+              }
             }
-
-            if (isHomepage && transitionStatus === 'exiting') {
-              this.animateIn();
-            }
-
             return (
+              // if (!isHomepage && transitionStatus === 'exiting') {
+              //   this.animateOut();
+              // }
+
               <ul
                 ref={c => {
                   this.menu = c;
