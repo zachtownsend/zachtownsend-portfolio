@@ -116,61 +116,70 @@ class Navigation extends Component {
 
     return (
       <TransitionState>
-        {({ transitionStatus, current, entry, exit }) => (
-          <StyledNavbar className="section">
-            <CenteredLogo
-              data-testid="logo"
-              className={classNames('logo', { centered: isHomepage })}
-              pose={location === '/' ? 'centered' : 'normal'}
-            >
-              <TransitionLink
-                to="/"
-                exit={{
-                  length: 2,
-                  state: {
-                    location,
-                  },
-                }}
-                entry={{
-                  delay: 0.8,
-                  state: {
-                    location,
-                  },
-                }}
+        {({ transitionStatus, current, entry, exit }) => {
+          const showSideNav =
+            (isHomepage &&
+              ['entered', 'entering', 'exiting'].includes(transitionStatus)) ||
+            (!isHomepage && transitionStatus === 'exiting');
+          return (
+            <StyledNavbar className="section">
+              <CenteredLogo
+                data-testid="logo"
+                className={classNames('logo', { centered: isHomepage })}
+                pose={location === '/' ? 'centered' : 'normal'}
               >
-                <Logo />
-              </TransitionLink>
-            </CenteredLogo>
+                <TransitionLink
+                  to="/"
+                  exit={{
+                    length: 2,
+                    state: {
+                      location,
+                    },
+                  }}
+                  entry={{
+                    delay: 0.8,
+                    state: {
+                      location,
+                    },
+                  }}
+                >
+                  <Logo />
+                </TransitionLink>
+              </CenteredLogo>
 
-            {isHomepage || (
-              <div className="page-title" data-testid="page-title">
-                <PageTitle siteTitle="Zach Townsend" pageTitle="Home" />
+              {isHomepage || (
+                <div className="page-title" data-testid="page-title">
+                  <PageTitle siteTitle="Zach Townsend" pageTitle="Home" />
+                </div>
+              )}
+
+              <div className="hamburger-container" data-testid="hamburger">
+                <Hamburger
+                  visible={!showSideNav}
+                  onResize={this.getBurgerLinesPositions}
+                />
               </div>
-            )}
 
-            <div className="hamburger-container" data-testid="hamburger">
-              <Hamburger
-                visible={!isHomepage && transitionStatus !== 'exiting'}
-                onResize={this.getBurgerLinesPositions}
-              />
-            </div>
-            {/* <p style={{ color: 'white' }}>
-              {location === '/' ? 'enter' : 'exit'}
-            </p> */}
-            <Media query={{ minWidth: siteTheme.breakpoints.touch }}>
-              {matches =>
-                matches ? (
-                  <SideNavigation
-                    data-testid="side-navigation"
-                    animateTo={hamburgerPosition}
-                    location={location}
-                    transition={location === '/' ? 'enter' : 'exit'}
-                  />
-                ) : null
-              }
-            </Media>
-          </StyledNavbar>
-        )}
+              <Media query={{ minWidth: siteTheme.breakpoints.touch }}>
+                {matches =>
+                  matches ? (
+                    <div
+                      className="side-navigation-wrapper"
+                      style={{ visibility: showSideNav ? 'visible' : 'hidden' }}
+                    >
+                      <SideNavigation
+                        data-testid="side-navigation"
+                        animateTo={hamburgerPosition}
+                        location={location}
+                        transition={location === '/' ? 'enter' : 'exit'}
+                      />
+                    </div>
+                  ) : null
+                }
+              </Media>
+            </StyledNavbar>
+          );
+        }}
       </TransitionState>
     );
   }
