@@ -35,3 +35,24 @@ export default class ProjectIndexPage extends React.Component {
     );
   }
 }
+
+// query ProjectsArchive {
+//   allMarkdownRemark(
+//     limit: 10
+//     filter: { frontmatter: { templateKey: { eq: "single-project" } } }
+//   ) {
+//     edges {
+//       node {
+//         frontmatter {
+//           title
+//           thumbnail {
+//             id
+//           }
+//           client
+//           techs
+//         }
+//         rawMarkdownBody
+//       }
+//     }
+//   }
+// }
