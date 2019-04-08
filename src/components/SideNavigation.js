@@ -132,9 +132,9 @@ export default class SideNavigation extends Component {
       0.4,
       { cycle: { y: yPositions } },
       { cycle: { y: [0, 0, 0, 0] } },
-      0.1
+      -0.1
     );
-    TweenMax.staggerFrom(this.menuTitles, 0.4, { y: -50, alpha: 0 }, 0.1);
+    TweenMax.staggerFrom(this.menuTitles, 0.4, { y: -50, alpha: 0 }, -0.1);
   };
 
   /**
