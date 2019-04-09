@@ -5,23 +5,12 @@ import styled from 'styled-components';
 import Layout from '../components/Layout';
 import Button from '../components/Button';
 import ContinueArrow from '../components/ContinueArrow';
+import StyledPageContainer from '../styles/StyledPageContainer';
 // import Features from '../components/Features';
 // import BlogRoll from '../components/BlogRoll';
 
-export const StyledPageContainer = styled.div`
+const HomePageContainer = styled(StyledPageContainer)`
   background: url(${props => props.backgroundimage});
-  padding-top: 20px;
-  min-height: calc(100vh - 20px);
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  text-align: center;
-  /* background: url('/assets/images/desktop-large_home-bg.jpg') no-repeat center center; */
-  background-size: cover;
-
-  > .columns {
-    flex: 1 1 100%;
-  }
 `;
 
 const StyledSiteTitle = styled.header`
@@ -66,7 +55,7 @@ const StyledSiteTitle = styled.header`
 `;
 
 export const IndexPageTemplate = props => (
-  <StyledPageContainer
+  <HomePageContainer
     className="section"
     backgroundimage={props.backgroundimage.childImageSharp.original.src}
   >
@@ -87,7 +76,7 @@ export const IndexPageTemplate = props => (
       </div>
       <div className="column is-one-third-desktop" />
     </div>
-  </StyledPageContainer>
+  </HomePageContainer>
 );
 
 IndexPageTemplate.propTypes = {

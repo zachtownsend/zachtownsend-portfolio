@@ -2,19 +2,13 @@ import React from 'react';
 // import { navigate } from 'gatsby-link';
 import styled from 'styled-components';
 import Layout from '../../components/Layout';
-import { StyledPageContainer } from '../../templates/index-page';
+import StyledPageContainer from '../../styles/StyledPageContainer';
 
 // function encode (data) {
 //   return Object.keys(data)
 //     .map(key => `${encodeURIComponent(key)  }=${  encodeURIComponent(data[key])}`)
 //     .join('&')
 // }
-const ContactPageContainer = styled(StyledPageContainer)`
-  background-color: ${({ theme }) => theme.darkGray};
-  .hamburger-container {
-    visibility: visible;
-  }
-`;
 
 export default class Index extends React.Component {
   // constructor (props) {
@@ -44,9 +38,9 @@ export default class Index extends React.Component {
   render() {
     return (
       <Layout>
-        <ContactPageContainer className="section">
+        <StyledPageContainer className="section">
           <h1>This is the contact page</h1>
-        </ContactPageContainer>
+        </StyledPageContainer>
       </Layout>
     );
   }
