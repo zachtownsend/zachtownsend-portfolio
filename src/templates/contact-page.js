@@ -11,6 +11,7 @@ const ContactPage = ({ data }) => {
 
   return (
     <Layout>
+      <h1>Test</h1>
       <ContactPageTemplate />
     </Layout>
   );

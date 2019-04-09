@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const Nav = props => props.active && <p>${props.mode}</p>;
+const Nav = props => ();
 
 Nav.propTypes = {
   mode: PropTypes.oneOf(['side', 'offcanvas']),
