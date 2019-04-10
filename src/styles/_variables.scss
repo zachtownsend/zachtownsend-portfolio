@@ -12,3 +12,11 @@ sans-serif;
 
 $family-sans-serif: $font-stack-body;
 $section-padding: 10px;
+
+// Breakpoints
+// The container horizontal gap, which acts as the offset for breakpoints
+$gap: 64px;
+$tablet: 769px;
+$desktop: 1023px;
+$widescreen: 1215px;
+$fullhd: 1407px;

@@ -1,10 +1,28 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import styled, { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider, css } from 'styled-components';
 import { Location } from '@reach/router';
 import Navigation from './Navigation';
 import './all.scss';
 import useSiteMetadata from './SiteMetadata';
+
+const sizes = {
+  mobile: 0,
+  tablet: 769,
+  touch: 1023,
+  desktop: 1215,
+  widescreen: 1407,
+};
+
+const media = Object.keys(sizes).reduce((acc, label) => {
+  console.log(acc, label);
+  acc[label] = (...args) => css`
+    @media (min-width: ${sizes[label] / 16}em) {
+      ${css(...args)}
+    }
+  `;
+  return acc;
+}, {});
 
 export const siteTheme = {
   primary: '#DA071F',
@@ -13,15 +31,10 @@ export const siteTheme = {
   lightGray: '#9C9C9B',
   white: '#fff',
   darkGray: '#0E0D0D',
-  breakpoints: {
-    mobile: 0,
-    tablet: 769,
-    touch: 1023,
-    desktop: 1215,
-    widescreen: 1407,
-  },
   bodyFontFamily: "'Open Sans', sans-serif",
   displayFontFamily: "'Roboto', sans-serif",
+  device: sizes,
+  media,
 };
 
 export const StyledPageContainer = styled.div`
