@@ -117,7 +117,7 @@ class Navigation extends Component {
 
     return (
       <TransitionState>
-        {({ transitionStatus, current, entry, exit }) => {
+        {({ transitionStatus }) => {
           const showSideNav =
             (isHomepage &&
               ['entered', 'entering', 'exiting'].includes(transitionStatus)) ||

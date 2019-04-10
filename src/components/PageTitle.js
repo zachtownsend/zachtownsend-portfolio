@@ -24,7 +24,7 @@ const StyledPageTitle = styled.h1`
     margin-right: 10px;
   }
 
-  @media (min-width: ${props => props.theme.breakpoints.tablet}px) {
+  @media (min-width: ${props => props.theme.device.tablet}px) {
     text-align: center;
 
     .site-title {

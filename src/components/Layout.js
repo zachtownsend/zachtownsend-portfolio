@@ -14,16 +14,6 @@ const sizes = {
   widescreen: 1407,
 };
 
-const media = Object.keys(sizes).reduce((acc, label) => {
-  console.log(acc, label);
-  acc[label] = (...args) => css`
-    @media (min-width: ${sizes[label] / 16}em) {
-      ${css(...args)}
-    }
-  `;
-  return acc;
-}, {});
-
 export const siteTheme = {
   primary: '#DA071F',
   black: '#000',
@@ -34,7 +24,6 @@ export const siteTheme = {
   bodyFontFamily: "'Open Sans', sans-serif",
   displayFontFamily: "'Roboto', sans-serif",
   device: sizes,
-  media,
 };
 
 export const StyledPageContainer = styled.div`
