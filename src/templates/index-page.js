@@ -13,6 +13,7 @@ import { applyHighlightTags } from '../lib/format';
 const HomePageContainer = styled(StyledPageContainer)`
   background: url(${props => props.backgroundimage});
   background-size: cover;
+  background-position: center;
 `;
 
 const StyledSiteTitle = styled.header`

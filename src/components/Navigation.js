@@ -161,7 +161,7 @@ class Navigation extends Component {
                 />
               </div>
 
-              <Media query={{ minWidth: siteTheme.device.desktop }}>
+              <Media query={{ minWidth: siteTheme.device.touch }}>
                 {matches =>
                   matches ? (
                     <div
