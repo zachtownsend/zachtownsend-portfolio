@@ -50,7 +50,7 @@ const StyledSiteTitle = styled.header`
       }
     }
 
-    @media (min-width: ${props => props.theme.device.desktop}px) {
+    @media (min-width: ${props => props.theme.device.touch}px) {
       text-align: right;
 
       .contact-button {
