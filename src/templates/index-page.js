@@ -6,50 +6,58 @@ import Layout from '../components/Layout';
 import Button from '../components/Button';
 import ContinueArrow from '../components/ContinueArrow';
 import StyledPageContainer from '../styles/StyledPageContainer';
+import { applyHighlightTags } from '../lib/format';
 // import Features from '../components/Features';
 // import BlogRoll from '../components/BlogRoll';
 
 const HomePageContainer = styled(StyledPageContainer)`
   background: url(${props => props.backgroundimage});
+  background-size: cover;
+  background-position: center;
 `;
 
 const StyledSiteTitle = styled.header`
-  text-align: center;
+  display: flex;
+  justify-content: center;
 
-  h1 {
-    font-size: 36px;
-    line-height: 1.2;
-    color: ${props => props.theme.white};
-  }
+  .page-title {
+    text-align: center;
 
-  p.subtitle {
-    color: ${props => props.theme.lightGray};
-    font-size: 18px;
-    line-height: 1.1667;
-    display: inline-block;
-    max-width: 12em;
-    margin-bottom: 27px;
-
-    &.highlight {
-      color: ${props => props.theme.primary};
-    }
-  }
-
-  @media (min-width: ${props => props.theme.breakpoints.tablet}px) {
     h1 {
-      font-size: 64px;
+      font-size: 36px;
+      line-height: 1.2;
+      color: ${props => props.theme.white};
     }
 
     p.subtitle {
-      font-size: 36px;
+      color: ${props => props.theme.lightGray};
+      font-size: 18px;
+      line-height: 1.1667;
+      display: inline-block;
+      max-width: 12em;
+      margin-bottom: 27px;
+
+      .highlighted {
+        color: ${props => props.theme.primary};
+      }
     }
-  }
 
-  @media (min-width: ${props => props.theme.breakpoints.desktop}px) {
-    text-align: right;
+    @media (min-width: ${props => props.theme.device.tablet}px) {
+      h1 {
+        font-size: 64px;
+      }
 
-    .contact-button {
-      display: none;
+      p.subtitle {
+        font-size: 36px;
+      }
+    }
+
+    @media (min-width: ${props => props.theme.device.touch}px) {
+      text-align: right;
+
+      .contact-button {
+        display: none;
+      }
     }
   }
 `;
@@ -63,11 +71,20 @@ export const IndexPageTemplate = props => (
       <div className="column is-full is-one-third-desktop">
         {props.title && (
           <StyledSiteTitle>
-            <h1>{props.title}</h1>
-            {props.subtitle && <p className="subtitle">{props.subtitle}</p>}
-            <Button className="contact-button">
-              <Link to="/contact">Contact Me</Link>
-            </Button>
+            <div className="page-title">
+              <h1>{props.title}</h1>
+              {props.subtitle && (
+                <p
+                  className="subtitle"
+                  dangerouslySetInnerHTML={{
+                    __html: applyHighlightTags(props.subtitle),
+                  }}
+                />
+              )}
+              <Button className="contact-button">
+                <Link to="/contact">Contact Me</Link>
+              </Button>
+            </div>
           </StyledSiteTitle>
         )}
       </div>

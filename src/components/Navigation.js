@@ -47,7 +47,7 @@ const StyledNavbar = styled.nav`
 
 const CenteredLogo = posed.div({
   centered: {
-    x: '50vw',
+    x: 'calc(50vw - 52px)',
     transition: {
       duration: 800,
       ease: 'easeInOut',
@@ -117,7 +117,7 @@ class Navigation extends Component {
 
     return (
       <TransitionState>
-        {({ transitionStatus, current, entry, exit }) => {
+        {({ transitionStatus }) => {
           const showSideNav =
             (isHomepage &&
               ['entered', 'entering', 'exiting'].includes(transitionStatus)) ||
@@ -161,7 +161,7 @@ class Navigation extends Component {
                 />
               </div>
 
-              <Media query={{ minWidth: siteTheme.breakpoints.touch }}>
+              <Media query={{ minWidth: siteTheme.device.touch }}>
                 {matches =>
                   matches ? (
                     <div
