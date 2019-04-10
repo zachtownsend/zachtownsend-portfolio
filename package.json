@@ -1,7 +1,7 @@
 {
   "name": "zachtownsend-portfolio",
   "description": "Zach Townsend's Web Developer Portfolio",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Zach Townsend",
   "dependencies": {
     "babel-core": "^7.0.0-bridge.0",
@@ -48,6 +48,7 @@
     "react-media": "^1.9.2",
     "react-pose": "^4.0.8",
     "react-transition-group": "^2.8.0",
+    "sanitize-html": "^1.20.0",
     "styled-components": "^4.2.0",
     "uuid": "^3.2.1"
   },

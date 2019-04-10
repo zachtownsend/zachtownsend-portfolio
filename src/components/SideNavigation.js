@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import posed from 'react-pose';
-import { TweenMax } from 'gsap/TweenMax';
 import TransitionLink, { TransitionState } from 'gatsby-plugin-transition-link';
+import TweenMax from 'gsap/umd/TweenMax';
 
 const StyledSideNavigation = styled.nav`
   position: absolute;

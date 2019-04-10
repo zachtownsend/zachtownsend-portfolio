@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, cleanup } from 'react-testing-library';
 import { ThemeProvider } from 'styled-components';
-import { siteTheme } from '../Layout';
-import PageTitle from '../PageTitle';
+import { siteTheme } from '../src/components/Layout';
+import PageTitle from '../src/components/PageTitle';
 
 afterEach(cleanup);
 
