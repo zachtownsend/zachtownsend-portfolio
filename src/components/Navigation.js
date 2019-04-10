@@ -47,7 +47,7 @@ const StyledNavbar = styled.nav`
 
 const CenteredLogo = posed.div({
   centered: {
-    x: '50vw',
+    x: 'calc(50vw - 52px)',
     transition: {
       duration: 800,
       ease: 'easeInOut',
