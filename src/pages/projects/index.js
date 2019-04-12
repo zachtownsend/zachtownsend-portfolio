@@ -27,11 +27,11 @@ const StyledSwiper = styled.div`
 const ProjectInfo = styled.div`
   position: absolute;
   top: 48px;
-  left: 7%;
+  left: 19vw;
   z-index: 1;
   padding: 48px 64px;
   display: block;
-  background-color: ${({ theme }) => theme.black};
+  background-color: rgba(0, 0, 0, 0.9);
   color: ${({ theme }) => theme.white};
 
   header {
@@ -99,7 +99,6 @@ class ProjectIndexPage extends React.Component {
           previousIndex: swiper.previousIndex,
           transitioning: true,
         });
-        console.log(swiper.previousIndex, swiper.activeIndex);
       })
       .on('transitionEnd', () => {
         this.setState({
@@ -111,7 +110,6 @@ class ProjectIndexPage extends React.Component {
 
   render() {
     const { currentIndex, previousIndex, transitioning } = this.state;
-
     const { edges } = this.props.data.allMarkdownRemark;
     const projects = edges.map(project => (
       <div className="swiper-slide" key={project.node.id}>
@@ -120,6 +118,7 @@ class ProjectIndexPage extends React.Component {
         </div>
       </div>
     ));
+
     return (
       <Layout>
         <StyledPageContainer>
@@ -130,6 +129,7 @@ class ProjectIndexPage extends React.Component {
                 <PeepholeText
                   tag="h2"
                   nowrap
+                  dynamicWidth
                   direction={previousIndex > currentIndex ? 'up' : 'down'}
                   nextContent={
                     transitioning
@@ -142,9 +142,21 @@ class ProjectIndexPage extends React.Component {
                       .frontmatter.title
                   }
                 </PeepholeText>
-                <p className="client">
-                  <span>Verb Brands Ltd</span>
-                </p>
+                <PeepholeText
+                  tag="p"
+                  className="client"
+                  direction={previousIndex > currentIndex ? 'up' : 'down'}
+                  nextContent={
+                    transitioning
+                      ? edges[currentIndex].node.frontmatter.client
+                      : null
+                  }
+                >
+                  {
+                    edges[transitioning ? previousIndex : currentIndex].node
+                      .frontmatter.client
+                  }
+                </PeepholeText>
               </header>
               <hr />
               <aside className="project-details">
