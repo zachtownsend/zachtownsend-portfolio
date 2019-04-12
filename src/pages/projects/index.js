@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Swiper from 'swiper';
 import Layout from '../../components/Layout';
 import Button from '../../components/Button';
+import PeepholeText from '../../components/PeepholeText';
 import StyledPageContainer from '../../styles/StyledPageContainer';
 import '../../../node_modules/swiper/dist/css/swiper.min.css';
 
@@ -25,53 +26,73 @@ const StyledSwiper = styled.div`
 
 const ProjectInfo = styled.div`
   position: absolute;
-  top: 0;
-  width: 100%;
-  left: 0;
-  height: 100%;
+  top: 48px;
+  left: 7%;
   z-index: 1;
-  padding: 0 7%;
-  display: grid;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: 50% 50%;
+  padding: 48px 64px;
+  display: block;
+  background-color: ${({ theme }) => theme.black};
   color: ${({ theme }) => theme.white};
 
   header {
-    grid-column-start: 1;
-    grid-column-end: 3;
     text-align: left;
 
     h2 {
       font-size: 64px;
+      line-height: 1;
     }
 
     p.client {
       font-family: ${({ theme }) => theme.displayFontFamily};
-      font-size: 36px;
+      font-size: 24px;
       font-weight: 100;
       color: ${({ theme }) => theme.white};
     }
   }
 
+  hr {
+    border: 1px inset ${({ theme }) => theme.primary};
+    margin: 13px 0 12px;
+  }
+
   aside.project-details {
-    grid-column-start: 1;
-    grid-column-end: 2;
     text-align: left;
+
+    h3 {
+      font-size: 24px;
+    }
+
+    p.techs {
+      font-family: ${({ theme }) => theme.displayFontFamily};
+      font-weight: 100;
+      font-size: 18px;
+      color: ${({ theme }) => theme.white};
+    }
   }
 
   .cta {
-    grid-column-start: 2;
-    grid-column-end: 3;
+    text-align: left;
+    margin-top: 12px;
   }
 `;
 
 class ProjectIndexPage extends React.Component {
+  state = {
+    currentProject: 1,
+  };
+
   componentDidMount = () => {
-    const mySwiper = new Swiper('.swiper-container', {
+    const swiper = new Swiper('.swiper-container', {
+      initialSlide: 0,
       direction: 'horizontal',
       slidesPerView: 'auto',
       centeredSlides: true,
       spaceBetween: '10%',
+      on: {
+        slideChangeTransitionStart() {
+          console.log(this.previousIndex, this.activeIndex);
+        },
+      },
     });
   };
 
@@ -91,16 +112,25 @@ class ProjectIndexPage extends React.Component {
             <div className="swiper-wrapper">{projects}</div>
             <ProjectInfo>
               <header>
-                <h2>Hanro</h2>
-                <p className="client">Verb Brands Ltd</p>
+                <PeepholeText tag="h2">Hanro</PeepholeText>
+                <p className="client">
+                  <span>Verb Brands Ltd</span>
+                </p>
               </header>
+              <hr />
               <aside className="project-details">
-                <h3>eCommerce</h3>
-                <p>Wordpress, Woocommerce, PHP</p>
+                <h3>
+                  <span>eCommerce</span>
+                </h3>
+                <p className="techs">
+                  <span>Wordpress, Woocommerce, PHP</span>
+                </p>
               </aside>
               <div className="cta">
                 <Button>
-                  <a href="#">Explore</a>
+                  <a href="#">
+                    <span>Explore</span>
+                  </a>
                 </Button>
               </div>
             </ProjectInfo>
