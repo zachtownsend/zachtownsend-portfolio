@@ -78,27 +78,42 @@ const ProjectInfo = styled.div`
 
 class ProjectIndexPage extends React.Component {
   state = {
-    currentProject: 1,
+    currentIndex: 0,
+    previousIndex: null,
+    transitioning: false,
   };
 
   componentDidMount = () => {
+    const { setState } = this;
     const swiper = new Swiper('.swiper-container', {
       initialSlide: 0,
       direction: 'horizontal',
       slidesPerView: 'auto',
       centeredSlides: true,
       spaceBetween: '10%',
-      on: {
-        slideChangeTransitionStart() {
-          console.log(this.previousIndex, this.activeIndex);
-        },
-      },
     });
+    swiper
+      .on('transitionStart', () => {
+        this.setState({
+          currentIndex: swiper.activeIndex,
+          previousIndex: swiper.previousIndex,
+          transitioning: true,
+        });
+        console.log(swiper.previousIndex, swiper.activeIndex);
+      })
+      .on('transitionEnd', () => {
+        this.setState({
+          previousIndex: null,
+          transitioning: false,
+        });
+      });
   };
 
   render() {
-    const { data } = this.props;
-    const projects = data.allMarkdownRemark.edges.map(project => (
+    const { currentIndex, previousIndex, transitioning } = this.state;
+
+    const { edges } = this.props.data.allMarkdownRemark;
+    const projects = edges.map(project => (
       <div className="swiper-slide" key={project.node.id}>
         <div className="project-container">
           <img src={project.node.frontmatter.thumbnail.publicURL} alt="" />
@@ -112,7 +127,21 @@ class ProjectIndexPage extends React.Component {
             <div className="swiper-wrapper">{projects}</div>
             <ProjectInfo>
               <header>
-                <PeepholeText tag="h2">Hanro</PeepholeText>
+                <PeepholeText
+                  tag="h2"
+                  nowrap
+                  direction={previousIndex > currentIndex ? 'up' : 'down'}
+                  nextContent={
+                    transitioning
+                      ? edges[currentIndex].node.frontmatter.title
+                      : null
+                  }
+                >
+                  {
+                    edges[transitioning ? previousIndex : currentIndex].node
+                      .frontmatter.title
+                  }
+                </PeepholeText>
                 <p className="client">
                   <span>Verb Brands Ltd</span>
                 </p>
