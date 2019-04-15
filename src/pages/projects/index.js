@@ -22,12 +22,21 @@ const StyledSwiper = styled.div`
       }
     }
   }
+
+  .info-container {
+    position: absolute;
+    z-index: 1;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: width 0.4s ease-in-out;
+  }
 `;
 
 const ProjectInfo = styled.div`
   position: absolute;
-  top: 48px;
-  left: 19vw;
+  bottom: 24px;
+  left: -48px;
   z-index: 1;
   padding: 48px 64px;
   display: block;
@@ -38,13 +47,13 @@ const ProjectInfo = styled.div`
     text-align: left;
 
     h2 {
-      font-size: 64px;
+      font-size: 32px;
       line-height: 1;
     }
 
     p.client {
       font-family: ${({ theme }) => theme.displayFontFamily};
-      font-size: 24px;
+      font-size: 18px;
       font-weight: 100;
       color: ${({ theme }) => theme.white};
     }
@@ -59,13 +68,13 @@ const ProjectInfo = styled.div`
     text-align: left;
 
     h3 {
-      font-size: 24px;
+      font-size: 18px;
     }
 
     p.techs {
       font-family: ${({ theme }) => theme.displayFontFamily};
       font-weight: 100;
-      font-size: 18px;
+      font-size: 14px;
       color: ${({ theme }) => theme.white};
     }
   }
@@ -81,7 +90,14 @@ class ProjectIndexPage extends React.Component {
     currentIndex: 0,
     previousIndex: null,
     transitioning: false,
+    containerDimensions: { width: 0, height: 0 },
   };
+
+  constructor(props) {
+    super(props);
+
+    this.infoContainer = null;
+  }
 
   componentDidMount = () => {
     const { setState } = this;
@@ -101,9 +117,13 @@ class ProjectIndexPage extends React.Component {
         });
       })
       .on('transitionEnd', () => {
+        const { width, height } = swiper.slides[
+          swiper.activeIndex
+        ].getBoundingClientRect();
         this.setState({
           previousIndex: null,
           transitioning: false,
+          containerDimensions: { width, height },
         });
       });
   };
@@ -124,57 +144,66 @@ class ProjectIndexPage extends React.Component {
         <StyledPageContainer>
           <StyledSwiper className="swiper-container">
             <div className="swiper-wrapper">{projects}</div>
-            <ProjectInfo>
-              <header>
-                <PeepholeText
-                  tag="h2"
-                  nowrap
-                  dynamicWidth
-                  direction={previousIndex > currentIndex ? 'up' : 'down'}
-                  nextContent={
-                    transitioning
-                      ? edges[currentIndex].node.frontmatter.title
-                      : null
-                  }
-                >
-                  {
-                    edges[transitioning ? previousIndex : currentIndex].node
-                      .frontmatter.title
-                  }
-                </PeepholeText>
-                <PeepholeText
-                  tag="p"
-                  className="client"
-                  direction={previousIndex > currentIndex ? 'up' : 'down'}
-                  nextContent={
-                    transitioning
-                      ? edges[currentIndex].node.frontmatter.client
-                      : null
-                  }
-                >
-                  {
-                    edges[transitioning ? previousIndex : currentIndex].node
-                      .frontmatter.client
-                  }
-                </PeepholeText>
-              </header>
-              <hr />
-              <aside className="project-details">
-                <h3>
-                  <span>eCommerce</span>
-                </h3>
-                <p className="techs">
-                  <span>Wordpress, Woocommerce, PHP</span>
-                </p>
-              </aside>
-              <div className="cta">
-                <Button>
-                  <a href="#">
-                    <span>Explore</span>
-                  </a>
-                </Button>
-              </div>
-            </ProjectInfo>
+            <div
+              ref={c => (this.infoContainer = c)}
+              className="info-container"
+              style={{
+                width: this.state.containerDimensions.width,
+                height: this.state.containerDimensions.height,
+              }}
+            >
+              <ProjectInfo>
+                <header>
+                  <PeepholeText
+                    tag="h2"
+                    nowrap
+                    dynamicWidth
+                    direction={previousIndex > currentIndex ? 'up' : 'down'}
+                    nextContent={
+                      transitioning
+                        ? edges[currentIndex].node.frontmatter.title
+                        : null
+                    }
+                  >
+                    {
+                      edges[transitioning ? previousIndex : currentIndex].node
+                        .frontmatter.title
+                    }
+                  </PeepholeText>
+                  <PeepholeText
+                    tag="p"
+                    className="client"
+                    direction={previousIndex > currentIndex ? 'up' : 'down'}
+                    nextContent={
+                      transitioning
+                        ? edges[currentIndex].node.frontmatter.client
+                        : null
+                    }
+                  >
+                    {
+                      edges[transitioning ? previousIndex : currentIndex].node
+                        .frontmatter.client
+                    }
+                  </PeepholeText>
+                </header>
+                <hr />
+                <aside className="project-details">
+                  <h3>
+                    <span>eCommerce</span>
+                  </h3>
+                  <p className="techs">
+                    <span>Wordpress, Woocommerce, PHP</span>
+                  </p>
+                </aside>
+                <div className="cta">
+                  <Button>
+                    <a href="#">
+                      <span>Explore</span>
+                    </a>
+                  </Button>
+                </div>
+              </ProjectInfo>
+            </div>
           </StyledSwiper>
         </StyledPageContainer>
       </Layout>
