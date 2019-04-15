@@ -2,6 +2,8 @@ import React from 'react';
 import { StaticQuery, graphql } from 'gatsby';
 import styled from 'styled-components';
 import Swiper from 'swiper';
+import posed, { PoseGroup } from 'react-pose';
+import classNames from 'classnames';
 import Layout from '../../components/Layout';
 import Button from '../../components/Button';
 import PeepholeText from '../../components/PeepholeText';
@@ -71,11 +73,28 @@ const ProjectInfo = styled.div`
       font-size: 18px;
     }
 
-    p.techs {
+    ul.techs {
       font-family: ${({ theme }) => theme.displayFontFamily};
       font-weight: 100;
       font-size: 14px;
       color: ${({ theme }) => theme.white};
+
+      &.transitioning {
+        white-space: nowrap;
+      }
+
+      li {
+        display: inline-block;
+        margin-right: 10px;
+
+        &::after {
+          content: ', ';
+        }
+
+        &:last-child::after {
+          display: none;
+        }
+      }
     }
   }
 
@@ -84,6 +103,15 @@ const ProjectInfo = styled.div`
     margin-top: 12px;
   }
 `;
+
+const Tech = posed.li({
+  enter: {
+    opacity: 1,
+    y: -2,
+    delay: ({ delay }) => delay,
+  },
+  exit: { opacity: 0, y: 2, delay: ({ delay }) => delay },
+});
 
 class ProjectIndexPage extends React.Component {
   state = {
@@ -191,11 +219,22 @@ class ProjectIndexPage extends React.Component {
                   <h3>
                     <span>eCommerce</span>
                   </h3>
-                  <p className="techs">
-                    {edges[
-                      transitioning ? previousIndex : currentIndex
-                    ].node.frontmatter.techs.join(', ')}
-                  </p>
+                  <ul
+                    className={classNames(
+                      'techs',
+                      transitioning && 'transitioning'
+                    )}
+                  >
+                    <PoseGroup>
+                      {edges[currentIndex].node.frontmatter.techs.map(
+                        (tech, index) => (
+                          <Tech key={tech} delay={index * 50}>
+                            {tech}
+                          </Tech>
+                        )
+                      )}
+                    </PoseGroup>
+                  </ul>
                 </aside>
                 <div className="cta">
                   <Button>
