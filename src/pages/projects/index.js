@@ -173,7 +173,7 @@ class ProjectIndexPage extends React.Component {
                   <PeepholeText
                     tag="p"
                     className="client"
-                    direction={previousIndex > currentIndex ? 'up' : 'down'}
+                    direction={previousIndex < currentIndex ? 'up' : 'down'}
                     nextContent={
                       transitioning
                         ? edges[currentIndex].node.frontmatter.client
@@ -192,7 +192,9 @@ class ProjectIndexPage extends React.Component {
                     <span>eCommerce</span>
                   </h3>
                   <p className="techs">
-                    <span>Wordpress, Woocommerce, PHP</span>
+                    {edges[
+                      transitioning ? previousIndex : currentIndex
+                    ].node.frontmatter.techs.join(', ')}
                   </p>
                 </aside>
                 <div className="cta">

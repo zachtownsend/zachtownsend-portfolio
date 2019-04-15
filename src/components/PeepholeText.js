@@ -3,13 +3,22 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import posed from 'react-pose';
 
-function getNextWidth(widthSetter, direction = 'up', dynamicWidth = true) {
+function getNextWidth(
+  widthSetter,
+  direction = 'up',
+  dynamicWidth = true,
+  callback
+) {
   if (dynamicWidth && widthSetter.current !== undefined) {
     const { current } = widthSetter;
     const sibling =
       current[direction === 'up' ? 'nextSibling' : 'previousSibling'];
 
-    if (sibling) {
+    if (sibling && sibling.offsetWidth) {
+      if (typeof callback === 'function') {
+        callback(sibling.offsetWidth, widthSetter);
+      }
+
       return sibling.offsetWidth;
     }
   }
@@ -23,6 +32,10 @@ const ChildWrapper = styled.span`
   position: relative;
 
   span {
+    display: inline-block;
+  }
+
+  span > span {
     display: block;
     position: absolute;
     ${({ nowrap }) => nowrap && `white-space: nowrap;`}
@@ -41,7 +54,7 @@ const ChildWrapper = styled.span`
   }
 `;
 
-const Transition = posed.div({
+const Transition = posed.span({
   init: {
     y: 0,
     transition: {
@@ -50,13 +63,13 @@ const Transition = posed.div({
   },
   up: {
     y: '-100%',
-    width: ({ widthSetter, dynamicWidth }) =>
-      getNextWidth(widthSetter, 'up', dynamicWidth) || '100%',
+    width: ({ widthSetter, dynamicWidth, callback }) =>
+      getNextWidth(widthSetter, 'up', dynamicWidth, callback) || '100%',
   },
   down: {
     y: '100%',
-    width: ({ widthSetter, dynamicWidth }) =>
-      getNextWidth(widthSetter, 'down', dynamicWidth) || '100%',
+    width: ({ widthSetter, dynamicWidth, callback }) =>
+      getNextWidth(widthSetter, 'down', dynamicWidth, callback) || '100%',
   },
 });
 
