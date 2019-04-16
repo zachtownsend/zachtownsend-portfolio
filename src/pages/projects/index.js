@@ -107,10 +107,11 @@ const ProjectInfo = styled.div`
 const Tech = posed.li({
   enter: {
     opacity: 1,
-    y: -2,
     delay: ({ delay }) => delay,
   },
-  exit: { opacity: 0, y: 2, delay: ({ delay }) => delay },
+  exit: {
+    opacity: 0,
+  },
 });
 
 class ProjectIndexPage extends React.Component {
@@ -119,6 +120,7 @@ class ProjectIndexPage extends React.Component {
     previousIndex: null,
     transitioning: false,
     containerDimensions: { width: 0, height: 0 },
+    projectIsWiderThanWindow: false,
   };
 
   constructor(props) {
@@ -148,17 +150,31 @@ class ProjectIndexPage extends React.Component {
         const { width, height } = swiper.slides[
           swiper.activeIndex
         ].getBoundingClientRect();
+
         this.setState({
           previousIndex: null,
           transitioning: false,
-          containerDimensions: { width, height },
+          containerDimensions: {
+            width:
+              window.innerWidth - 168 < width ? window.innerWidth - 168 : width,
+            height,
+          },
+          projectIsWiderThanWindow: window.innerWidth - 168 < width,
         });
       });
   };
 
   render() {
-    const { currentIndex, previousIndex, transitioning } = this.state;
+    const {
+      currentIndex,
+      previousIndex,
+      transitioning,
+      containerDimensions,
+      projectIsWiderThanWindow,
+    } = this.state;
+
     const { edges } = this.props.data.allMarkdownRemark;
+
     const projects = edges.map(project => (
       <div className="swiper-slide" key={project.node.id}>
         <div className="project-container">
@@ -176,8 +192,8 @@ class ProjectIndexPage extends React.Component {
               ref={c => (this.infoContainer = c)}
               className="info-container"
               style={{
-                width: this.state.containerDimensions.width,
-                height: this.state.containerDimensions.height,
+                width: containerDimensions.width,
+                height: containerDimensions.height,
               }}
             >
               <ProjectInfo>
