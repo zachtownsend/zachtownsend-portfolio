@@ -4,7 +4,8 @@ import styled from 'styled-components';
 const Button = styled.div`
   display: block;
 
-  a, button {
+  a,
+  button {
     display: inline-block;
     font-size: 14px;
     line-height: 1.143;
@@ -14,6 +15,7 @@ const Button = styled.div`
     font-family: 'Roboto', sans-serif;
     color: ${props => props.theme.white};
     font-weight: 100;
+    text-align: center;
   }
 `;
 
