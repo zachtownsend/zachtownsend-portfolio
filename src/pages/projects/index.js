@@ -178,7 +178,10 @@ class ProjectIndexPage extends React.Component {
     const projects = edges.map(project => (
       <div className="swiper-slide" key={project.node.id}>
         <div className="project-container">
-          <img src={project.node.frontmatter.thumbnail.publicURL} alt="" />
+          <img
+            src={project.node.frontmatter.thumbnail.childImageSharp.resize.src}
+            alt=""
+          />
         </div>
       </div>
     ));
@@ -282,7 +285,11 @@ export default props => (
               frontmatter {
                 title
                 thumbnail {
-                  publicURL
+                  childImageSharp {
+                    resize(height: 900) {
+                      src
+                    }
+                  }
                 }
                 client
                 techs
