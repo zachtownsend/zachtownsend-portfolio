@@ -18,6 +18,9 @@ const StyledSwiper = styled.div`
     width: auto;
 
     .project-container {
+      line-height: 0;
+      overflow: hidden;
+
       img {
         height: 75vh;
         width: auto;
@@ -170,7 +173,6 @@ class ProjectIndexPage extends React.Component {
       previousIndex,
       transitioning,
       containerDimensions,
-      projectIsWiderThanWindow,
     } = this.state;
 
     const { edges } = this.props.data.allMarkdownRemark;
@@ -178,7 +180,10 @@ class ProjectIndexPage extends React.Component {
     const projects = edges.map(project => (
       <div className="swiper-slide" key={project.node.id}>
         <div className="project-container">
-          <img src={project.node.frontmatter.thumbnail.publicURL} alt="" />
+          <img
+            src={project.node.frontmatter.thumbnail.childImageSharp.resize.src}
+            alt=""
+          />
         </div>
       </div>
     ));
@@ -282,7 +287,11 @@ export default props => (
               frontmatter {
                 title
                 thumbnail {
-                  publicURL
+                  childImageSharp {
+                    resize(height: 900) {
+                      src
+                    }
+                  }
                 }
                 client
                 techs
