@@ -18,6 +18,9 @@ const StyledSwiper = styled.div`
     width: auto;
 
     .project-container {
+      line-height: 0;
+      overflow: hidden;
+
       img {
         height: 75vh;
         width: auto;
@@ -170,7 +173,6 @@ class ProjectIndexPage extends React.Component {
       previousIndex,
       transitioning,
       containerDimensions,
-      projectIsWiderThanWindow,
     } = this.state;
 
     const { edges } = this.props.data.allMarkdownRemark;
