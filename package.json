@@ -1,7 +1,7 @@
 {
   "name": "zachtownsend-portfolio",
   "description": "Zach Townsend's Web Developer Portfolio",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "Zach Townsend",
   "dependencies": {
     "babel-core": "^7.0.0-bridge.0",
