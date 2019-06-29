@@ -2,7 +2,7 @@ import React from 'react';
 // import { navigate } from 'gatsby-link';
 import styled from 'styled-components';
 import Layout from '../../components/Layout';
-import StyledPageContainer from '../../styles/StyledPageContainer';
+import PageContainer from '../../components/PageContainer';
 
 // function encode (data) {
 //   return Object.keys(data)
@@ -38,9 +38,9 @@ export default class Index extends React.Component {
   render() {
     return (
       <Layout>
-        <StyledPageContainer className="section">
+        <PageContainer className="section">
           <h1>This is the contact page</h1>
-        </StyledPageContainer>
+        </PageContainer>
       </Layout>
     );
   }

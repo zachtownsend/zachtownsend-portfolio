@@ -70,7 +70,14 @@ const TemplateWrapper = ({ children }) => {
           <meta property="og:url" content="/" />
           <meta property="og:image" content="/img/og-image.jpg" />
         </Helmet>
+<<<<<<< HEAD
         <LayoutWrapper>{children}</LayoutWrapper>
+=======
+        <Location>
+          {({ location }) => <Navigation location={location.pathname} />}
+        </Location>
+        {children}
+>>>>>>> refactor(PageContainer): move page container to single component
       </div>
     </ThemeProvider>
   );
