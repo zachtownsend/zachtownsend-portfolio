@@ -3,6 +3,7 @@ import { StaticQuery, graphql } from 'gatsby';
 import styled from 'styled-components';
 import Swiper from 'swiper';
 import posed, { PoseGroup } from 'react-pose';
+import TransitionLink, { TransitionState } from 'gatsby-plugin-transition-link';
 import classNames from 'classnames';
 import Layout from '../../components/Layout';
 import Button from '../../components/Button';
@@ -107,6 +108,12 @@ const ProjectInfo = styled.div`
   }
 `;
 
+const ProjectBlockLink = styled(TransitionLink)`
+  width: 100%;
+  height: 100%;
+  display: block;
+`;
+
 const Tech = posed.li({
   enter: {
     opacity: 1,
@@ -140,7 +147,9 @@ class ProjectIndexPage extends React.Component {
       slidesPerView: 'auto',
       centeredSlides: true,
       spaceBetween: '10%',
+      preventClicksPropagation: false,
     });
+
     swiper
       .on('transitionStart', () => {
         this.setState({
@@ -180,6 +189,7 @@ class ProjectIndexPage extends React.Component {
     const projects = edges.map(project => (
       <div className="swiper-slide" key={project.node.id}>
         <div className="project-container">
+          <ProjectBlockLink to={project.node.fields.slug} />
           <img
             src={project.node.frontmatter.thumbnail.childImageSharp.resize.src}
             alt=""
@@ -259,9 +269,9 @@ class ProjectIndexPage extends React.Component {
                 </aside>
                 <div className="cta">
                   <Button>
-                    <a href="#">
+                    <TransitionLink to={edges[currentIndex].node.fields.slug}>
                       <span>Explore</span>
-                    </a>
+                    </TransitionLink>
                   </Button>
                 </div>
               </ProjectInfo>
@@ -284,6 +294,9 @@ export default props => (
           edges {
             node {
               id
+              fields {
+                slug
+              }
               frontmatter {
                 title
                 thumbnail {
