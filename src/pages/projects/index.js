@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import Layout from '../../components/Layout';
 import Button from '../../components/Button';
 import PeepholeText from '../../components/PeepholeText';
-import StyledPageContainer from '../../styles/StyledPageContainer';
+import PageContainer from '../../components/PageContainer';
 import '../../../node_modules/swiper/dist/css/swiper.min.css';
 
 const StyledSwiper = styled.div`
@@ -190,7 +190,7 @@ class ProjectIndexPage extends React.Component {
 
     return (
       <Layout>
-        <StyledPageContainer>
+        <PageContainer noPadding>
           <StyledSwiper className="swiper-container">
             <div className="swiper-wrapper">{projects}</div>
             <div
@@ -267,7 +267,7 @@ class ProjectIndexPage extends React.Component {
               </ProjectInfo>
             </div>
           </StyledSwiper>
-        </StyledPageContainer>
+        </PageContainer>
       </Layout>
     );
   }

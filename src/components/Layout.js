@@ -26,9 +26,9 @@ export const siteTheme = {
   device: sizes,
 };
 
-export const StyledPageContainer = styled.div`
+export const PageContainer = styled.div`
   background: ${siteTheme.darkGray};
-  padding-top: 20px;
+  padding-top: 210px;
   min-height: calc(100vh - 20px);
 `;
 
@@ -75,7 +75,7 @@ const TemplateWrapper = ({ children }) => {
         <Location>
           {({ location }) => <Navigation location={location.pathname} />}
         </Location>
-        <StyledPageContainer>{children}</StyledPageContainer>
+        {children}
       </div>
     </ThemeProvider>
   );
