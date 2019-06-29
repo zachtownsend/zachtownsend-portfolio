@@ -3,10 +3,23 @@ import PropTypes from 'prop-types';
 import { kebabCase } from 'lodash';
 import Helmet from 'react-helmet';
 import { graphql, Link } from 'gatsby';
+import styled from 'styled-components';
 import Layout from '../components/Layout';
 import Content, { HTMLContent } from '../components/Content';
 import ProjectQuickInfo from '../components/ProjectQuickInfo';
 import PageContainer from '../components/PageContainer';
+
+const ProjectInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+
+  .projectInfo + .projectInfo {
+    margin-top: 78px;
+  }
+`;
 
 export const BlogPostTemplate = ({
   content,
@@ -26,7 +39,14 @@ export const BlogPostTemplate = ({
           </div>
         </div>
         <div className="column is-3 is-offset-1">
-          <ProjectQuickInfo title="Project" content={title} />
+          <ProjectInfoContainer>
+            <ProjectQuickInfo title="Project" content={title} />
+            <ProjectQuickInfo title="Agency" content="Verb Brands Ltd" />
+            <ProjectQuickInfo
+              title="Technology"
+              content="Wordpress, Woocommerce, PHP, jQuery"
+            />
+          </ProjectInfoContainer>
         </div>
       </div>
     </div>
