@@ -112,6 +112,12 @@ const ProjectInfo = styled.div`
   }
 `;
 
+const ProjectBlockLink = styled(TransitionLink)`
+  width: 100%;
+  height: 100%;
+  display: block;
+`;
+
 const Tech = posed.li({
   enter: {
     opacity: 1,
