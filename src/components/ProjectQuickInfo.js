@@ -8,6 +8,7 @@ const ProjectInfo = styled.div.attrs({ className: 'projectInfo' })`
 
     p {
       color: ${props => props.theme.white};
+      font-family: ${props => props.displayFontFamily};
       font-size: 24px;
 
       &:not(:last-child) {

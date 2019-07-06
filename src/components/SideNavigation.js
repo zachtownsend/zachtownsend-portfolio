@@ -62,7 +62,9 @@ export default class SideNavigation extends Component {
 
   constructor(props) {
     super(props);
+
     const { location } = props;
+
     this.state = {
       yPositions: [0, 0, 0, 0],
     };
@@ -70,8 +72,16 @@ export default class SideNavigation extends Component {
     this.transitionProps = {
       exit: {
         trigger: ({ e }) => {
+          /**
+           * Get pathname of clicked nav link
+           */
           const { pathname } = e.target.closest('a');
+
+          /**
+           * Animate menu lines either in or out
+           */
           if (pathname === '/') {
+            // is Homepage
             this.animateIn();
           } else {
             this.animateOut();
@@ -90,6 +100,9 @@ export default class SideNavigation extends Component {
       },
     };
 
+    /**
+     * Define refs for animations
+     */
     this.menu = null;
     this.menuTitles = null;
     this.menuLines = null;
@@ -107,11 +120,6 @@ export default class SideNavigation extends Component {
 
     window.addEventListener('resize', this.setLinePositions);
   };
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   const { yPositions } = this.state;
-  //   return nextState.yPositions === yPositions;
-  // }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.setLinePositions);
@@ -137,21 +145,21 @@ export default class SideNavigation extends Component {
 
   /**
    * Set the positions of the destination span lines in the state
+   *
+   * @return  {array|null}  Arrayject of hamburger line positions
    */
   setLinePositions = callback => {
-    /**
-     * Check that the menuItems refs are available
-     */
+    // If the menu ref hasn't been set, return null
     if (!this.menu) return;
 
     const { animateTo } = this.props;
     const lines = Array.from(this.menu.querySelectorAll('span.line'));
-    const menuItemsPosition = lines.map(line => line.getBoundingClientRect().y);
-
-    const animateToPositions = [0, 0, 0, 0];
-    for (let i = 0; i < menuItemsPosition.length; i += 1) {
-      animateToPositions[i] = -Math.abs(menuItemsPosition[i] - animateTo[i]);
-    }
+    const menuItemsPositions = lines.map(
+      line => line.getBoundingClientRect().y
+    );
+    const animateToPositions = menuItemsPositions.map(
+      (itemPosition, index) => -Math.abs(itemPosition - animateTo[index])
+    );
 
     this.setState(
       {
@@ -177,7 +185,7 @@ export default class SideNavigation extends Component {
         <TransitionState>
           {({ transitionStatus }) => {
             if (
-              this.props.location === '/' &&
+              isHomepage &&
               ['exiting', 'exited'].includes(transitionStatus) &&
               !TweenMax.isTweening(this.menuLines)
             ) {
