@@ -112,12 +112,6 @@ const ProjectInfo = styled.div`
   }
 `;
 
-const ProjectBlockLink = styled(TransitionLink)`
-  width: 100%;
-  height: 100%;
-  display: block;
-`;
-
 const Tech = posed.li({
   enter: {
     opacity: 1,
@@ -170,10 +164,10 @@ class ProjectIndexPage extends React.Component {
       slidesPerView: 'auto',
       centeredSlides: true,
       spaceBetween: '10%',
+      preventClicksPropagation: true,
+      preventClicks: false,
       preloadImages: true,
       updateOnImagesReady: true,
-      preventClicksPropagation: false,
-      init: false,
     });
 
     swiper
@@ -226,17 +220,22 @@ class ProjectIndexPage extends React.Component {
     });
   };
 
-  projectInfoPosition() {
-    const { containerDimensions, projectIsWiderThanWindow } = this.state;
-
-    return {
-      bottom:
-        window.innerHeight -
-        (containerDimensions.y + containerDimensions.height) +
-        24,
-      left: projectIsWiderThanWindow ? 40 : containerDimensions.x - 48,
+  projectTransition = entryImageBox => {
+    const exitImage = this.projectImage.current;
+    const exitImageBox = this.projectImage.current.getBoundingClientRect();
+    const toPositions = {
+      x: entryImageBox.x - exitImageBox.x,
+      y: entryImageBox.y - exitImageBox.y,
+      width: entryImageBox.width,
     };
-  }
+
+    TweenMax.to(exitImage, 1, {
+      x: toPositions.x,
+      y: toPositions.y,
+      width: toPositions.width,
+      ease: Power2.easeInOut,
+    });
+  };
 
   render() {
     const { currentIndex, previousIndex, transitioning } = this.state;
