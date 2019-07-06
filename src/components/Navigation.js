@@ -27,12 +27,6 @@ const StyledNavbar = styled.nav`
   .logo {
     display: inline-block;
 
-    /* @media (min-width: ${({ theme }) => theme.breakpoints.touch}px) {
-      &.centered {
-        transform: translateX(calc(50vw - 52px));
-      }
-    } */
-
     svg {
       width: 44px;
       height: 44px;
@@ -62,21 +56,6 @@ const CenteredLogo = posed.div({
   },
 });
 
-const transitionProps = {
-  exit: {
-    length: 0.8,
-    state: {
-      foo: 'exit',
-    },
-  },
-  entry: {
-    delay: 0.8,
-    state: {
-      foo: 'enter',
-    },
-  },
-};
-
 class Navigation extends Component {
   constructor(props) {
     super(props);
@@ -95,13 +74,7 @@ class Navigation extends Component {
     this.setState({
       isHomepage: location === '/',
     });
-
-    console.log('navigation mounted');
   };
-
-  componentWillUnmount() {
-    console.log('navigation unmounted');
-  }
 
   getBurgerLinesPositions = positions => {
     if (Array.isArray(positions)) {
@@ -135,9 +108,15 @@ class Navigation extends Component {
                     length: 2,
                     trigger: props => {
                       console.dir(props);
+                      const { e, entry, exit, node } = props;
+                      console.dir(e.target.closest('a'));
                     },
                   }}
                   entry={{
+                    trigger: props => {
+                      const { e, entry, exit, node } = props;
+                      console.dir(e.target.closest('a'));
+                    },
                     delay: 0.8,
                     state: {
                       location,

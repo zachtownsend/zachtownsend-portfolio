@@ -32,7 +32,7 @@ export const PageContainer = styled.div`
   min-height: calc(100vh - 20px);
 `;
 
-const TemplateWrapper = ({ children }) => {
+const Layout = ({ children }) => {
   const { title, description } = useSiteMetadata();
   return (
     <ThemeProvider theme={siteTheme}>
@@ -81,4 +81,4 @@ const TemplateWrapper = ({ children }) => {
   );
 };
 
-export default TemplateWrapper;
+export default Layout;
