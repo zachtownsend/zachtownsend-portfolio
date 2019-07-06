@@ -6,6 +6,7 @@ import Swiper from 'swiper';
 import posed, { PoseGroup } from 'react-pose';
 import TransitionLink, { TransitionState } from 'gatsby-plugin-transition-link';
 import classNames from 'classnames';
+import TweenMax from 'gsap/umd/TweenMax';
 import Layout from '../../components/Layout';
 import Button from '../../components/Button';
 import PageHead from '../../components/PageHead';
@@ -23,10 +24,11 @@ const StyledSwiper = styled.div`
     .project-container {
       line-height: 0;
       overflow: hidden;
+      height: 75vh;
 
       img {
-        height: 75vh;
-        width: auto;
+        height: auto;
+        width: 100%;
       }
     }
   }
@@ -110,12 +112,6 @@ const ProjectInfo = styled.div`
   }
 `;
 
-const ProjectBlockLink = styled(TransitionLink)`
-  width: 100%;
-  height: 100%;
-  display: block;
-`;
-
 const Tech = posed.li({
   enter: {
     opacity: 1,
@@ -139,17 +135,20 @@ class ProjectIndexPage extends React.Component {
     super(props);
     console.log(props);
     this.infoContainer = null;
+    this.projectImage = React.createRef();
   }
 
   componentDidMount = () => {
-    const { setState } = this;
     const swiper = new Swiper('.swiper-container', {
       initialSlide: 0,
       direction: 'horizontal',
       slidesPerView: 'auto',
       centeredSlides: true,
       spaceBetween: '10%',
-      preventClicksPropagation: false,
+      preventClicksPropagation: true,
+      preventClicks: false,
+      preloadImages: true,
+      updateOnImagesReady: true,
     });
 
     swiper
@@ -178,6 +177,23 @@ class ProjectIndexPage extends React.Component {
       });
   };
 
+  projectTransition = entryImageBox => {
+    const exitImage = this.projectImage.current;
+    const exitImageBox = this.projectImage.current.getBoundingClientRect();
+    const toPositions = {
+      x: entryImageBox.x - exitImageBox.x,
+      y: entryImageBox.y - exitImageBox.y,
+      width: entryImageBox.width,
+    };
+
+    TweenMax.to(exitImage, 1, {
+      x: toPositions.x,
+      y: toPositions.y,
+      width: toPositions.width,
+      ease: Power2.easeInOut,
+    });
+  };
+
   render() {
     const {
       currentIndex,
@@ -188,10 +204,12 @@ class ProjectIndexPage extends React.Component {
 
     const { edges } = this.props.data.allMarkdownRemark;
 
-    const projects = edges.map(project => (
+    const projects = edges.map((project, index) => (
       <div className="swiper-slide" key={project.node.id}>
-        <div className="project-container">
-          <ProjectBlockLink to={project.node.fields.slug} />
+        <div
+          className="project-container"
+          ref={index === currentIndex ? this.projectImage : null}
+        >
           <img
             src={project.node.frontmatter.thumbnail.childImageSharp.resize.src}
             alt=""
@@ -277,7 +295,31 @@ class ProjectIndexPage extends React.Component {
                 </aside>
                 <div className="cta">
                   <Button>
-                    <TransitionLink to={edges[currentIndex].node.fields.slug}>
+                    <TransitionLink
+                      to={edges[currentIndex].node.fields.slug}
+                      exit={{
+                        trigger: ({ node, e, exit, entry }) => {
+                          console.log(
+                            node,
+                            node.querySelector('.image-container'),
+                            e,
+                            exit,
+                            entry
+                          );
+                        },
+                        length: 1,
+                        zIndex: 2,
+                      }}
+                      entry={{
+                        trigger: ({ node }) => {
+                          const image = node.querySelector('.image-container');
+                          this.projectTransition(image.getBoundingClientRect());
+                          console.log('entering');
+                        },
+                        delay: 0,
+                        length: 1,
+                      }}
+                    >
                       <span>Explore</span>
                     </TransitionLink>
                   </Button>

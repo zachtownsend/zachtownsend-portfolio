@@ -76,7 +76,6 @@ export default class SideNavigation extends Component {
           } else {
             this.animateOut();
           }
-          // console.dir(pathname);
         },
         length: 2,
         state: {
