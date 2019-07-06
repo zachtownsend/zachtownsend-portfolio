@@ -164,10 +164,9 @@ class ProjectIndexPage extends React.Component {
       slidesPerView: 'auto',
       centeredSlides: true,
       spaceBetween: '10%',
-      preventClicksPropagation: true,
-      preventClicks: false,
       preloadImages: true,
       updateOnImagesReady: true,
+      preventClicksPropagation: false,
     });
 
     swiper
@@ -179,10 +178,22 @@ class ProjectIndexPage extends React.Component {
         });
       })
       .on('transitionEnd', () => {
-        this.updateSlider(swiper);
-      })
-      .on('init', () => {
-        this.updateSlider(swiper);
+        const { y, x, width, height } = swiper.slides[
+          swiper.activeIndex
+        ].getBoundingClientRect();
+
+        this.setState({
+          previousIndex: null,
+          transitioning: false,
+          containerDimensions: {
+            width:
+              window.innerWidth - 168 < width ? window.innerWidth - 168 : width,
+            height,
+            x,
+            y,
+          },
+          projectIsWiderThanWindow: window.innerWidth - 168 < width,
+        });
       });
 
     swiper.init();
@@ -221,6 +232,7 @@ class ProjectIndexPage extends React.Component {
   };
 
   projectTransition = entryImageBox => {
+    const { currentIndex } = this.state;
     const exitImage = this.projectImage.current;
     const exitImageBox = this.projectImage.current.getBoundingClientRect();
     const toPositions = {
@@ -228,6 +240,20 @@ class ProjectIndexPage extends React.Component {
       y: entryImageBox.y - exitImageBox.y,
       width: entryImageBox.width,
     };
+
+    const projects = Array.from(
+      exitImage
+        .closest('.swiper-wrapper')
+        .querySelectorAll('.project-container')
+    );
+
+    projects.forEach((project, index) => {
+      if (index < currentIndex) {
+        TweenMax.to(project, 1, { x: '-50vw', alpha: 0 });
+      } else if (index > currentIndex) {
+        TweenMax.to(project, 1, { x: '50vw', alpha: 0 });
+      }
+    });
 
     TweenMax.to(exitImage, 1, {
       x: toPositions.x,
@@ -272,8 +298,12 @@ class ProjectIndexPage extends React.Component {
           </StyledSwiper>
           <ProjectInfo
             style={{
-              bottom: `${bottom}px`,
-              transform: `translateX(${left}px)`,
+              position: 'fixed',
+              bottom:
+                window.innerHeight -
+                (containerDimensions.y + containerDimensions.height) +
+                24,
+              left: containerDimensions.x - 48,
             }}
           >
             <header>
