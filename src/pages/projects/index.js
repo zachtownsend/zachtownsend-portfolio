@@ -44,14 +44,14 @@ const StyledSwiper = styled.div`
 `;
 
 const ProjectInfo = styled.div`
-  position: absolute;
-  bottom: 24px;
-  left: -48px;
+  position: fixed;
+  left: 0;
   z-index: 1;
   padding: 48px 64px;
   display: block;
   background-color: rgba(0, 0, 0, 0.9);
   color: ${({ theme }) => theme.white};
+  transition: transform 0.4s ease-in-out;
 
   header {
     text-align: left;
@@ -138,6 +138,25 @@ class ProjectIndexPage extends React.Component {
     this.projectImage = React.createRef();
   }
 
+  updateSlider = swiper => {
+    const { y, x, width, height } = swiper.slides[
+      swiper.activeIndex
+    ].getBoundingClientRect();
+
+    this.setState({
+      previousIndex: null,
+      transitioning: false,
+      containerDimensions: {
+        width:
+          window.innerWidth - 168 < width ? window.innerWidth - 168 : width,
+        height,
+        x,
+        y,
+      },
+      projectIsWiderThanWindow: window.innerWidth - 168 < width,
+    });
+  };
+
   componentDidMount = () => {
     const swiper = new Swiper('.swiper-container', {
       initialSlide: 0,
@@ -148,6 +167,7 @@ class ProjectIndexPage extends React.Component {
       preloadImages: true,
       updateOnImagesReady: true,
       preventClicksPropagation: false,
+      init: false,
     });
 
     swiper
@@ -159,23 +179,13 @@ class ProjectIndexPage extends React.Component {
         });
       })
       .on('transitionEnd', () => {
-        const { y, x, width, height } = swiper.slides[
-          swiper.activeIndex
-        ].getBoundingClientRect();
-
-        this.setState({
-          previousIndex: null,
-          transitioning: false,
-          containerDimensions: {
-            width:
-              window.innerWidth - 168 < width ? window.innerWidth - 168 : width,
-            height,
-            x,
-            y,
-          },
-          projectIsWiderThanWindow: window.innerWidth - 168 < width,
-        });
+        this.updateSlider(swiper);
+      })
+      .on('init', () => {
+        this.updateSlider(swiper);
       });
+
+    swiper.init();
   };
 
   projectTransition = entryImageBox => {
@@ -196,9 +206,9 @@ class ProjectIndexPage extends React.Component {
 
     projects.forEach((project, index) => {
       if (index < currentIndex) {
-        TweenMax.to(project, 1, { x: '-50vw', alpha: 0 });
+        TweenMax.to(project, 1, { x: '-25vw', alpha: 0 });
       } else if (index > currentIndex) {
-        TweenMax.to(project, 1, { x: '50vw', alpha: 0 });
+        TweenMax.to(project, 1, { x: '25vw', alpha: 0 });
       }
     });
 
@@ -210,13 +220,22 @@ class ProjectIndexPage extends React.Component {
     });
   };
 
+  projectInfoPosition() {
+    const { containerDimensions, projectIsWiderThanWindow } = this.state;
+
+    return {
+      bottom:
+        window.innerHeight -
+        (containerDimensions.y + containerDimensions.height) +
+        24,
+      left: projectIsWiderThanWindow ? 40 : containerDimensions.x - 48,
+    };
+  }
+
   render() {
-    const {
-      currentIndex,
-      previousIndex,
-      transitioning,
-      containerDimensions,
-    } = this.state;
+    const { currentIndex, previousIndex, transitioning } = this.state;
+
+    const { bottom, left } = this.projectInfoPosition();
 
     const { edges } = this.props.data.allMarkdownRemark;
 
@@ -248,12 +267,8 @@ class ProjectIndexPage extends React.Component {
           </StyledSwiper>
           <ProjectInfo
             style={{
-              position: 'fixed',
-              bottom:
-                window.innerHeight -
-                (containerDimensions.y + containerDimensions.height) +
-                24,
-              left: containerDimensions.x - 48,
+              bottom: `${bottom}px`,
+              transform: `translateX(${left}px)`,
             }}
           >
             <header>
