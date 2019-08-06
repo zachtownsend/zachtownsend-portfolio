@@ -4,16 +4,6 @@ import styled from 'styled-components';
 import TransitionLink from 'gatsby-plugin-transition-link';
 import TweenMax from 'gsap/umd/TweenMax';
 
-function animateIn(yPositions, menuLines, menuTitles) {
-  TweenMax.staggerTo(menuLines, 0.4, { cycle: { y: [0, 0, 0, 0] } }, -0.1);
-  TweenMax.staggerTo(menuTitles, 0.4, { y: 0, alpha: 1 }, -0.1);
-}
-
-function animateOut(yPositions, menuLines, menuTitles) {
-  TweenMax.staggerTo(menuLines, 0.4, { cycle: { y: yPositions } }, 0.1);
-  TweenMax.staggerTo(menuTitles, 0.4, { y: -50, alpha: 0 }, 0.1);
-}
-
 const transitionProps = {
   exit: {
     trigger: ({ e }) => {},
@@ -66,15 +56,24 @@ export default class SideNav extends Component {
   static propTypes = {
     open: PropTypes.bool,
     animateTo: PropTypes.arrayOf(PropTypes.number),
+    onBeforeTransition: PropTypes.func,
+    onAfterTransition: PropTypes.func,
   };
 
   static defaultProps = {
-    isVisible: true,
+    open: true,
     animateTo: [0, 0, 0, 0],
+    onBeforeTransition: () => false,
+    onAfterTransition: () => false,
   };
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      transitioning: false,
+    };
+
     this.menu = null;
     this.menuTitles = [];
     this.menuLines = [];
@@ -82,26 +81,32 @@ export default class SideNav extends Component {
 
   componentDidMount = () => {
     requestAnimationFrame(() => {
-      this.setLinePositions();
+      this.linePositions();
     });
 
-    window.addEventListener('resize', this.setLinePositions);
+    window.addEventListener('resize', this.linePositions);
   };
 
   componentDidUpdate = prevProps => {
-    const { open } = this.props;
-    console.log(this.setLinePositions());
+    const { open, onBeforeTransition, onAfterTransition } = this.props;
+    // const { transitioning } = this.state;
+    if (prevProps.open === open) {
+      return false;
+    }
+
+    onBeforeTransition();
+
     if (open) {
-      animateIn([0, 0, 0, 0], this.menuLines, this.menuTitles);
+      this.animateIn(onAfterTransition);
     } else {
-      animateOut(this.setLinePositions(), this.menuLines, this.menuTitles);
+      this.animateOut(onAfterTransition);
     }
   };
 
   /**
    * Set the positions of the destination span lines in the state
    */
-  setLinePositions = () => {
+  linePositions = () => {
     /**
      * Check that the menuItems refs are available
      */
@@ -112,15 +117,40 @@ export default class SideNav extends Component {
       line => line.getBoundingClientRect().y
     );
 
-    console.log({ animateTo, menuItemsPosition });
-
-    const animateToPositions = [0, 0, 0, 0];
+    const linePositions = [0, 0, 0, 0];
 
     for (let i = 0; i < menuItemsPosition.length; i += 1) {
-      animateToPositions[i] = -Math.abs(menuItemsPosition[i] - animateTo[i]);
+      linePositions[i] = -Math.abs(menuItemsPosition[i] - animateTo[i]);
     }
 
-    return animateToPositions;
+    return linePositions;
+  };
+
+  animateIn = onComplete => {
+    const { menuLines, menuTitles } = this;
+
+    TweenMax.staggerTo(
+      menuLines,
+      0.4,
+      { cycle: { y: [0, 0, 0, 0] } },
+      -0.1,
+      onComplete
+    );
+    TweenMax.staggerTo(menuTitles, 0.4, { y: 0, alpha: 1 }, -0.1);
+  };
+
+  animateOut = onComplete => {
+    const { menuLines, menuTitles } = this;
+
+    TweenMax.staggerTo(
+      menuLines,
+      0.4,
+      { cycle: { y: this.linePositions() } },
+      0.1,
+      onComplete
+    );
+
+    TweenMax.staggerTo(menuTitles, 0.4, { y: -50, alpha: 0 }, 0.1);
   };
 
   render() {

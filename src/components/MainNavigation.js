@@ -86,18 +86,14 @@ export default class MainNavigation extends Component {
     super(props);
 
     this.state = {
+      transitioning: false,
       hamburgerPosition: [],
     };
 
     this.hamburger = null;
   }
 
-  componentDidMount = () => {
-    console.log(this.hamburger);
-  };
-
   getHamburgerPosition = positions => {
-    console.log(positions);
     if (Array.isArray(positions)) {
       this.setState({
         hamburgerPosition: positions,
@@ -105,10 +101,20 @@ export default class MainNavigation extends Component {
     }
   };
 
+  setTransitioning = status => {
+    const { transitioning } = this.state;
+    if (status !== transitioning) {
+      this.setState(prevState => ({
+        ...prevState,
+        transitioning: status,
+      }));
+    }
+  };
+
   render() {
     const { getHamburgerPosition } = this;
     const { open } = this.props;
-    const { hamburgerPosition } = this.state;
+    const { hamburgerPosition, transitioning } = this.state;
 
     return (
       <StyledNavbar className="section">
@@ -136,7 +142,7 @@ export default class MainNavigation extends Component {
 
         <div className="hamburger-container" data-testid="hamburger">
           <Hamburger
-            visible={!open}
+            visible={!open && !transitioning}
             onHamburgerPosition={getHamburgerPosition}
           />
         </div>
@@ -144,6 +150,12 @@ export default class MainNavigation extends Component {
         <SideNav
           data-testid="side-navigation"
           animateTo={hamburgerPosition}
+          onBeforeTransition={() => {
+            this.setTransitioning(true);
+          }}
+          onAfterTransition={() => {
+            this.setTransitioning(false);
+          }}
           open={open}
         />
       </StyledNavbar>
