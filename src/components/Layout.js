@@ -1,6 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import styled, { ThemeProvider, css } from 'styled-components';
+import { TransitionPortal } from 'gatsby-plugin-transition-link';
 import { Location } from '@reach/router';
 import Navigation from './Navigation';
 import './all.scss';
@@ -73,7 +74,11 @@ const TemplateWrapper = ({ children }) => {
           <meta property="og:image" content="/img/og-image.jpg" />
         </Helmet>
         <Location>
-          {({ location }) => <Navigation location={location.pathname} />}
+          {({ location }) => (
+            <TransitionPortal>
+              <Navigation location={location.pathname} />
+            </TransitionPortal>
+          )}
         </Location>
         <StyledPageContainer>{children}</StyledPageContainer>
       </div>
