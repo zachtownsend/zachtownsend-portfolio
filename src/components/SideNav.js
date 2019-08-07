@@ -8,12 +8,13 @@ const transitionProps = {
   replace: true,
   exit: {
     delay: 0,
-    length: 2,
-    // zIndex: 100,
+    length: 1,
+    zIndex: 1,
   },
   entry: {
     delay: 0,
-    length: 2,
+    length: 1,
+    zIndex: 0,
   },
 };
 
