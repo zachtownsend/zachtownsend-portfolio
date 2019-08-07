@@ -80,6 +80,12 @@ const CenteredLogo = posed.div({
 export default class MainNavigation extends Component {
   static propTypes = {
     open: PropTypes.bool,
+    transitionId: PropTypes.number,
+  };
+
+  static defaultProps = {
+    open: true,
+    transitionId: 0,
   };
 
   constructor(props) {
@@ -157,6 +163,7 @@ export default class MainNavigation extends Component {
             this.setTransitioning(false);
           }}
           open={open}
+          // visible={open || transitioning}
         />
       </StyledNavbar>
     );

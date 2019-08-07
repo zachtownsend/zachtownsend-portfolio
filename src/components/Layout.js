@@ -75,11 +75,14 @@ const TemplateWrapper = ({ children }) => {
           <meta property="og:image" content="/img/og-image.jpg" />
         </Helmet>
         <Location>
-          {({ location }) => (
-            <TransitionPortal>
-              <MainNavigation open />
-            </TransitionPortal>
-          )}
+          {({ location }) => {
+            console.log(location.pathname);
+            return (
+              <TransitionPortal>
+                <MainNavigation open={location.pathname === '/'} />
+              </TransitionPortal>
+            );
+          }}
         </Location>
 
         <StyledPageContainer>{children}</StyledPageContainer>

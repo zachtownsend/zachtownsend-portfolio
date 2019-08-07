@@ -5,10 +5,16 @@ import TransitionLink from 'gatsby-plugin-transition-link';
 import TweenMax from 'gsap/umd/TweenMax';
 
 const transitionProps = {
+  replace: true,
   exit: {
-    trigger: ({ e }) => {},
+    delay: 0,
+    length: 2,
+    // zIndex: 100,
   },
-  entry: {},
+  entry: {
+    delay: 0,
+    length: 2,
+  },
 };
 
 const StyledSideNavigation = styled.nav`
@@ -55,6 +61,7 @@ const StyledSideNavigation = styled.nav`
 export default class SideNav extends Component {
   static propTypes = {
     open: PropTypes.bool,
+    visible: PropTypes.bool,
     animateTo: PropTypes.arrayOf(PropTypes.number),
     onBeforeTransition: PropTypes.func,
     onAfterTransition: PropTypes.func,
@@ -62,6 +69,7 @@ export default class SideNav extends Component {
 
   static defaultProps = {
     open: true,
+    visible: true,
     animateTo: [0, 0, 0, 0],
     onBeforeTransition: () => false,
     onAfterTransition: () => false,
@@ -70,10 +78,6 @@ export default class SideNav extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      transitioning: false,
-    };
-
     this.menu = null;
     this.menuTitles = [];
     this.menuLines = [];
@@ -81,10 +85,18 @@ export default class SideNav extends Component {
 
   componentDidMount = () => {
     requestAnimationFrame(() => {
-      this.linePositions();
+      if (!this.props.open) {
+        this.linePositions().forEach((linePosition, index) => {
+          TweenMax.set(this.menuLines[index], { y: linePosition });
+        });
+
+        this.menuTitles.forEach(menuTitle => {
+          TweenMax.set(menuTitle, { y: -50, alpha: 0 });
+        });
+      }
     });
 
-    window.addEventListener('resize', this.linePositions);
+    // window.addEventListener('resize', this.linePositions);
   };
 
   componentDidUpdate = prevProps => {
@@ -154,8 +166,10 @@ export default class SideNav extends Component {
   };
 
   render() {
+    const { visible } = this.props;
+
     return (
-      <StyledSideNavigation>
+      <StyledSideNavigation visible={visible}>
         <ul
           ref={c => {
             this.menu = c;
