@@ -87,7 +87,7 @@ export default class SideNav extends Component {
 
   componentDidUpdate = prevProps => {
     const { open, onBeforeTransition, onAfterTransition } = this.props;
-    // const { transitioning } = this.state;
+
     if (prevProps.open === open) {
       return false;
     }
