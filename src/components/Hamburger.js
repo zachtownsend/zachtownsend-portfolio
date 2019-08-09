@@ -32,18 +32,21 @@ const StyledHamburger = styled.button`
 
 export default class Hamburger extends React.Component {
   componentDidMount = () => {
-    const { onResize } = this.props;
+    const { onHamburgerPosition } = this.props;
 
-    onResize(this.getBurgerLinesPositions());
+    requestAnimationFrame(() => {
+      onHamburgerPosition(this.getBurgerLinesPositions());
+    });
 
     window.addEventListener('resize', () => {
       const positions = this.getBurgerLinesPositions();
-      onResize(positions);
+      onHamburgerPosition(positions);
     });
   };
 
   getBurgerLinesPositions() {
     if (this.lineWrapper === null) return;
+
     return Array.from(this.lineWrapper.children).map(
       line => line.getBoundingClientRect().y
     );
@@ -70,7 +73,7 @@ export default class Hamburger extends React.Component {
 
 // function Hamburger(props) {
 //   window.addEventListener('resize', () => {
-//     props.onResize('test');
+//     props.onHamburgerPosition('test');
 //   });
 
 //   return (
@@ -88,13 +91,13 @@ export default class Hamburger extends React.Component {
 Hamburger.propTypes = {
   active: PropTypes.bool,
   visible: PropTypes.bool,
-  onResize: PropTypes.func,
+  onHamburgerPosition: PropTypes.func,
 };
 
 Hamburger.defaultProps = {
   active: false,
   visible: true,
-  onResize: () => false,
+  onHamburgerPosition: () => false,
 };
 
 // export default Hamburger;

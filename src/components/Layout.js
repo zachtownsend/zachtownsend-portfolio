@@ -1,8 +1,13 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import styled, { ThemeProvider, css } from 'styled-components';
+import {
+  TransitionPortal,
+  TransitionState,
+} from 'gatsby-plugin-transition-link';
 import { Location } from '@reach/router';
-import Navigation from './Navigation';
+// import Navigation from './Navigation';
+import MainNavigation from './MainNavigation';
 import './all.scss';
 import useSiteMetadata from './SiteMetadata';
 
@@ -73,8 +78,19 @@ const TemplateWrapper = ({ children }) => {
           <meta property="og:image" content="/img/og-image.jpg" />
         </Helmet>
         <Location>
-          {({ location }) => <Navigation location={location.pathname} />}
+          {({ location }) => (
+            <TransitionState>
+              {({ transitionStatus }) =>
+                ['exiting', 'entered'].includes(transitionStatus) && (
+                  <TransitionPortal>
+                    <MainNavigation open={location.pathname === '/'} />
+                  </TransitionPortal>
+                )
+              }
+            </TransitionState>
+          )}
         </Location>
+
         <StyledPageContainer>{children}</StyledPageContainer>
       </div>
     </ThemeProvider>
