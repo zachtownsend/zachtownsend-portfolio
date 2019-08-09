@@ -85,12 +85,6 @@ export default class SideNav extends Component {
     this.menuLines = [];
   }
 
-  componentDidMount = () => {
-    this.initialiseLinePositions();
-
-    window.addEventListener('resize', this.initialiseLinePositions);
-  };
-
   componentDidUpdate = prevProps => {
     const { open, onBeforeTransition, onAfterTransition } = this.props;
     // const { transitioning } = this.state;
@@ -105,21 +99,6 @@ export default class SideNav extends Component {
     } else {
       this.animateOut(onAfterTransition);
     }
-  };
-
-  initialiseLinePositions = () => {
-    const { open } = this.props;
-    requestAnimationFrame(() => {
-      if (!open) {
-        this.linePositions().forEach((linePosition, index) => {
-          TweenMax.set(this.menuLines[index], { y: linePosition });
-        });
-
-        this.menuTitles.forEach(menuTitle => {
-          TweenMax.set(menuTitle, { y: -50, alpha: 0 });
-        });
-      }
-    });
   };
 
   /**
@@ -148,14 +127,21 @@ export default class SideNav extends Component {
   animateIn = onComplete => {
     const { menuLines, menuTitles } = this;
 
-    TweenMax.staggerTo(
+    TweenMax.staggerFromTo(
       menuLines,
       0.4,
+      { cycle: { y: this.linePositions() } },
       { cycle: { y: [0, 0, 0, 0] } },
       -0.1,
       onComplete
     );
-    TweenMax.staggerTo(menuTitles, 0.4, { y: 0, alpha: 1 }, -0.1);
+    TweenMax.staggerFromTo(
+      menuTitles,
+      0.4,
+      { y: -50, alpha: 0 },
+      { y: 0, alpha: 1 },
+      -0.1
+    );
   };
 
   animateOut = onComplete => {
