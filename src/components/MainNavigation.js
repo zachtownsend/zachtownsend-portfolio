@@ -33,6 +33,12 @@ const StyledNavbar = styled.nav`
       }
     } */
 
+    @media (min-width: ${({ theme }) => theme.device.touch}px) {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
     svg {
       width: 44px;
       height: 44px;
@@ -44,38 +50,6 @@ const StyledNavbar = styled.nav`
     text-align: left;
   }
 `;
-
-const transitionProps = {
-  exit: {
-    length: 0.8,
-    state: {
-      foo: 'exit',
-    },
-  },
-  entry: {
-    delay: 0.8,
-    state: {
-      foo: 'enter',
-    },
-  },
-};
-
-const CenteredLogo = posed.div({
-  centered: {
-    x: 'calc(50vw - 52px)',
-    transition: {
-      duration: 800,
-      ease: 'easeInOut',
-    },
-  },
-  normal: {
-    x: 0,
-    transition: {
-      duration: 800,
-      ease: 'easeInOut',
-    },
-  },
-});
 
 export default class MainNavigation extends Component {
   static propTypes = {
@@ -124,23 +98,18 @@ export default class MainNavigation extends Component {
 
     return (
       <StyledNavbar className="section">
-        <CenteredLogo
-          data-testid="logo"
-          className={classNames('logo', { centered: !open })}
-          pose={!open ? 'centered' : 'normal'}
+        <TransitionLink
+          className="logo centered"
+          to="/"
+          exit={{
+            length: 2,
+          }}
+          entry={{
+            delay: 0.8,
+          }}
         >
-          <TransitionLink
-            to="/"
-            exit={{
-              length: 2,
-            }}
-            entry={{
-              delay: 0.8,
-            }}
-          >
-            <Logo />
-          </TransitionLink>
-        </CenteredLogo>
+          <Logo />
+        </TransitionLink>
 
         <div className="page-title" data-testid="page-title">
           <PageTitle siteTitle="Zach Townsend" pageTitle="Home" />
@@ -163,7 +132,7 @@ export default class MainNavigation extends Component {
             this.setTransitioning(false);
           }}
           open={open}
-          // visible={open || transitioning}
+          visible={open || transitioning}
         />
       </StyledNavbar>
     );

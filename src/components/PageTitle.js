@@ -31,6 +31,10 @@ const StyledPageTitle = styled.h1`
       display: inline-block;
     }
   }
+
+  @media (min-width: ${props => props.theme.device.touch}px) {
+    text-align: left;
+  }
 `;
 
 function PageTitle({ display, pageTitle, siteTitle, className }) {

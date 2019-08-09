@@ -29,6 +29,7 @@ const StyledSideNavigation = styled.nav`
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  visibility: ${props => (props.visible ? 'visible' : 'hidden')};
 
   ul {
     li {
@@ -85,19 +86,9 @@ export default class SideNav extends Component {
   }
 
   componentDidMount = () => {
-    requestAnimationFrame(() => {
-      if (!this.props.open) {
-        this.linePositions().forEach((linePosition, index) => {
-          TweenMax.set(this.menuLines[index], { y: linePosition });
-        });
+    this.initialiseLinePositions();
 
-        this.menuTitles.forEach(menuTitle => {
-          TweenMax.set(menuTitle, { y: -50, alpha: 0 });
-        });
-      }
-    });
-
-    // window.addEventListener('resize', this.linePositions);
+    window.addEventListener('resize', this.initialiseLinePositions);
   };
 
   componentDidUpdate = prevProps => {
@@ -114,6 +105,21 @@ export default class SideNav extends Component {
     } else {
       this.animateOut(onAfterTransition);
     }
+  };
+
+  initialiseLinePositions = () => {
+    const { open } = this.props;
+    requestAnimationFrame(() => {
+      if (!open) {
+        this.linePositions().forEach((linePosition, index) => {
+          TweenMax.set(this.menuLines[index], { y: linePosition });
+        });
+
+        this.menuTitles.forEach(menuTitle => {
+          TweenMax.set(menuTitle, { y: -50, alpha: 0 });
+        });
+      }
+    });
   };
 
   /**
