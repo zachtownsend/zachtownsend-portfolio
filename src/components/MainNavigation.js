@@ -54,12 +54,12 @@ const StyledNavbar = styled.nav`
 export default class MainNavigation extends Component {
   static propTypes = {
     open: PropTypes.bool,
-    transitionId: PropTypes.number,
+    pageTitle: PropTypes.string,
   };
 
   static defaultProps = {
     open: true,
-    transitionId: 0,
+    pageTitle: null,
   };
 
   constructor(props) {
@@ -93,7 +93,7 @@ export default class MainNavigation extends Component {
 
   render() {
     const { getHamburgerPosition } = this;
-    const { open } = this.props;
+    const { open, pageTitle } = this.props;
     const { hamburgerPosition, transitioning } = this.state;
 
     return (
@@ -112,7 +112,7 @@ export default class MainNavigation extends Component {
         </TransitionLink>
 
         <div className="page-title" data-testid="page-title">
-          <PageTitle siteTitle="Zach Townsend" pageTitle="Home" />
+          <PageTitle siteTitle="Zach Townsend" pageTitle={pageTitle} />
         </div>
 
         <div className="hamburger-container" data-testid="hamburger">

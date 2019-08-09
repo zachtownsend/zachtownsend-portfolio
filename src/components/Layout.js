@@ -1,15 +1,14 @@
 import React from 'react';
-import Helmet from 'react-helmet';
-import styled, { ThemeProvider, css } from 'styled-components';
 import {
   TransitionPortal,
   TransitionState,
 } from 'gatsby-plugin-transition-link';
+import { ThemeProvider } from 'styled-components';
 import { Location } from '@reach/router';
 // import Navigation from './Navigation';
 import MainNavigation from './MainNavigation';
 import './all.scss';
-import useSiteMetadata from './SiteMetadata';
+import PageContainer from './PageContainer';
 
 const sizes = {
   mobile: 0,
@@ -31,70 +30,42 @@ export const siteTheme = {
   device: sizes,
 };
 
-export const StyledPageContainer = styled.div`
-  background: ${siteTheme.darkGray};
-  padding-top: 20px;
-  min-height: calc(100vh - 20px);
-`;
+export const getPageTitleFromPath = location => {
+  if (/^\/projects(\/.+)?/.test(location)) {
+    return 'Projects';
+  }
 
-const TemplateWrapper = ({ children }) => {
-  const { title, description } = useSiteMetadata();
-  return (
-    <ThemeProvider theme={siteTheme}>
-      <div className="page-container">
-        <Helmet>
-          <html lang="en" />
-          <title>{title}</title>
-          <meta name="description" content={description} />
+  if (/^\/workshop(\/.+)?/.test(location)) {
+    return 'Workshop';
+  }
 
-          <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/img/apple-touch-icon.png"
-          />
-          <link
-            rel="icon"
-            type="image/png"
-            href="/img/favicon-32x32.png"
-            sizes="32x32"
-          />
-          <link
-            rel="icon"
-            type="image/png"
-            href="/img/favicon-16x16.png"
-            sizes="16x16"
-          />
+  if (/^\/contact(\/.+)?/.test(location)) {
+    return 'Contact';
+  }
 
-          <link
-            rel="mask-icon"
-            href="/img/safari-pinned-tab.svg"
-            color="#ff4400"
-          />
-          <meta name="theme-color" content="#fff" />
+  if (/^\/blog(\/.+)?/.test(location)) {
+    return 'Blog';
+  }
 
-          <meta property="og:type" content="business.business" />
-          <meta property="og:title" content={title} />
-          <meta property="og:url" content="/" />
-          <meta property="og:image" content="/img/og-image.jpg" />
-        </Helmet>
-        <Location>
-          {({ location }) => (
-            <TransitionState>
-              {({ transitionStatus }) =>
-                ['exiting', 'entered'].includes(transitionStatus) && (
-                  <TransitionPortal>
-                    <MainNavigation open={location.pathname === '/'} />
-                  </TransitionPortal>
-                )
-              }
-            </TransitionState>
-          )}
-        </Location>
-
-        <StyledPageContainer>{children}</StyledPageContainer>
-      </div>
-    </ThemeProvider>
-  );
+  return null;
 };
+
+const TemplateWrapper = ({ children }) => (
+  <ThemeProvider theme={siteTheme}>
+    <div>
+      <Location>
+        {({ location }) => (
+          <TransitionPortal>
+            <MainNavigation
+              open={location.pathname === '/'}
+              pageTitle={getPageTitleFromPath(location.pathname)}
+            />
+          </TransitionPortal>
+        )}
+      </Location>
+      <PageContainer>{children}</PageContainer>
+    </div>
+  </ThemeProvider>
+);
 
 export default TemplateWrapper;

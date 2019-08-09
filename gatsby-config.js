@@ -2,13 +2,19 @@ const proxy = require('http-proxy-middleware');
 
 module.exports = {
   siteMetadata: {
-    title: 'Zach Townsend | Freelance Web Developer based in Berlin',
+    title: 'Zach Townsend',
     description: 'Portfolio site for Zach Townsend - Work in Progress!',
   },
   plugins: [
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-styled-components',
     'gatsby-plugin-sass',
+    {
+      resolve: 'gatsby-plugin-layout',
+      options: {
+        component: require.resolve('./src/components/PageContainer'),
+      },
+    },
     {
       resolve: 'gatsby-plugin-transition-link',
       options: {
