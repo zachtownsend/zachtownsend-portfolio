@@ -52,6 +52,13 @@ const StyledNavbar = styled.nav`
   }
 `;
 
+export const mainNavigationLinks = [
+  '/projects',
+  '/blog',
+  '/workshop',
+  '/contact',
+];
+
 export default class MainNavigation extends Component {
   static propTypes = {
     open: PropTypes.bool,
@@ -130,6 +137,7 @@ export default class MainNavigation extends Component {
           }}
           open={open}
           visible={open || transitioning}
+          links={mainNavigationLinks}
         />
       </StyledNavbar>
     );
