@@ -18,6 +18,7 @@ const StyledNavbar = styled.nav`
   right: 20px;
   display: flex;
   justify-content: space-between;
+  z-index: 1000;
 
   .logo,
   .hamburger-container {
@@ -101,12 +102,8 @@ export default class MainNavigation extends Component {
         <TransitionLink
           className="logo centered"
           to="/"
-          exit={{
-            length: 2,
-          }}
-          entry={{
-            delay: 0.8,
-          }}
+          exit={{ length: 0.8 }}
+          entry={{ delay: 0.8, length: 0.8 }}
         >
           <Logo />
         </TransitionLink>

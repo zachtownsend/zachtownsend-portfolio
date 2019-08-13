@@ -10,7 +10,6 @@ export const StyledPageContainer = styled.div`
 
 function PageContainer({ children }) {
   const { title, description } = useSiteMetadata();
-  console.log(children);
 
   return (
     <div className="page-container">

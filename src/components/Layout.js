@@ -55,12 +55,10 @@ const TemplateWrapper = ({ children }) => (
     <div>
       <Location>
         {({ location }) => (
-          <TransitionPortal>
-            <MainNavigation
-              open={location.pathname === '/'}
-              pageTitle={getPageTitleFromPath(location.pathname)}
-            />
-          </TransitionPortal>
+          <MainNavigation
+            open={location.pathname === '/'}
+            pageTitle={getPageTitleFromPath(location.pathname)}
+          />
         )}
       </Location>
       <PageContainer>{children}</PageContainer>

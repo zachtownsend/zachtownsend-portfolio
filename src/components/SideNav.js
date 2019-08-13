@@ -8,12 +8,12 @@ const transitionProps = {
   replace: true,
   exit: {
     delay: 0,
-    length: 1,
+    length: 0.8,
     zIndex: 1,
   },
   entry: {
     delay: 0,
-    length: 1,
+    length: 0.8,
     zIndex: 0,
   },
 };
@@ -133,7 +133,12 @@ export default class SideNav extends Component {
       { cycle: { y: this.linePositions() } },
       { cycle: { y: [0, 0, 0, 0] } },
       -0.1,
-      onComplete
+      delay => {
+        setTimeout(() => {
+          onComplete();
+        }, delay);
+      },
+      [menuLines.length * 0.1] // To Compensate for the stagger delay
     );
     TweenMax.staggerFromTo(
       menuTitles,
@@ -147,12 +152,18 @@ export default class SideNav extends Component {
   animateOut = onComplete => {
     const { menuLines, menuTitles } = this;
 
-    TweenMax.staggerTo(
+    TweenMax.staggerFromTo(
       menuLines,
       0.4,
+      { cycle: { y: [0, 0, 0, 0] } },
       { cycle: { y: this.linePositions() } },
       0.1,
-      onComplete
+      delay => {
+        setTimeout(() => {
+          onComplete();
+        }, delay);
+      },
+      [menuLines.length * 0.1] //
     );
 
     TweenMax.staggerTo(menuTitles, 0.4, { y: -50, alpha: 0 }, 0.1);
