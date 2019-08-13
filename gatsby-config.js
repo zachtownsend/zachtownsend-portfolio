@@ -2,7 +2,7 @@ const proxy = require('http-proxy-middleware');
 
 module.exports = {
   siteMetadata: {
-    title: 'Zach Townsend | Freelance Web Developer based in Berlin',
+    title: 'Zach Townsend',
     description: 'Portfolio site for Zach Townsend - Work in Progress!',
   },
   plugins: [
@@ -12,7 +12,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-transition-link',
       options: {
-        component: require.resolve('./src/components/Layout.js'),
+        layout: require.resolve('./src/components/PageContainer.js'),
       },
     },
     {

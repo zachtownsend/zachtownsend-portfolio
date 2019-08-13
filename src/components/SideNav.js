@@ -6,16 +6,16 @@ import TweenMax from 'gsap/umd/TweenMax';
 
 const transitionProps = {
   replace: true,
-  exit: {
-    delay: 0,
-    length: 1,
-    zIndex: 1,
-  },
-  entry: {
-    delay: 0,
-    length: 1,
-    zIndex: 0,
-  },
+  // exit: {
+  //   // delay: 0,
+  //   // length: 0.8,
+  //   zIndex: 1,
+  // },
+  // entry: {
+  //   // delay: 0,
+  //   // length: 0.8,
+  //   zIndex: 0,
+  // },
 };
 
 const StyledSideNavigation = styled.nav`
@@ -64,7 +64,7 @@ export default class SideNav extends Component {
   static propTypes = {
     open: PropTypes.bool,
     visible: PropTypes.bool,
-    animateTo: PropTypes.arrayOf(PropTypes.number),
+    hamburgerLinePositions: PropTypes.arrayOf(PropTypes.number),
     onBeforeTransition: PropTypes.func,
     onAfterTransition: PropTypes.func,
   };
@@ -72,7 +72,7 @@ export default class SideNav extends Component {
   static defaultProps = {
     open: true,
     visible: true,
-    animateTo: [0, 0, 0, 0],
+    hamburgerLinePositions: [0, 0, 0, 0],
     onBeforeTransition: () => false,
     onAfterTransition: () => false,
   };
@@ -110,18 +110,15 @@ export default class SideNav extends Component {
      */
     if (!this.menu && !this.menuLines && !this.menuTitles) return;
 
-    const { animateTo } = this.props;
-    const menuItemsPosition = this.menuLines.map(
+    const { hamburgerLinePositions } = this.props;
+    const menuLinePositions = this.menuLines.map(
       line => line.getBoundingClientRect().y
     );
 
-    const linePositions = [0, 0, 0, 0];
-
-    for (let i = 0; i < menuItemsPosition.length; i += 1) {
-      linePositions[i] = -Math.abs(menuItemsPosition[i] - animateTo[i]);
-    }
-
-    return linePositions;
+    return menuLinePositions.map(
+      (linePosition, index) =>
+        -Math.abs(linePosition - hamburgerLinePositions[index])
+    );
   };
 
   animateIn = onComplete => {
@@ -133,7 +130,13 @@ export default class SideNav extends Component {
       { cycle: { y: this.linePositions() } },
       { cycle: { y: [0, 0, 0, 0] } },
       -0.1,
-      onComplete
+      delay => {
+        setTimeout(() => {
+          onComplete();
+          TweenMax.set(menuLines, { y: [0, 0, 0, 0] });
+        }, delay);
+      },
+      [menuLines.length * 0.1] // To Compensate for the stagger delay
     );
     TweenMax.staggerFromTo(
       menuTitles,
@@ -147,12 +150,19 @@ export default class SideNav extends Component {
   animateOut = onComplete => {
     const { menuLines, menuTitles } = this;
 
-    TweenMax.staggerTo(
+    TweenMax.staggerFromTo(
       menuLines,
       0.4,
+      { cycle: { y: [0, 0, 0, 0] } },
       { cycle: { y: this.linePositions() } },
       0.1,
-      onComplete
+      delay => {
+        setTimeout(() => {
+          onComplete();
+          TweenMax.set(menuLines, { y: [0, 0, 0, 0] });
+        }, delay);
+      },
+      [menuLines.length * 0.1] //
     );
 
     TweenMax.staggerTo(menuTitles, 0.4, { y: -50, alpha: 0 }, 0.1);

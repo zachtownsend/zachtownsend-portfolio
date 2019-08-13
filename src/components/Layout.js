@@ -1,15 +1,14 @@
 import React from 'react';
+import styled, { ThemeProvider } from 'styled-components';
 import Helmet from 'react-helmet';
-import styled, { ThemeProvider, css } from 'styled-components';
-import {
-  TransitionPortal,
-  TransitionState,
-} from 'gatsby-plugin-transition-link';
-import { Location } from '@reach/router';
 // import Navigation from './Navigation';
-import MainNavigation from './MainNavigation';
 import './all.scss';
 import useSiteMetadata from './SiteMetadata';
+
+export const LayoutWrapper = styled.div`
+  background: ${({ theme }) => theme.darkGray};
+  min-height: calc(100vh - 20px);
+`;
 
 const sizes = {
   mobile: 0,
@@ -31,12 +30,6 @@ export const siteTheme = {
   device: sizes,
 };
 
-export const StyledPageContainer = styled.div`
-  background: ${siteTheme.darkGray};
-  padding-top: 20px;
-  min-height: calc(100vh - 20px);
-`;
-
 const TemplateWrapper = ({ children }) => {
   const { title, description } = useSiteMetadata();
   return (
@@ -44,7 +37,7 @@ const TemplateWrapper = ({ children }) => {
       <div className="page-container">
         <Helmet>
           <html lang="en" />
-          <title>{title}</title>
+          <title>{title} | Freelance Web Developer based in Berlin</title>
           <meta name="description" content={description} />
 
           <link
@@ -77,21 +70,7 @@ const TemplateWrapper = ({ children }) => {
           <meta property="og:url" content="/" />
           <meta property="og:image" content="/img/og-image.jpg" />
         </Helmet>
-        <Location>
-          {({ location }) => (
-            <TransitionState>
-              {({ transitionStatus }) =>
-                ['exiting', 'entered'].includes(transitionStatus) && (
-                  <TransitionPortal>
-                    <MainNavigation open={location.pathname === '/'} />
-                  </TransitionPortal>
-                )
-              }
-            </TransitionState>
-          )}
-        </Location>
-
-        <StyledPageContainer>{children}</StyledPageContainer>
+        <LayoutWrapper>{children}</LayoutWrapper>
       </div>
     </ThemeProvider>
   );

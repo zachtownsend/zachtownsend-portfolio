@@ -1,11 +1,13 @@
 import React from 'react';
 import { StaticQuery, graphql } from 'gatsby';
+import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import Swiper from 'swiper';
 import posed, { PoseGroup } from 'react-pose';
 import classNames from 'classnames';
 import Layout from '../../components/Layout';
 import Button from '../../components/Button';
+import PageHead from '../../components/PageHead';
 import PeepholeText from '../../components/PeepholeText';
 import StyledPageContainer from '../../styles/StyledPageContainer';
 import '../../../node_modules/swiper/dist/css/swiper.min.css';
@@ -128,7 +130,7 @@ class ProjectIndexPage extends React.Component {
 
   constructor(props) {
     super(props);
-
+    console.log(props);
     this.infoContainer = null;
   }
 
@@ -190,6 +192,12 @@ class ProjectIndexPage extends React.Component {
 
     return (
       <Layout>
+        <PageHead pageTitle="Projects">
+          <meta
+            name="description"
+            content="This is a description for the projects page"
+          />
+        </PageHead>
         <StyledPageContainer>
           <StyledSwiper className="swiper-container">
             <div className="swiper-wrapper">{projects}</div>

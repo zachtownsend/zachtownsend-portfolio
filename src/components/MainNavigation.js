@@ -18,6 +18,7 @@ const StyledNavbar = styled.nav`
   right: 20px;
   display: flex;
   justify-content: space-between;
+  z-index: 1000;
 
   .logo,
   .hamburger-container {
@@ -54,12 +55,12 @@ const StyledNavbar = styled.nav`
 export default class MainNavigation extends Component {
   static propTypes = {
     open: PropTypes.bool,
-    transitionId: PropTypes.number,
+    pageTitle: PropTypes.string,
   };
 
   static defaultProps = {
     open: true,
-    transitionId: 0,
+    pageTitle: null,
   };
 
   constructor(props) {
@@ -93,7 +94,7 @@ export default class MainNavigation extends Component {
 
   render() {
     const { getHamburgerPosition } = this;
-    const { open } = this.props;
+    const { open, pageTitle } = this.props;
     const { hamburgerPosition, transitioning } = this.state;
 
     return (
@@ -101,18 +102,14 @@ export default class MainNavigation extends Component {
         <TransitionLink
           className="logo centered"
           to="/"
-          exit={{
-            length: 2,
-          }}
-          entry={{
-            delay: 0.8,
-          }}
+          exit={{ length: 0.8 }}
+          entry={{ delay: 0.8, length: 0.8 }}
         >
           <Logo />
         </TransitionLink>
 
         <div className="page-title" data-testid="page-title">
-          <PageTitle siteTitle="Zach Townsend" pageTitle="Home" />
+          <PageTitle siteTitle="Zach Townsend" pageTitle={pageTitle} />
         </div>
 
         <div className="hamburger-container" data-testid="hamburger">
@@ -124,7 +121,7 @@ export default class MainNavigation extends Component {
 
         <SideNav
           data-testid="side-navigation"
-          animateTo={hamburgerPosition}
+          hamburgerLinePositions={hamburgerPosition}
           onBeforeTransition={() => {
             this.setTransitioning(true);
           }}

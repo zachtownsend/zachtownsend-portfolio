@@ -35,6 +35,10 @@ const StyledPageTitle = styled.h1`
   @media (min-width: ${props => props.theme.device.touch}px) {
     text-align: left;
   }
+
+  .shuffle-text-char {
+    animation: none; /* none for no effect */
+  }
 `;
 
 function PageTitle({ display, pageTitle, siteTitle, className }) {
