@@ -10,15 +10,9 @@ module.exports = {
     'gatsby-plugin-styled-components',
     'gatsby-plugin-sass',
     {
-      resolve: 'gatsby-plugin-layout',
-      options: {
-        component: require.resolve('./src/components/PageContainer'),
-      },
-    },
-    {
       resolve: 'gatsby-plugin-transition-link',
       options: {
-        component: require.resolve('./src/components/Layout.js'),
+        layout: require.resolve('./src/components/PageContainer.js'),
       },
     },
     {

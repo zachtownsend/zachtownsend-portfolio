@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, cleanup } from 'react-testing-library';
-import { getPageTitleFromPath } from '../src/components/Layout';
+import { getPageTitleFromPath } from '../src/lib/helpers';
 
 afterEach(cleanup);
 

@@ -1,58 +1,31 @@
 import React from 'react';
-import Helmet from 'react-helmet';
-import styled from 'styled-components';
-import useSiteMetadata from './SiteMetadata';
+import PropTypes from 'prop-types';
+import { ThemeProvider } from 'styled-components';
+import { TransitionPortal } from 'gatsby-plugin-transition-link';
+import { Location } from '@reach/router';
+import MainNavigation from './MainNavigation';
+import { siteTheme } from './Layout';
 
-export const StyledPageContainer = styled.div`
-  background: ${({ theme }) => theme.darkGray};
-  min-height: calc(100vh - 20px);
-`;
-
-function PageContainer({ children }) {
-  const { title, description } = useSiteMetadata();
-
+export default function PageContainer({ children }) {
   return (
-    <div className="page-container">
-      <Helmet>
-        <html lang="en" />
-        <title>{title} | Freelance Web Developer based in Berlin</title>
-        <meta name="description" content={description} />
-
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/img/apple-touch-icon.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          href="/img/favicon-32x32.png"
-          sizes="32x32"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          href="/img/favicon-16x16.png"
-          sizes="16x16"
-        />
-
-        <link
-          rel="mask-icon"
-          href="/img/safari-pinned-tab.svg"
-          color="#ff4400"
-        />
-        <meta name="theme-color" content="#fff" />
-
-        <meta property="og:type" content="business.business" />
-        <meta property="og:title" content={title} />
-        <meta property="og:url" content="/" />
-        <meta property="og:image" content="/img/og-image.jpg" />
-      </Helmet>
-      <StyledPageContainer>{children}</StyledPageContainer>
-    </div>
+    <ThemeProvider theme={siteTheme}>
+      <div>
+        <Location>
+          {({ location }) => (
+            <TransitionPortal>
+              <MainNavigation
+                open={location.pathname === '/'}
+                pageTitle={getPageTitleFromPath(location.pathname)}
+              />
+            </TransitionPortal>
+          )}
+        </Location>
+        <div>{children}</div>
+      </div>
+    </ThemeProvider>
   );
 }
 
-PageContainer.propTypes = {};
-
-export default PageContainer;
+PageContainer.propTypes = {
+  children: PropTypes.element,
+};

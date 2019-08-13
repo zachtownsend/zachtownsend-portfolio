@@ -7,13 +7,13 @@ import TweenMax from 'gsap/umd/TweenMax';
 const transitionProps = {
   replace: true,
   exit: {
-    delay: 0,
-    length: 0.8,
+    // delay: 0,
+    // length: 0.8,
     zIndex: 1,
   },
   entry: {
-    delay: 0,
-    length: 0.8,
+    // delay: 0,
+    // length: 0.8,
     zIndex: 0,
   },
 };

@@ -1,14 +1,14 @@
 import React from 'react';
-import {
-  TransitionPortal,
-  TransitionState,
-} from 'gatsby-plugin-transition-link';
-import { ThemeProvider } from 'styled-components';
-import { Location } from '@reach/router';
+import styled, { ThemeProvider } from 'styled-components';
+import Helmet from 'react-helmet';
 // import Navigation from './Navigation';
-import MainNavigation from './MainNavigation';
 import './all.scss';
-import PageContainer from './PageContainer';
+import useSiteMetadata from './SiteMetadata';
+
+export const LayoutWrapper = styled.div`
+  background: ${({ theme }) => theme.darkGray};
+  min-height: calc(100vh - 20px);
+`;
 
 const sizes = {
   mobile: 0,
@@ -30,40 +30,50 @@ export const siteTheme = {
   device: sizes,
 };
 
-export const getPageTitleFromPath = location => {
-  if (/^\/projects(\/.+)?/.test(location)) {
-    return 'Projects';
-  }
+const TemplateWrapper = ({ children }) => {
+  const { title, description } = useSiteMetadata();
+  return (
+    <ThemeProvider theme={siteTheme}>
+      <div className="page-container">
+        <Helmet>
+          <html lang="en" />
+          <title>{title} | Freelance Web Developer based in Berlin</title>
+          <meta name="description" content={description} />
 
-  if (/^\/workshop(\/.+)?/.test(location)) {
-    return 'Workshop';
-  }
-
-  if (/^\/contact(\/.+)?/.test(location)) {
-    return 'Contact';
-  }
-
-  if (/^\/blog(\/.+)?/.test(location)) {
-    return 'Blog';
-  }
-
-  return null;
-};
-
-const TemplateWrapper = ({ children }) => (
-  <ThemeProvider theme={siteTheme}>
-    <div>
-      <Location>
-        {({ location }) => (
-          <MainNavigation
-            open={location.pathname === '/'}
-            pageTitle={getPageTitleFromPath(location.pathname)}
+          <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/img/apple-touch-icon.png"
           />
-        )}
-      </Location>
-      <PageContainer>{children}</PageContainer>
-    </div>
-  </ThemeProvider>
-);
+          <link
+            rel="icon"
+            type="image/png"
+            href="/img/favicon-32x32.png"
+            sizes="32x32"
+          />
+          <link
+            rel="icon"
+            type="image/png"
+            href="/img/favicon-16x16.png"
+            sizes="16x16"
+          />
+
+          <link
+            rel="mask-icon"
+            href="/img/safari-pinned-tab.svg"
+            color="#ff4400"
+          />
+          <meta name="theme-color" content="#fff" />
+
+          <meta property="og:type" content="business.business" />
+          <meta property="og:title" content={title} />
+          <meta property="og:url" content="/" />
+          <meta property="og:image" content="/img/og-image.jpg" />
+        </Helmet>
+        <LayoutWrapper>{children}</LayoutWrapper>
+      </div>
+    </ThemeProvider>
+  );
+};
 
 export default TemplateWrapper;
