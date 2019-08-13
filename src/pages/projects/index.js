@@ -390,7 +390,7 @@ class ProjectIndexPage extends React.Component {
               </Button>
             </div>
           </ProjectInfo>
-        </PageContainer>
+        </StyledPageContainer>
       </Layout>
     );
   }
