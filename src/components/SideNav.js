@@ -127,10 +127,9 @@ export default class SideNav extends Component {
   animateIn = onComplete => {
     const { menuLines, menuTitles } = this;
 
-    TweenMax.staggerFromTo(
+    TweenMax.staggerTo(
       menuLines,
       0.4,
-      { cycle: { y: this.linePositions() } },
       { cycle: { y: [0, 0, 0, 0] } },
       -0.1,
       delay => {
