@@ -10,7 +10,7 @@ import Layout from '../../components/Layout';
 import Button from '../../components/Button';
 import PageHead from '../../components/PageHead';
 import PeepholeText from '../../components/PeepholeText';
-import PageContainer from '../../components/PageContainer';
+import StyledPageContainer from '../../styles/StyledPageContainer';
 import '../../../node_modules/swiper/dist/css/swiper.min.css';
 
 const StyledSwiper = styled.div`
