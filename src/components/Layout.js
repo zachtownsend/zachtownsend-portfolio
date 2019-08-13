@@ -76,4 +76,4 @@ const TemplateWrapper = ({ children }) => {
   );
 };
 
-export default TemplateWrapper;
+export default Layout;
