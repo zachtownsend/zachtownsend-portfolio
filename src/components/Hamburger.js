@@ -53,8 +53,13 @@ export default class Hamburger extends React.Component {
   }
 
   render() {
+    const { visible, onClick } = this.props;
     return (
-      <StyledHamburger data-testid="hamburger" visible={this.props.visible}>
+      <StyledHamburger
+        data-testid="hamburger"
+        visible={visible}
+        onClick={onClick}
+      >
         <div
           ref={c => {
             this.lineWrapper = c;
@@ -89,15 +94,15 @@ export default class Hamburger extends React.Component {
 // }
 
 Hamburger.propTypes = {
-  active: PropTypes.bool,
   visible: PropTypes.bool,
   onHamburgerPosition: PropTypes.func,
+  onClick: PropTypes.func,
 };
 
 Hamburger.defaultProps = {
-  active: false,
   visible: true,
-  onHamburgerPosition: () => false,
+  onHamburgerPosition: null,
+  onClick: null,
 };
 
 // export default Hamburger;

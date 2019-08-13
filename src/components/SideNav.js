@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import TransitionLink from 'gatsby-plugin-transition-link';
 import TweenMax from 'gsap/umd/TweenMax';
+import { getPageTitleFromPath } from '../lib/helpers';
 
 const transitionProps = {
   replace: true,
@@ -18,7 +19,7 @@ const transitionProps = {
   // },
 };
 
-const StyledSideNavigation = styled.nav`
+const StyledSideNavigation = styled.div`
   position: absolute;
   right: 0;
   width: 33vw;
@@ -64,6 +65,7 @@ export default class SideNav extends Component {
   static propTypes = {
     open: PropTypes.bool,
     visible: PropTypes.bool,
+    links: PropTypes.arrayOf(PropTypes.string),
     hamburgerLinePositions: PropTypes.arrayOf(PropTypes.number),
     onBeforeTransition: PropTypes.func,
     onAfterTransition: PropTypes.func,
@@ -80,7 +82,6 @@ export default class SideNav extends Component {
   constructor(props) {
     super(props);
 
-    this.menu = null;
     this.menuTitles = [];
     this.menuLines = [];
   }
@@ -108,7 +109,7 @@ export default class SideNav extends Component {
     /**
      * Check that the menuItems refs are available
      */
-    if (!this.menu && !this.menuLines && !this.menuTitles) return;
+    if (!this.menuLines && !this.menuTitles) return;
 
     const { hamburgerLinePositions } = this.props;
     const menuLinePositions = this.menuLines.map(
@@ -162,66 +163,31 @@ export default class SideNav extends Component {
           TweenMax.set(menuLines, { y: [0, 0, 0, 0] });
         }, delay);
       },
-      [menuLines.length * 0.1] //
+      [menuLines.length * 0.1] // To Compensate for the stagger delay
     );
 
     TweenMax.staggerTo(menuTitles, 0.4, { y: -50, alpha: 0 }, 0.1);
   };
 
   render() {
-    const { visible } = this.props;
+    const { visible, links } = this.props;
 
     return (
       <StyledSideNavigation visible={visible}>
-        <ul
-          ref={c => {
-            this.menu = c;
-          }}
-        >
-          <li>
-            <TransitionLink to="/projects" {...transitionProps}>
-              <span
-                className="text-wrapper"
-                ref={c => (this.menuTitles[0] = c)}
-              >
-                Projects
-              </span>
-              <span className="line" ref={c => (this.menuLines[0] = c)} />
-            </TransitionLink>
-          </li>
-          <li>
-            <TransitionLink to="/blog" {...transitionProps}>
-              <span
-                className="text-wrapper"
-                ref={c => (this.menuTitles[1] = c)}
-              >
-                Blog
-              </span>
-              <span className="line" ref={c => (this.menuLines[1] = c)} />
-            </TransitionLink>
-          </li>
-          <li>
-            <TransitionLink to="/workshop" {...transitionProps}>
-              <span
-                className="text-wrapper"
-                ref={c => (this.menuTitles[2] = c)}
-              >
-                Workshop
-              </span>
-              <span className="line" ref={c => (this.menuLines[2] = c)} />
-            </TransitionLink>
-          </li>
-          <li>
-            <TransitionLink to="/contact" {...transitionProps}>
-              <span
-                className="text-wrapper"
-                ref={c => (this.menuTitles[3] = c)}
-              >
-                Contact
-              </span>
-              <span className="line" ref={c => (this.menuLines[3] = c)} />
-            </TransitionLink>
-          </li>
+        <ul>
+          {links.map((link, index) => (
+            <li>
+              <TransitionLink to={link} {...transitionProps}>
+                <span
+                  className="text-wrapper"
+                  ref={c => (this.menuTitles[index] = c)}
+                >
+                  {getPageTitleFromPath(link)}
+                </span>
+                <span className="line" ref={c => (this.menuLines[index] = c)} />
+              </TransitionLink>
+            </li>
+          ))}
         </ul>
       </StyledSideNavigation>
     );
