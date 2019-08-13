@@ -19,7 +19,7 @@ const transitionProps = {
   // },
 };
 
-const StyledSideNavigation = styled.nav`
+const StyledSideNavigation = styled.div`
   position: absolute;
   right: 0;
   width: 33vw;

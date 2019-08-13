@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TransitionLink, { TransitionState } from 'gatsby-plugin-transition-link';
+import TransitionLink from 'gatsby-plugin-transition-link';
 import styled from 'styled-components';
-import posed from 'react-pose';
-import classNames from 'classnames';
 import Media from 'react-media';
 import Logo from './Logo';
 import PageTitle from './PageTitle';
 import Hamburger from './Hamburger';
 import SideNav from './SideNav';
-import { siteTheme } from './Layout';
+import OffCanvasNav from './OffCanvasNav';
 
 const StyledNavbar = styled.nav`
   position: fixed;
@@ -23,6 +21,13 @@ const StyledNavbar = styled.nav`
   .logo,
   .hamburger-container {
     flex: 0 1 auto;
+  }
+
+  .logo,
+  .page-title,
+  .hamburger-container {
+    position: relative;
+    z-index: 1;
   }
 
   .logo {
@@ -63,11 +68,15 @@ export default class MainNavigation extends Component {
   static propTypes = {
     open: PropTypes.bool,
     pageTitle: PropTypes.string,
+    onOffCanvasToggle: PropTypes.func,
+    offCanvasOpen: PropTypes.bool,
   };
 
   static defaultProps = {
     open: true,
     pageTitle: null,
+    onOffCanvasToggle: null,
+    offCanvasOpen: false,
   };
 
   constructor(props) {
@@ -75,6 +84,7 @@ export default class MainNavigation extends Component {
 
     this.state = {
       transitioning: false,
+      offCanvasMenuOpen: false,
       hamburgerPosition: [],
     };
 
@@ -101,7 +111,7 @@ export default class MainNavigation extends Component {
 
   render() {
     const { getHamburgerPosition } = this;
-    const { open, pageTitle } = this.props;
+    const { open, pageTitle, onOffCanvasToggle, offCanvasOpen } = this.props;
     const { hamburgerPosition, transitioning } = this.state;
 
     return (
@@ -114,18 +124,16 @@ export default class MainNavigation extends Component {
         >
           <Logo />
         </TransitionLink>
-
         <div className="page-title" data-testid="page-title">
           <PageTitle siteTitle="Zach Townsend" pageTitle={pageTitle} />
         </div>
-
         <div className="hamburger-container" data-testid="hamburger">
           <Hamburger
             visible={!open && !transitioning}
             onHamburgerPosition={getHamburgerPosition}
+            onClick={onOffCanvasToggle}
           />
         </div>
-
         <SideNav
           data-testid="side-navigation"
           hamburgerLinePositions={hamburgerPosition}
@@ -139,6 +147,12 @@ export default class MainNavigation extends Component {
           visible={open || transitioning}
           links={mainNavigationLinks}
         />
+        {offCanvasOpen && (
+          <OffCanvasNav
+            links={mainNavigationLinks}
+            onLinkClick={onOffCanvasToggle}
+          />
+        )}
       </StyledNavbar>
     );
   }
