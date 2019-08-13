@@ -121,7 +121,7 @@ export default class MainNavigation extends Component {
 
         <SideNav
           data-testid="side-navigation"
-          animateTo={hamburgerPosition}
+          hamburgerLinePositions={hamburgerPosition}
           onBeforeTransition={() => {
             this.setTransitioning(true);
           }}
