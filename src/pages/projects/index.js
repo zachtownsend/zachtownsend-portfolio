@@ -190,39 +190,7 @@ class ProjectIndexPage extends React.Component {
   projectTransition = entryImageBox => {
     const { currentIndex } = this.state;
     const exitImage = this.projectImage.current;
-    const exitImageBox = this.projectImage.current.getBoundingClientRect();
-    const toPositions = {
-      x: entryImageBox.x - exitImageBox.x,
-      y: entryImageBox.y - exitImageBox.y,
-      width: entryImageBox.width,
-    };
-
-    const projects = Array.from(
-      exitImage
-        .closest('.swiper-wrapper')
-        .querySelectorAll('.project-container')
-    );
-
-    projects.forEach((project, index) => {
-      if (index < currentIndex) {
-        TweenMax.to(project, 1, { x: '-25vw', alpha: 0 });
-      } else if (index > currentIndex) {
-        TweenMax.to(project, 1, { x: '25vw', alpha: 0 });
-      }
-    });
-
-    TweenMax.to(exitImage, 1, {
-      x: toPositions.x,
-      y: toPositions.y,
-      width: toPositions.width,
-      ease: Power2.easeInOut,
-    });
-  };
-
-  projectTransition = entryImageBox => {
-    const { currentIndex } = this.state;
-    const exitImage = this.projectImage.current;
-    const exitImageBox = this.projectImage.current.getBoundingClientRect();
+    const exitImageBox = exitImage.getBoundingClientRect();
     const toPositions = {
       x: entryImageBox.x - exitImageBox.x,
       y: entryImageBox.y - exitImageBox.y,
@@ -376,9 +344,11 @@ class ProjectIndexPage extends React.Component {
                   }}
                   entry={{
                     trigger: ({ node }) => {
-                      const image = node.querySelector('.image-container');
-                      this.projectTransition(image.getBoundingClientRect());
-                      console.log('entering');
+                      requestAnimationFrame(() => {
+                        const image = node.querySelector('.image-container');
+                        this.projectTransition(image.getBoundingClientRect());
+                        console.log('entering');
+                      });
                     },
                     delay: 0,
                     length: 1,
