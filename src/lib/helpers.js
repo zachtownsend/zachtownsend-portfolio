@@ -18,6 +18,12 @@ export const getPageTitleFromPath = location => {
   return null;
 };
 
+export const getBasePath = path => {
+  const matches = path.match(/^\/[^\/]+/);
+
+  return matches[0];
+};
+
 export const getJustifyContentPosition = function(position = 'left') {
   if (typeof position !== 'string' && position !== null) {
     throw new Error(

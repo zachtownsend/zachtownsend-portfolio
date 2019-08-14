@@ -2,6 +2,7 @@ import React from 'react';
 import { render, cleanup } from 'react-testing-library';
 import {
   getPageTitleFromPath,
+  getBasePath,
   getJustifyContentPosition,
 } from '../src/lib/helpers';
 
@@ -38,6 +39,23 @@ describe('Test getPageTitleFromLocation', () => {
 
   it('returns the page title "Blog" if on a single blog page', () => {
     expect(getPageTitleFromPath('/blog/foobar')).toBe('Blog');
+  });
+});
+
+describe('Test getBasePath', () => {
+  it('returns the correct base path', () => {
+    expect(getBasePath('/projects')).toBe('/projects');
+    expect(getBasePath('/projects/something')).toBe('/projects');
+    expect(getBasePath('/projects/foo/bar')).toBe('/projects');
+    expect(getBasePath('/workshop')).toBe('/workshop');
+    expect(getBasePath('/workshop/something')).toBe('/workshop');
+    expect(getBasePath('/workshop/foo/bar')).toBe('/workshop');
+    expect(getBasePath('/contact')).toBe('/contact');
+    expect(getBasePath('/contact/something')).toBe('/contact');
+    expect(getBasePath('/contact/foo/bar')).toBe('/contact');
+    expect(getBasePath('/blog')).toBe('/blog');
+    expect(getBasePath('/blog/something')).toBe('/blog');
+    expect(getBasePath('/blog/foo/bar')).toBe('/blog');
   });
 });
 

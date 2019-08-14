@@ -67,14 +67,14 @@ export const mainNavigationLinks = [
 export default class MainNavigation extends Component {
   static propTypes = {
     open: PropTypes.bool,
-    pageTitle: PropTypes.string,
+    path: PropTypes.string,
     onOffCanvasToggle: PropTypes.func,
     offCanvasOpen: PropTypes.bool,
   };
 
   static defaultProps = {
     open: true,
-    pageTitle: null,
+    path: null,
     onOffCanvasToggle: null,
     offCanvasOpen: false,
   };
@@ -111,7 +111,7 @@ export default class MainNavigation extends Component {
 
   render() {
     const { getHamburgerPosition } = this;
-    const { open, pageTitle, onOffCanvasToggle, offCanvasOpen } = this.props;
+    const { open, path, onOffCanvasToggle, offCanvasOpen } = this.props;
     const { hamburgerPosition, transitioning } = this.state;
 
     return (
@@ -125,7 +125,7 @@ export default class MainNavigation extends Component {
           <Logo />
         </TransitionLink>
         <div className="page-title" data-testid="page-title">
-          <PageTitle siteTitle="Zach Townsend" pageTitle={pageTitle} />
+          <PageTitle siteTitle="Zach Townsend" path={path} />
         </div>
         <div className="hamburger-container" data-testid="hamburger">
           <Hamburger

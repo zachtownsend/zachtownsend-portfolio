@@ -47,7 +47,7 @@ export default class PageContainer extends Component {
                       offCanvasOpen: !offCanvasOpen,
                     });
                   }}
-                  pageTitle={getPageTitleFromPath(location.pathname)}
+                  path={location.pathname}
                 />
               </TransitionPortal>
             )}

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { getPageTitleFromPath, getBasePath } from '../lib/helpers';
 
 const StyledPageTitle = styled.h1`
   color: ${props => props.theme.white};
@@ -15,6 +16,10 @@ const StyledPageTitle = styled.h1`
     + .page-title {
       margin-left: 10px;
     }
+  }
+
+  .page-title {
+    color: ${props => props.theme.white};
   }
 
   .page-title::before {
@@ -41,14 +46,20 @@ const StyledPageTitle = styled.h1`
   }
 `;
 
-function PageTitle({ display, pageTitle, siteTitle, className }) {
-  if (!pageTitle && !siteTitle) return null;
+function PageTitle({ path, siteTitle, className }) {
+  if (!path && !siteTitle) return null;
+
+  const pageTitle = getPageTitleFromPath(path);
 
   return (
     <header className={className} data-testid="page-title">
       <StyledPageTitle data-testid="htag">
         {siteTitle && <span className="site-title">{siteTitle}</span>}
-        {pageTitle && <span className="page-title">{pageTitle}</span>}
+        {pageTitle && (
+          <a className="page-title" href={getBasePath(path)}>
+            {pageTitle}
+          </a>
+        )}
       </StyledPageTitle>
     </header>
   );
@@ -56,13 +67,13 @@ function PageTitle({ display, pageTitle, siteTitle, className }) {
 
 PageTitle.propTypes = {
   siteTitle: PropTypes.string,
-  pageTitle: PropTypes.string,
+  path: PropTypes.string,
   className: PropTypes.string,
 };
 
 PageTitle.defaultProps = {
   siteTitle: '',
-  pageTitle: '',
+  path: '',
   className: null,
 };
 
