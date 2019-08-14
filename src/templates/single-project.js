@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import Layout from '../components/Layout';
 import Content, { HTMLContent } from '../components/Content';
 import ProjectQuickInfo from '../components/ProjectQuickInfo';
-import PageContainer from '../components/PageContainer';
+import StyledPageContainer from '../styles/StyledPageContainer';
 
 const ProjectInfoContainer = styled.div`
   display: flex;
@@ -66,7 +66,7 @@ const BlogPost = ({ data }) => {
 
   return (
     <Layout>
-      <PageContainer vAlign="flex-start">
+      <StyledPageContainer vAlign="flex-start">
         <BlogPostTemplate
           content={post.html}
           contentComponent={HTMLContent}
@@ -84,7 +84,7 @@ const BlogPost = ({ data }) => {
           title={post.frontmatter.title}
           thumbnail={post.frontmatter.thumbnail.childImageSharp.resize.src}
         />
-      </PageContainer>
+      </StyledPageContainer>
     </Layout>
   );
 };

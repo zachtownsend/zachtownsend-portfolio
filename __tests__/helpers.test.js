@@ -1,6 +1,9 @@
 import React from 'react';
 import { render, cleanup } from 'react-testing-library';
-import { getPageTitleFromPath } from '../src/lib/helpers';
+import {
+  getPageTitleFromPath,
+  getJustifyContentPosition,
+} from '../src/lib/helpers';
 
 afterEach(cleanup);
 
@@ -35,5 +38,53 @@ describe('Test getPageTitleFromLocation', () => {
 
   it('returns the page title "Blog" if on a single blog page', () => {
     expect(getPageTitleFromPath('/blog/foobar')).toBe('Blog');
+  });
+});
+
+describe('Test getJustifyContentPosition', () => {
+  it('returns "flex-start" by default', () => {
+    expect(getJustifyContentPosition()).toBe('flex-start');
+    expect(getJustifyContentPosition('')).toBe('flex-start');
+    expect(getJustifyContentPosition(null)).toBe('flex-start');
+  });
+
+  it('returns "flex-start" when "left" or "flex-start" is passed', () => {
+    expect(getJustifyContentPosition('left')).toBe('flex-start');
+    expect(getJustifyContentPosition('flex-start')).toBe('flex-start');
+  });
+
+  it('returns "flex-end" when "right" or "flex-end" is passed', () => {
+    expect(getJustifyContentPosition('right')).toBe('flex-end');
+    expect(getJustifyContentPosition('flex-end')).toBe('flex-end');
+  });
+
+  it('returns "center" when "center" is passed', () => {
+    expect(getJustifyContentPosition('center')).toBe('center');
+  });
+
+  it('returns correct "space" values when passed', () => {
+    expect(getJustifyContentPosition('space-around')).toBe('space-around');
+    expect(getJustifyContentPosition('space-between')).toBe('space-between');
+    expect(getJustifyContentPosition('space-evenly')).toBe('space-evenly');
+  });
+
+  it('throws an error if a string is not passed', () => {
+    expect(() => {
+      getJustifyContentPosition(10);
+    }).toThrow(new Error('Invalid type. Must be a string.'));
+
+    expect(() => {
+      getJustifyContentPosition({});
+    }).toThrowError(new Error('Invalid type. Must be a string.'));
+  });
+
+  it('throws an error if any other value passed', () => {
+    expect(() => {
+      getJustifyContentPosition('asdfasdfasd');
+    }).toThrow(
+      new Error(
+        `Invalid string. Must be one of 'left', 'right', 'flex-start', 'flex-end', 'center', 'space-around', 'space-between' or 'space-evenly'`
+      )
+    );
   });
 });

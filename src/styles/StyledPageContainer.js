@@ -1,11 +1,13 @@
 import styled from 'styled-components';
+import { getJustifyContentPosition } from '../lib/helpers';
 
 const StyledPageContainer = styled.div`
   background: ${props => props.theme.darkGray};
   padding-top: 20px;
   min-height: calc(100vh - 20px);
   display: flex;
-  justify-content: flex-start;
+  justify-content: ${({ hAlign }) =>
+    getJustifyContentPosition(hAlign || 'left')};
   align-items: center;
   text-align: center;
   background-size: cover;
