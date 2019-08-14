@@ -221,10 +221,11 @@ class ProjectIndexPage extends React.Component {
 
   projectInfoPosition() {
     const { containerDimensions, projectIsWiderThanWindow } = this.state;
+    const windowHeight = typeof window !== 'undefined' ? window.innerHeight : 0;
 
     return {
       bottom:
-        window.innerHeight -
+        windowHeight -
         (containerDimensions.y + containerDimensions.height) +
         24,
       left: projectIsWiderThanWindow ? 40 : containerDimensions.x - 48,
