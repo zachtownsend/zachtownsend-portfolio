@@ -5,10 +5,14 @@ import styled from 'styled-components';
 import Layout from '../components/Layout';
 import Button from '../components/Button';
 import ContinueArrow from '../components/ContinueArrow';
-import PageContainer from '../components/PageContainer';
-import { applyHighlightTags } from '../lib/format';
+import StyledPageContainer from '../styles/StyledPageContainer';
 // import Features from '../components/Features';
 // import BlogRoll from '../components/BlogRoll';
+
+const HomePageContainer = styled(StyledPageContainer)`
+  background: url(${props => props.backgroundimage});
+  background-size: cover;
+`;
 
 const StyledSiteTitle = styled.header`
   display: flex;
@@ -31,7 +35,7 @@ const StyledSiteTitle = styled.header`
       max-width: 12em;
       margin-bottom: 27px;
 
-      .highlighted {
+      &.highlight {
         color: ${props => props.theme.primary};
       }
     }
@@ -46,7 +50,7 @@ const StyledSiteTitle = styled.header`
       }
     }
 
-    @media (min-width: ${props => props.theme.device.touch}px) {
+    @media (min-width: ${props => props.theme.device.desktop}px) {
       text-align: right;
 
       .contact-button {
@@ -57,10 +61,9 @@ const StyledSiteTitle = styled.header`
 `;
 
 export const IndexPageTemplate = props => (
-  <PageContainer
+  <HomePageContainer
     className="section"
     backgroundimage={props.backgroundimage.childImageSharp.original.src}
-    noPadding
   >
     <div className="columns is-multiline">
       <div className="column is-full is-one-third-desktop">
@@ -68,14 +71,7 @@ export const IndexPageTemplate = props => (
           <StyledSiteTitle>
             <div className="page-title">
               <h1>{props.title}</h1>
-              {props.subtitle && (
-                <p
-                  className="subtitle"
-                  dangerouslySetInnerHTML={{
-                    __html: applyHighlightTags(props.subtitle),
-                  }}
-                />
-              )}
+              {props.subtitle && <p className="subtitle">{props.subtitle}</p>}
               <Button className="contact-button">
                 <Link to="/contact">Contact Me</Link>
               </Button>
@@ -88,7 +84,7 @@ export const IndexPageTemplate = props => (
       </div>
       <div className="column is-one-third-desktop" />
     </div>
-  </PageContainer>
+  </HomePageContainer>
 );
 
 IndexPageTemplate.propTypes = {
