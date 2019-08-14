@@ -23,7 +23,6 @@ const StyledNavbar = styled.nav`
     flex: 0 1 auto;
   }
 
-  .logo,
   .page-title,
   .hamburger-container {
     position: relative;
@@ -32,6 +31,7 @@ const StyledNavbar = styled.nav`
 
   .logo {
     display: inline-block;
+    z-index: 2;
 
     /* @media (min-width: ${({ theme }) => theme.breakpoints.touch}px) {
       &.centered {
