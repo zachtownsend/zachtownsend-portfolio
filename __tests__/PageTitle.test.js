@@ -16,7 +16,7 @@ const renderComponent = props =>
 describe('PageTitle', () => {
   it('Shows the site title and the page title separated by a slash', () => {
     const Test = renderComponent({
-      pageTitle: 'Projects',
+      path: '/projects',
       siteTitle: 'Zach Townsend',
     });
 
@@ -42,7 +42,7 @@ describe('PageTitle', () => {
   });
 
   it('Only shows the page title if site title omitted', () => {
-    const Test = renderComponent({ pageTitle: 'Projects' });
+    const Test = renderComponent({ path: '/projects' });
     const { container } = Test;
     const h1 = container.querySelector('h1');
 
@@ -54,7 +54,7 @@ describe('PageTitle', () => {
 
   it('has h1 as the first parent', () => {
     const Test = renderComponent({
-      pageTitle: 'Projects',
+      path: '/projects',
       siteTitle: 'Zach Townsend',
     });
     const { container } = Test;

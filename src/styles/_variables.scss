@@ -17,9 +17,9 @@ $section-padding: 10px;
 // The container horizontal gap, which acts as the offset for breakpoints
 $gap: 64px;
 $tablet: 769px;
-$desktop: 1023px;
-$widescreen: 1215px;
-$fullhd: 1407px;
+$desktop: 1407px;
+$widescreen: 1840px;
+$fullhd: $widescreen;
 
 $title-weight: 100;
 $title-color: $white;

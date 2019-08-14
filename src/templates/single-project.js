@@ -3,8 +3,23 @@ import PropTypes from 'prop-types';
 import { kebabCase } from 'lodash';
 import Helmet from 'react-helmet';
 import { graphql, Link } from 'gatsby';
+import styled from 'styled-components';
 import Layout from '../components/Layout';
 import Content, { HTMLContent } from '../components/Content';
+import ProjectQuickInfo from '../components/ProjectQuickInfo';
+import StyledPageContainer from '../styles/StyledPageContainer';
+
+const ProjectInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+
+  .projectInfo + .projectInfo {
+    margin-top: 78px;
+  }
+`;
 
 export const BlogPostTemplate = ({
   content,
@@ -12,37 +27,29 @@ export const BlogPostTemplate = ({
   description,
   tags,
   title,
-  helmet,
+  thumbnail,
 }) => {
   const PostContent = contentComponent || Content;
-
   return (
-    <section className="section">
-      {helmet || ''}
-      <div className="container content">
-        <div className="columns">
-          <div className="column is-10 is-offset-1">
-            <h1 className="title is-size-2 has-text-weight-bold is-bold-light">
-              {title}
-            </h1>
-            <p>{description}</p>
-            <PostContent content={content} />
-            {tags && tags.length ? (
-              <div style={{ marginTop: `4rem` }}>
-                <h4>Tags</h4>
-                <ul className="taglist">
-                  {tags.map(tag => (
-                    <li key={`${tag  }tag`}>
-                      <Link to={`/tags/${kebabCase(tag)}/`}>{tag}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
+    <div className="container content">
+      <div className="columns">
+        <div className="column is-5 is-offset-1">
+          <div className="image-container">
+            <img src={thumbnail} alt="" />
           </div>
         </div>
+        <div className="column is-3 is-offset-1">
+          <ProjectInfoContainer>
+            <ProjectQuickInfo title="Project" content={title} />
+            <ProjectQuickInfo title="Agency" content="Verb Brands Ltd" />
+            <ProjectQuickInfo
+              title="Technology"
+              content="Wordpress, Woocommerce, PHP, jQuery"
+            />
+          </ProjectInfoContainer>
+        </div>
       </div>
-    </section>
+    </div>
   );
 };
 
@@ -59,22 +66,25 @@ const BlogPost = ({ data }) => {
 
   return (
     <Layout>
-      <BlogPostTemplate
-        content={post.html}
-        contentComponent={HTMLContent}
-        description={post.frontmatter.description}
-        helmet={
-          <Helmet titleTemplate="%s | Blog">
-            <title>{`${post.frontmatter.title}`}</title>
-            <meta
-              name="description"
-              content={`${post.frontmatter.description}`}
-            />
-          </Helmet>
-        }
-        tags={post.frontmatter.tags}
-        title={post.frontmatter.title}
-      />
+      <StyledPageContainer vAlign="flex-start">
+        <BlogPostTemplate
+          content={post.html}
+          contentComponent={HTMLContent}
+          description={post.frontmatter.description}
+          helmet={
+            <Helmet titleTemplate="%s | Blog">
+              <title>{`${post.frontmatter.title}`}</title>
+              <meta
+                name="description"
+                content={`${post.frontmatter.description}`}
+              />
+            </Helmet>
+          }
+          tags={post.frontmatter.tags}
+          title={post.frontmatter.title}
+          thumbnail={post.frontmatter.thumbnail.childImageSharp.resize.src}
+        />
+      </StyledPageContainer>
     </Layout>
   );
 };
@@ -97,6 +107,15 @@ export const pageQuery = graphql`
         title
         description
         tags
+        thumbnail {
+          childImageSharp {
+            resize(height: 900) {
+              src
+            }
+          }
+        }
+        client
+        techs
       }
     }
   }
