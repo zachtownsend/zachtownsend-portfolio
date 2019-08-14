@@ -19,6 +19,12 @@ export const getPageTitleFromPath = location => {
 };
 
 export const getJustifyContentPosition = function(position = 'left') {
+  if (typeof position !== 'string' && position !== null) {
+    throw new Error(
+      `Invalid type. Must be a string, ${typeof position} passed.`
+    );
+  }
+
   switch (position) {
     case '':
     case null:
@@ -37,10 +43,6 @@ export const getJustifyContentPosition = function(position = 'left') {
       return position;
 
     default:
-      if (typeof position !== 'string') {
-        throw new Error('Invalid type. Must be a string.');
-      }
-
       throw new Error(
         `Invalid string. Must be one of 'left', 'right', 'flex-start', 'flex-end', 'center', 'space-around', 'space-between' or 'space-evenly'`
       );

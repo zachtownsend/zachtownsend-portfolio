@@ -71,11 +71,39 @@ describe('Test getJustifyContentPosition', () => {
   it('throws an error if a string is not passed', () => {
     expect(() => {
       getJustifyContentPosition(10);
-    }).toThrow(new Error('Invalid type. Must be a string.'));
+    }).toThrow(new Error('Invalid type. Must be a string, number passed.'));
 
     expect(() => {
       getJustifyContentPosition({});
-    }).toThrowError(new Error('Invalid type. Must be a string.'));
+    }).toThrowError(
+      new Error('Invalid type. Must be a string, object passed.')
+    );
+
+    expect(() => {
+      getJustifyContentPosition(['test', 'test1']);
+    }).toThrowError(
+      new Error('Invalid type. Must be a string, object passed.')
+    );
+
+    expect(() => {
+      getJustifyContentPosition(true);
+    }).toThrowError(
+      new Error('Invalid type. Must be a string, boolean passed.')
+    );
+
+    expect(() => {
+      getJustifyContentPosition(Symbol());
+    }).toThrowError(
+      new Error('Invalid type. Must be a string, symbol passed.')
+    );
+
+    expect(() => {
+      getJustifyContentPosition(function() {
+        return false;
+      });
+    }).toThrowError(
+      new Error('Invalid type. Must be a string, function passed.')
+    );
   });
 
   it('throws an error if any other value passed', () => {
