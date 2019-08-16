@@ -5,7 +5,7 @@ const StyledPageContainer = styled.div`
   background: ${props => props.theme.darkGray};
   padding-top: 20px;
   min-height: calc(100vh - 20px);
-  display: flex;
+  display: ${({ display }) => display || 'flex'};
   justify-content: ${({ hAlign }) =>
     getJustifyContentPosition(hAlign || 'left')};
   align-items: center;
