@@ -9,12 +9,8 @@ import { siteTheme } from './Layout';
 import { getPageTitleFromPath } from '../lib/helpers';
 
 const ContentContainer = posed.div({
-  menuClosed: {
-    filter: 'blur(0px) brightness(1)',
-    transform: 'scale(1)',
-    opacity: 1,
-  },
-  menuOpen: { filter: 'blur(10px) brightness(0.3)', transform: 'scale(0.99)' },
+  menuClosed: { transform: 'scale(1)' },
+  menuOpen: { transform: 'scale(0.99)' },
 });
 
 export default class PageContainer extends Component {
