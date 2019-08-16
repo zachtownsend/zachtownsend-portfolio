@@ -21,6 +21,12 @@ const ProjectInfoContainer = styled.div`
   }
 `;
 
+const ImageContainer = styled.div`
+  img {
+    width: 100%;
+  }
+`;
+
 export const BlogPostTemplate = ({
   content,
   contentComponent,
@@ -34,9 +40,9 @@ export const BlogPostTemplate = ({
     <div className="container content">
       <div className="columns">
         <div className="column is-5 is-offset-1">
-          <div className="image-container">
+          <ImageContainer className="image-container">
             <img src={thumbnail} alt="" />
-          </div>
+          </ImageContainer>
         </div>
         <div className="column is-3 is-offset-1">
           <ProjectInfoContainer>
