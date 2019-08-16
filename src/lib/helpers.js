@@ -54,3 +54,5 @@ export const getJustifyContentPosition = function(position = 'left') {
       );
   }
 };
+
+export const getColumnWidth = (columns, baseColumns = 12) => `${100 * (columns / baseColumns)}%`;

@@ -5,9 +5,13 @@ import Helmet from 'react-helmet';
 import './all.scss';
 import useSiteMetadata from './SiteMetadata';
 
+const settings = {
+  pagePadding: 20,
+};
+
 export const LayoutWrapper = styled.div`
   background: ${({ theme }) => theme.darkGray};
-  min-height: calc(100vh - 20px);
+  min-height: calc(100vh - ${settings.pagePadding * 2}px);
 `;
 
 const sizes = {
@@ -28,6 +32,7 @@ export const siteTheme = {
   bodyFontFamily: "'Open Sans', sans-serif",
   displayFontFamily: "'Roboto', sans-serif",
   device: sizes,
+  fullHeight: `calc(100vh - ${settings.pagePadding * 2}px)`,
 };
 
 const TemplateWrapper = ({ children }) => {

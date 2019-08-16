@@ -4,6 +4,7 @@ import {
   getPageTitleFromPath,
   getBasePath,
   getJustifyContentPosition,
+  getColumnWidth,
 } from '../src/lib/helpers';
 
 afterEach(cleanup);
@@ -132,5 +133,19 @@ describe('Test getJustifyContentPosition', () => {
         `Invalid string. Must be one of 'left', 'right', 'flex-start', 'flex-end', 'center', 'space-around', 'space-between' or 'space-evenly'`
       )
     );
+  });
+});
+
+describe('Test getColumnWidth', () => {
+  it('returns the correct column widths with default 12 column grids', () => {
+    for (let index = 1; index <= 12; index++) {
+      expect(getColumnWidth(index)).toBe(`${100 * (index / 12)}%`);
+    }
+  });
+
+  it('returns the correct column widths with defined 6 column grids', () => {
+    for (let index = 1; index <= 6; index++) {
+      expect(getColumnWidth(index, 6)).toBe(`${100 * (index / 6)}%`);
+    }
   });
 });
