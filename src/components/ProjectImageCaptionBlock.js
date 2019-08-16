@@ -24,7 +24,7 @@ const ProjectImageCaptionBlock = ({ children }) => (
     />
     {children && (
       <Parallax
-        y={[-80, 0]}
+        y={[-100, 0]}
         tagOuter="figcaption"
         styleOuter={{
           position: 'absolute',

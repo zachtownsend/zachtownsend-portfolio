@@ -10,7 +10,7 @@ const TextBlockContainer = styled.div`
 `;
 
 const Header = styled.header`
-  position: absolute;
+  /* position: absolute; */
   mix-blend-mode: exclusion;
   color: ${({ theme }) => theme.white};
   width: ${getColumnWidth(3)};
@@ -33,9 +33,9 @@ function ProjectTextBlock({ title, children }) {
   return (
     <TextBlockContainer className="container">
       <Parallax
-        y={[100, 0]}
+        y={[500, 0]}
+        tagOuter="header"
         styleOuter={{ mixBlendMode: 'exclusion' }}
-        styleInner={{ position: 'absolute', width: '100%', height: '100%' }}
       >
         <Header>
           <h2>{title}</h2>
