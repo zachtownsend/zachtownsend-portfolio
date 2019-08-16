@@ -17,6 +17,10 @@ const StyledSwiper = styled.div`
   width: 100%;
   height: 100%;
 
+  .swiper-container {
+    overflow: visible;
+  }
+
   .swiper-slide {
     width: auto;
 
@@ -24,6 +28,7 @@ const StyledSwiper = styled.div`
       line-height: 0;
       overflow: hidden;
       height: 75vh;
+      transform-origin: top left;
 
       img {
         height: auto;
@@ -194,7 +199,7 @@ class ProjectIndexPage extends React.Component {
     const toPositions = {
       x: entryImageBox.x - exitImageBox.x,
       y: entryImageBox.y - exitImageBox.y,
-      width: entryImageBox.width,
+      scale: entryImageBox.width / exitImageBox.width,
     };
 
     const projects = Array.from(
@@ -203,19 +208,19 @@ class ProjectIndexPage extends React.Component {
         .querySelectorAll('.project-container')
     );
 
+    TweenMax.to(exitImage, 1, {
+      x: toPositions.x,
+      y: toPositions.y,
+      scale: toPositions.scale,
+      ease: Power2.easeInOut,
+    });
+
     projects.forEach((project, index) => {
       if (index < currentIndex) {
         TweenMax.to(project, 1, { x: '-25vw', alpha: 0 });
       } else if (index > currentIndex) {
         TweenMax.to(project, 1, { x: '25vw', alpha: 0 });
       }
-    });
-
-    TweenMax.to(exitImage, 1, {
-      x: toPositions.x,
-      y: toPositions.y,
-      width: toPositions.width,
-      ease: Power2.easeInOut,
     });
   };
 
@@ -348,7 +353,6 @@ class ProjectIndexPage extends React.Component {
                       requestAnimationFrame(() => {
                         const image = node.querySelector('.image-container');
                         this.projectTransition(image.getBoundingClientRect());
-                        console.log('entering');
                       });
                     },
                     delay: 0,
