@@ -8,6 +8,7 @@ import Content, { HTMLContent } from '../components/Content';
 import ProjectQuickInfo from '../components/ProjectQuickInfo';
 import StyledPageContainer from '../styles/StyledPageContainer';
 import ProjectTextBlock from '../components/ProjectTextBlock';
+import ProjectImageCaptionBlock from '../components/ProjectImageCaptionBlock';
 
 const ProjectInfoContainer = styled.div`
   display: flex;
@@ -133,6 +134,17 @@ const ProjectPost = ({ data }) => {
             fusce nam leo pharetra per turpis nascetur. At sed.
           </p>
         </ProjectTextBlock>
+        <ProjectImageCaptionBlock>
+          <p>
+            Quisque aenean taciti semper dolor varius morbi elementum
+            suspendisse odio tempus nec sociosqu. Nibh tempus molestie dapibus
+            per tellus velit pharetra senectus. Etiam integer cras nec. Nec
+            malesuada, imperdiet magna volutpat himenaeos aliquet ultrices
+            lectus tristique ullamcorper aptent. Phasellus purus dui gravida
+            per; dolor himenaeos tempus lectus erat! Mauris semper velit egestas
+            fusce nam leo pharetra per turpis nascetur. At sed.
+          </p>
+        </ProjectImageCaptionBlock>
       </StyledPageContainer>
     </Layout>
   );
