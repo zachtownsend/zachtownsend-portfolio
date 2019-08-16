@@ -27,7 +27,7 @@ const ImageContainer = styled.div`
   }
 `;
 
-export const BlogPostTemplate = ({
+export const SingleProjectTemplate = ({
   content,
   contentComponent,
   description,
@@ -59,7 +59,7 @@ export const BlogPostTemplate = ({
   );
 };
 
-BlogPostTemplate.propTypes = {
+SingleProjectTemplate.propTypes = {
   content: PropTypes.node.isRequired,
   contentComponent: PropTypes.func,
   description: PropTypes.string,
@@ -67,13 +67,13 @@ BlogPostTemplate.propTypes = {
   helmet: PropTypes.object,
 };
 
-const BlogPost = ({ data }) => {
+const ProjectPost = ({ data }) => {
   const { markdownRemark: post } = data;
 
   return (
     <Layout>
       <StyledPageContainer vAlign="flex-start">
-        <BlogPostTemplate
+        <SingleProjectTemplate
           content={post.html}
           contentComponent={HTMLContent}
           description={post.frontmatter.description}
@@ -90,18 +90,37 @@ const BlogPost = ({ data }) => {
           title={post.frontmatter.title}
           thumbnail={post.frontmatter.thumbnail.childImageSharp.resize.src}
         />
+        <div className="content container">
+          <section className="introduction">
+            <header>
+              <h2>Introduction</h2>
+            </header>
+            <article>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
+                amet, consectetur adipisicing elit, sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                veniam, quis nostrud exercitation ullamco laboris nisi ut
+                aliquip ex ea commodo consequat.
+              </p>
+            </article>
+          </section>
+        </div>
       </StyledPageContainer>
     </Layout>
   );
 };
 
-BlogPost.propTypes = {
+ProjectPost.propTypes = {
   data: PropTypes.shape({
     markdownRemark: PropTypes.object,
   }),
 };
 
-export default BlogPost;
+export default ProjectPost;
 
 export const pageQuery = graphql`
   query ProjectByID($id: String!) {

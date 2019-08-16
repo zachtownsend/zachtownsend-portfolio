@@ -17,7 +17,7 @@ const StyledSwiper = styled.div`
   width: 100%;
   height: 100%;
 
-  .swiper-container {
+  &.swiper-container {
     overflow: visible;
   }
 
@@ -26,7 +26,6 @@ const StyledSwiper = styled.div`
 
     .project-container {
       line-height: 0;
-      overflow: hidden;
       height: 75vh;
       transform-origin: top left;
 
