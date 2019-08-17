@@ -48,6 +48,8 @@ const ProjectImageCaptionBlock = ({ children }) => (
   </BlockContainer>
 );
 
-ProjectImageCaptionBlock.propTypes = {};
+ProjectImageCaptionBlock.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.node]),
+};
 
 export default ProjectImageCaptionBlock;

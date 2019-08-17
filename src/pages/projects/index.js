@@ -30,8 +30,8 @@ const StyledSwiper = styled.div`
       transform-origin: top left;
 
       img {
-        height: auto;
-        width: 100%;
+        height: 100%;
+        width: auto;
       }
     }
   }
