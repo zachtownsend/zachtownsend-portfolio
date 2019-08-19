@@ -6,6 +6,7 @@ import { TimelineMax } from 'gsap/umd/TweenMax';
 const MagicContainer = styled.div`
   position: relative;
   overflow: hidden;
+  clip-path: polygon(0 0, 0 0, 0 1px, 0 1px);
 
   .mask {
     position: absolute;
@@ -38,38 +39,35 @@ export default class MagicContentReveal extends Component {
     super(props);
     this.container = null;
     this.mask = null;
-    this.timeline = new TimelineMax();
+    this.timeline = new TimelineMax({ paused: !props.show });
   }
 
   componentDidMount() {
     const { timeline, container, mask } = this;
     const { speed, ease } = this.props;
-    const clipPath = {
-      from: 'polygon(0% 0%, 100% 0%, 100% 1px, 0% 1px)',
-      to: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
-    };
-    const clip = {
-      from: 'rect(0 0 0 0)',
-      to: 'rect(0 0 0 0)',
-    };
+    const clipPaths = [
+      'polygon(0 0, 0 0, 0 1px, 0 1px)',
+      'polygon(0% 0, 100% 0, 100% 1px, 0% 1px)',
+      'polygon(0% 0%, 100% 0%, 100% 1px, 0% 1px)',
+      'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+    ];
+
     timeline.fromTo(
       container,
       0.6 * speed,
-      { width: 0 },
-      { width: '100%', ease }
+      { clipPath: clipPaths[0], webkitClipPath: clipPaths[0] },
+      { clipPath: clipPaths[1], webkitClipPath: clipPaths[1], ease }
     );
     timeline.fromTo(
       container,
       0.6 * speed,
       {
-        clipPath: clipPath.from,
-        webkitClipPath: clipPath.from,
-        clip: clip.from,
+        clipPath: clipPaths[2],
+        webkitClipPath: clipPaths[2],
       },
       {
-        clipPath: clipPath.to,
-        webkitClipPath: clipPath.to,
-        clip: clip.to,
+        clipPath: clipPaths[3],
+        webkitClipPath: clipPaths[3],
         ease,
       }
     );
