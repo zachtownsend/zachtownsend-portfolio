@@ -7051,7 +7051,7 @@ hoist-non-react-statics@^2.5.0:
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
 
-hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.3.0:
+hoist-non-react-statics@^3.0.0, hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.0.tgz#b09178f0122184fb95acf525daaecb4d8f45958b"
   dependencies:
@@ -7529,6 +7529,10 @@ internal-ip@^4.3.0:
   dependencies:
     default-gateway "^4.2.0"
     ipaddr.js "^1.9.0"
+
+intersection-observer@^0.5.0:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/intersection-observer/-/intersection-observer-0.5.1.tgz#e340fc56ce74290fe2b2394d1ce88c4353ac6dfa"
 
 into-stream@^3.1.0:
   version "3.1.0"
@@ -11730,6 +11734,13 @@ react-hot-loader@^4.8.0, react-hot-loader@^4.8.4:
 react-immutable-proptypes@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/react-immutable-proptypes/-/react-immutable-proptypes-2.1.0.tgz#023d6f39bb15c97c071e9e60d00d136eac5fa0b4"
+
+react-in-viewport@^0.0.38:
+  version "0.0.38"
+  resolved "https://registry.yarnpkg.com/react-in-viewport/-/react-in-viewport-0.0.38.tgz#d4fd532e71b6ad017829a55fdba0dff510e00ecc"
+  dependencies:
+    hoist-non-react-statics "^3.0.0"
+    intersection-observer "^0.5.0"
 
 react-input-autosize@^2.2.1:
   version "2.2.1"
