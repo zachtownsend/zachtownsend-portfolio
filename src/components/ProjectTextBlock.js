@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 // import { Parallax } from 'react-scroll-parallax';
+import ViewportBlock from './ViewportBlock';
 import { getColumnWidth } from '../lib/helpers';
 
 const TextBlockContainer = styled.div`
@@ -22,7 +23,7 @@ const Header = styled.header`
   }
 `;
 
-const Content = styled.div`
+const Content = styled(ViewportBlock)`
   background: ${({ theme }) => theme.white};
   padding: 82px ${getColumnWidth(1, 8)} 86px ${getColumnWidth(2, 8)};
   width: ${getColumnWidth(8)};

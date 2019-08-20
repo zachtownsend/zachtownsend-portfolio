@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { graphql } from 'gatsby';
 import styled from 'styled-components';
-import handleViewport from 'react-in-viewport';
 // import { ParallaxProvider, Parallax } from 'react-scroll-parallax';
 import Layout from '../components/Layout';
 import Content, { HTMLContent } from '../components/Content';
@@ -11,7 +10,6 @@ import ProjectQuickInfo from '../components/ProjectQuickInfo';
 import StyledPageContainer from '../styles/StyledPageContainer';
 import ProjectTextBlock from '../components/ProjectTextBlock';
 import ProjectImageCaptionBlock from '../components/ProjectImageCaptionBlock';
-import MagicContentReveal from '../components/MagicContentReveal';
 
 const ProjectInfoContainer = styled.div`
   display: flex;
@@ -36,30 +34,6 @@ const ProjectTop = styled.section`
   align-items: center;
   display: flex;
 `;
-
-const ViewportBlockWrapper = ({
-  inViewport,
-  innerRef,
-  children,
-  enterCount,
-}) => (
-  <div ref={innerRef}>
-    <MagicContentReveal show={enterCount > 0}>{children}</MagicContentReveal>
-  </div>
-);
-
-ViewportBlockWrapper.propTypes = {
-  inViewport: PropTypes.bool,
-};
-
-const ViewportBlock = handleViewport(
-  ViewportBlockWrapper,
-  {
-    threshold: 0,
-    rootMargin: '-33.3333%',
-  },
-  { disconnectOnLeave: true }
-);
 
 export const SingleProjectTemplate = ({
   content,
@@ -124,58 +98,54 @@ const ProjectPost = ({ data }) => {
           title={post.frontmatter.title}
           thumbnail={post.frontmatter.thumbnail.childImageSharp.resize.src}
         />
-        <ViewportBlock>
-          <ProjectTextBlock title="Introduction">
-            <p>
-              <strong>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
-                amet, consectetur adipisicing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-                veniam, quis nostrud exercitation ullamco laboris nisi ut
-                aliquip ex ea commodo consequat.
-              </strong>
-            </p>
-            <p>
-              Nunc montes porttitor quam nunc at ullamcorper penatibus cubilia
-              ridiculus tortor suscipit. Gravida purus sollicitudin class
-              pharetra egestas dis senectus ullamcorper penatibus aptent dictum
-              odio. Ut morbi eget condimentum varius volutpat porta euismod
-              sociosqu. Venenatis per quis erat cum pellentesque aliquam sem
-              rutrum platea malesuada risus parturient. Nulla consectetur
-              feugiat fringilla mauris vitae, placerat curabitur integer eu
-              praesent. Platea semper porttitor magna nostra ornare vulputate
-              elementum elementum quis tincidunt laoreet. Sagittis, lobortis
-              posuere varius mus odio. Venenatis gravida, mi ut. Diam taciti,
-              nibh nisi. Magnis proin at condimentum, sollicitudin platea
-              natoque. Porttitor a aliquet blandit.
-            </p>
-            <p>
-              Quisque aenean taciti semper dolor varius morbi elementum
-              suspendisse odio tempus nec sociosqu. Nibh tempus molestie dapibus
-              per tellus velit pharetra senectus. Etiam integer cras nec. Nec
-              malesuada, imperdiet magna volutpat himenaeos aliquet ultrices
-              lectus tristique ullamcorper aptent. Phasellus purus dui gravida
-              per; dolor himenaeos tempus lectus erat! Mauris semper velit
-              egestas fusce nam leo pharetra per turpis nascetur. At sed.
-            </p>
-          </ProjectTextBlock>
-        </ViewportBlock>
-        <ViewportBlock>
-          <ProjectImageCaptionBlock>
-            <p>
-              Quisque aenean taciti semper dolor varius morbi elementum
-              suspendisse odio tempus nec sociosqu. Nibh tempus molestie dapibus
-              per tellus velit pharetra senectus. Etiam integer cras nec. Nec
-              malesuada, imperdiet magna volutpat himenaeos aliquet ultrices
-              lectus tristique ullamcorper aptent. Phasellus purus dui gravida
-              per; dolor himenaeos tempus lectus erat! Mauris semper velit
-              egestas fusce nam leo pharetra per turpis nascetur. At sed.
-            </p>
-          </ProjectImageCaptionBlock>
-        </ViewportBlock>
+        <ProjectTextBlock title="Introduction">
+          <p>
+            <strong>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
+              amet, consectetur adipisicing elit, sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+              veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+              ex ea commodo consequat.
+            </strong>
+          </p>
+          <p>
+            Nunc montes porttitor quam nunc at ullamcorper penatibus cubilia
+            ridiculus tortor suscipit. Gravida purus sollicitudin class pharetra
+            egestas dis senectus ullamcorper penatibus aptent dictum odio. Ut
+            morbi eget condimentum varius volutpat porta euismod sociosqu.
+            Venenatis per quis erat cum pellentesque aliquam sem rutrum platea
+            malesuada risus parturient. Nulla consectetur feugiat fringilla
+            mauris vitae, placerat curabitur integer eu praesent. Platea semper
+            porttitor magna nostra ornare vulputate elementum elementum quis
+            tincidunt laoreet. Sagittis, lobortis posuere varius mus odio.
+            Venenatis gravida, mi ut. Diam taciti, nibh nisi. Magnis proin at
+            condimentum, sollicitudin platea natoque. Porttitor a aliquet
+            blandit.
+          </p>
+          <p>
+            Quisque aenean taciti semper dolor varius morbi elementum
+            suspendisse odio tempus nec sociosqu. Nibh tempus molestie dapibus
+            per tellus velit pharetra senectus. Etiam integer cras nec. Nec
+            malesuada, imperdiet magna volutpat himenaeos aliquet ultrices
+            lectus tristique ullamcorper aptent. Phasellus purus dui gravida
+            per; dolor himenaeos tempus lectus erat! Mauris semper velit egestas
+            fusce nam leo pharetra per turpis nascetur. At sed.
+          </p>
+        </ProjectTextBlock>
+        <ProjectImageCaptionBlock>
+          <p>
+            Quisque aenean taciti semper dolor varius morbi elementum
+            suspendisse odio tempus nec sociosqu. Nibh tempus molestie dapibus
+            per tellus velit pharetra senectus. Etiam integer cras nec. Nec
+            malesuada, imperdiet magna volutpat himenaeos aliquet ultrices
+            lectus tristique ullamcorper aptent. Phasellus purus dui gravida
+            per; dolor himenaeos tempus lectus erat! Mauris semper velit egestas
+            fusce nam leo pharetra per turpis nascetur. At sed.
+          </p>
+        </ProjectImageCaptionBlock>
       </StyledPageContainer>
     </Layout>
   );
