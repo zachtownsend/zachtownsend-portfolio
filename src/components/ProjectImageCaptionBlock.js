@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 // import { Parallax } from 'react-scroll-parallax';
 import { getColumnWidth } from '../lib/helpers';
-import ViewportBlock from './ViewportBlock';
+import ViewportBlock, { customViewportBlock } from './ViewportBlock';
 
 const BlockContainer = styled.figure`
   position: relative;
@@ -16,14 +16,25 @@ const BlockContainer = styled.figure`
     width: 100%;
   }
 
-  figcaption {
+  /* figcaption {
     position: absolute;
     width: ${getColumnWidth(3)};
     right: ${getColumnWidth(2)};
     bottom: 10%;
     background: ${({ theme }) => theme.black};
     padding: 56px 59px 42px;
-  }
+  } */
+`;
+
+const CustomViewportBlock = customViewportBlock({ rootMargin: '50%' });
+
+const FigCaption = styled(CustomViewportBlock)`
+  position: absolute;
+  width: ${getColumnWidth(3)};
+  right: ${getColumnWidth(2)};
+  bottom: 10%;
+  background: ${({ theme }) => theme.black};
+  padding: 56px 59px 42px;
 `;
 
 const ProjectImageCaptionBlock = ({ children }) => (
@@ -34,11 +45,7 @@ const ProjectImageCaptionBlock = ({ children }) => (
         alt=""
       />
     </ViewportBlock>
-    {children && (
-      <ViewportBlock rootMargin="0">
-        <figcaption className="figcaption">{children}</figcaption>
-      </ViewportBlock>
-    )}
+    {children && <FigCaption>{children}</FigCaption>}
   </BlockContainer>
 );
 

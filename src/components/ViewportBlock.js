@@ -2,6 +2,15 @@ import React from 'react';
 import handleViewport from 'react-in-viewport';
 import MagicContentReveal from './MagicContentReveal';
 
+const defaultOptions = {
+  threshold: 0,
+  rootMargin: '-33.3333%',
+};
+
+const defaultConfig = {
+  disconnectOnLeave: false,
+};
+
 const ViewportBlockWrapper = ({
   className,
   innerRef,
@@ -17,11 +26,16 @@ const ViewportBlockWrapper = ({
 
 const ViewportBlock = handleViewport(
   ViewportBlockWrapper,
-  {
-    threshold: 0,
-    rootMargin: '-33.3333%',
-  },
-  { disconnectOnLeave: true }
+  Object.assign({}, defaultOptions),
+  Object.assign({}, defaultConfig)
 );
+
+export function customViewportBlock(customOptions = {}, customConfig = {}) {
+  return handleViewport(
+    ViewportBlockWrapper,
+    Object.assign(defaultOptions, customOptions),
+    Object.assign(defaultConfig, customConfig)
+  );
+}
 
 export default ViewportBlock;
