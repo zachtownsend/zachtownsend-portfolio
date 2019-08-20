@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 // import { Parallax } from 'react-scroll-parallax';
 import { getColumnWidth } from '../lib/helpers';
+import ViewportBlock from './ViewportBlock';
 
 const BlockContainer = styled.figure`
   position: relative;
@@ -14,15 +15,30 @@ const BlockContainer = styled.figure`
   img {
     width: 100%;
   }
+
+  figcaption {
+    position: absolute;
+    width: ${getColumnWidth(3)};
+    right: ${getColumnWidth(2)};
+    bottom: 10%;
+    background: ${({ theme }) => theme.black};
+    padding: 56px 59px 42px;
+  }
 `;
 
 const ProjectImageCaptionBlock = ({ children }) => (
   <BlockContainer>
-    <img
-      src="https://images.unsplash.com/photo-1553013476-72259f63abd4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1051&q=80"
-      alt=""
-    />
-    {children}
+    <ViewportBlock>
+      <img
+        src="https://images.unsplash.com/photo-1553013476-72259f63abd4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1051&q=80"
+        alt=""
+      />
+    </ViewportBlock>
+    {children && (
+      <ViewportBlock rootMargin="0">
+        <figcaption className="figcaption">{children}</figcaption>
+      </ViewportBlock>
+    )}
   </BlockContainer>
 );
 
