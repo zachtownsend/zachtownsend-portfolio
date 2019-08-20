@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Parallax } from 'react-scroll-parallax';
+// import { Parallax } from 'react-scroll-parallax';
 import { getColumnWidth } from '../lib/helpers';
 
 const TextBlockContainer = styled.div`
@@ -32,15 +32,9 @@ const Content = styled.div`
 function ProjectTextBlock({ title, children }) {
   return (
     <TextBlockContainer className="container">
-      <Parallax
-        y={[500, 0]}
-        tagOuter="header"
-        styleOuter={{ mixBlendMode: 'exclusion' }}
-      >
-        <Header>
-          <h2>{title}</h2>
-        </Header>
-      </Parallax>
+      <Header>
+        <h2>{title}</h2>
+      </Header>
       <Content>{children}</Content>
     </TextBlockContainer>
   );
