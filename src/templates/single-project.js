@@ -10,6 +10,7 @@ import ProjectQuickInfo from '../components/ProjectQuickInfo';
 import StyledPageContainer from '../styles/StyledPageContainer';
 import ProjectTextBlock from '../components/ProjectTextBlock';
 import ProjectImageCaptionBlock from '../components/ProjectImageCaptionBlock';
+import SmoothScrollContainer from '../components/SmoothScrollContainer';
 
 const ProjectInfoContainer = styled.div`
   display: flex;

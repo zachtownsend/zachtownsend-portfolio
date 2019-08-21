@@ -4,6 +4,7 @@ import Helmet from 'react-helmet';
 // import Navigation from './Navigation';
 import './all.scss';
 import useSiteMetadata from './SiteMetadata';
+import SmoothScrollContainer from './SmoothScrollContainer';
 
 const settings = {
   pagePadding: 20,
@@ -39,7 +40,7 @@ const TemplateWrapper = ({ children }) => {
   const { title, description } = useSiteMetadata();
   return (
     <ThemeProvider theme={siteTheme}>
-      <div className="page-container">
+      <SmoothScrollContainer className="page-container">
         <Helmet>
           <html lang="en" />
           <title>{title} | Freelance Web Developer based in Berlin</title>
@@ -76,7 +77,7 @@ const TemplateWrapper = ({ children }) => {
           <meta property="og:image" content="/img/og-image.jpg" />
         </Helmet>
         <LayoutWrapper>{children}</LayoutWrapper>
-      </div>
+      </SmoothScrollContainer>
     </ThemeProvider>
   );
 };
