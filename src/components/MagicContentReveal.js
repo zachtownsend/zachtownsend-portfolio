@@ -92,12 +92,16 @@ export default class MagicContentReveal extends Component {
   };
 
   render() {
-    const { children, maskColor } = this.props;
+    const { children, maskColor, className } = this.props;
 
     return (
-      <MagicContainer ref={c => (this.container = c)} maskColor={maskColor}>
+      <MagicContainer
+        className={className}
+        ref={c => (this.container = c)}
+        maskColor={maskColor}
+      >
         <div className="mask" ref={c => (this.mask = c)} />
-        <div className="clip-wrapper">{children}</div>
+        <div>{children}</div>
       </MagicContainer>
     );
   }

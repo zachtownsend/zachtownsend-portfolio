@@ -48,6 +48,7 @@
     "react-in-viewport": "^0.0.38",
     "react-media": "^1.9.2",
     "react-pose": "^4.0.8",
+    "react-scroll-parallax": "^2.1.2",
     "react-shuffle-text": "^1.0.6",
     "react-transition-group": "^2.8.0",
     "sanitize-html": "^1.20.0",
