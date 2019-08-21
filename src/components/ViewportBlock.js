@@ -16,13 +16,17 @@ const ViewportBlockWrapper = ({
   innerRef,
   children,
   enterCount,
-}) => (
-  <div ref={innerRef}>
-    <MagicContentReveal className={className} show={enterCount > 0}>
-      {children}
-    </MagicContentReveal>
-  </div>
-);
+  tag,
+}) => {
+  const Tag = tag || 'div';
+  return (
+    <Tag ref={innerRef}>
+      <MagicContentReveal className={className} show={enterCount > 0}>
+        {children}
+      </MagicContentReveal>
+    </Tag>
+  );
+};
 
 const ViewportBlock = handleViewport(
   ViewportBlockWrapper,

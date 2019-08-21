@@ -45,7 +45,7 @@ const ProjectImageCaptionBlock = ({ children }) => (
         alt=""
       />
     </ViewportBlock>
-    {children && <FigCaption>{children}</FigCaption>}
+    {children && <FigCaption tag="figcaption">{children}</FigCaption>}
   </BlockContainer>
 );
 
