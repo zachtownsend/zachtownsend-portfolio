@@ -18,6 +18,76 @@ const MathUtils = {
   lerp: (a, b, n) => (1 - n) * a + n * b,
 };
 
+const { body } = document;
+
+class SmoothScroll {
+  constructor(scrollable, ease = 0.1) {
+    const { addEventListener } = window;
+    this.scrollable = scrollable;
+    this.renderedScroll = {
+      previous: 0,
+      current: 0,
+    };
+    this.docScroll = window.pageYOffset || document.documentElement.scrollTop;
+    this.winSize = { width: window.innerWidth, height: window.innerHeight };
+    this.ease = ease;
+    addEventListener('resize', this.calculateWinSize.bind(this));
+    addEventListener('scroll', this.getPageYScroll.bind(this));
+    this.update();
+    this.setSize();
+    this.requestAnimationFrameId = requestAnimationFrame(
+      this.render.bind(this)
+    );
+  }
+
+  calculateWinSize() {
+    this.winSize = { width: window.innerWidth, height: window.innerHeight };
+    this.setSize();
+  }
+
+  getPageYScroll() {
+    this.docScroll = window.pageYOffset || document.documentElement.scrollTop;
+  }
+
+  update() {
+    // const docScroll = this.renderedScroll.setValue();
+    this.renderedScroll.current = this.docScroll;
+    this.renderedScroll.previous = this.docScroll;
+    this.layout();
+  }
+
+  layout() {
+    this.scrollable.style.transform = `translate3d(0,${-1 *
+      this.renderedScroll.previous}px,0)`;
+  }
+
+  setSize() {
+    body.style.height = `${this.scrollable.scrollHeight}px`;
+  }
+
+  render() {
+    this.renderedScroll.current = this.docScroll;
+    this.renderedScroll.previous = MathUtils.lerp(
+      this.renderedScroll.previous,
+      this.renderedScroll.current,
+      this.ease
+    );
+    if (this.renderedScroll.previous < 0.1) {
+      this.renderedScroll.previous = 0;
+    }
+
+    this.layout();
+
+    this.requestAnimationFrameId = requestAnimationFrame(
+      this.render.bind(this)
+    );
+  }
+
+  destroy() {
+    cancelAnimationFrame(this.requestAnimationFrameId);
+  }
+}
+
 export default class SmoothScrollContainer extends Component {
   static propTypes = {
     children: PropTypes.oneOfType(PropTypes.node, PropTypes.element),
@@ -26,83 +96,20 @@ export default class SmoothScrollContainer extends Component {
   constructor(props) {
     super(props);
     this.scrollable = null;
-    this.body = document.body;
-
-    this.state = {
-      winSize: {
-        width: window.innerWidth,
-        height: window.innerHeight,
-      },
-      docScroll: window.pageYOffset || document.documentElement.scrollTop,
-      translationY: {
-        previous: 0,
-        current: 0,
-      },
-    };
+    this.scrollClass = null;
   }
 
   componentDidMount() {
-    const { calcWinSize, setSize, handleScroll, scrollable } = this;
-    const { docScroll } = this.state;
-
-    this.setState({
-      translationY: {
-        previous: docScroll,
-        current: docScroll,
-      },
-    });
-
-    setSize();
-
-    window.addEventListener('resize', () => {
-      calcWinSize();
-      setSize();
-    });
-    window.addEventListener('scroll', handleScroll);
+    const { scrollable } = this;
+    this.scrollClass = new SmoothScroll(scrollable, 0.1);
   }
-
-  setSize = () => {
-    const { body, scrollable } = this;
-
-    body.style.height = `${scrollable.scrollHeight}px`;
-  };
-
-  handleScroll = () => {
-    const { docScroll } = this.state;
-    const current = window.pageYOffset || document.documentElement.scrollTop;
-    const previous = docScroll;
-    this.setState({
-      docScroll: current,
-      translationY: {
-        previous: MathUtils.lerp(previous, current, 0.2),
-        current,
-      },
-    });
-  };
-
-  calcWinSize = () => {
-    this.setState({
-      winSize: {
-        width: window.innerWidth,
-        height: window.innerHeight,
-      },
-    });
-  };
 
   render() {
     const { children } = this.props;
-    const { translationY } = this.state;
 
     return (
       <Container>
-        <div
-          ref={c => (this.scrollable = c)}
-          style={{
-            transform: `translate3d(0,${-1 * translationY.previous}px, 0)`,
-          }}
-        >
-          {children}
-        </div>
+        <div ref={c => (this.scrollable = c)}>{children}</div>
       </Container>
     );
   }
