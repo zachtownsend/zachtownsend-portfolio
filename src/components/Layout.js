@@ -4,6 +4,11 @@ import Helmet from 'react-helmet';
 // import Navigation from './Navigation';
 import './all.scss';
 import useSiteMetadata from './SiteMetadata';
+// import SmoothScrollContainer from './SmoothScrollContainer';
+
+// if (!("scrollBehavior" in document.documentElement.style)) {
+// 	await import("scroll-behavior-polyfill");
+// }
 
 const settings = {
   pagePadding: 20,

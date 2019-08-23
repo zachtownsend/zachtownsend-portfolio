@@ -48,9 +48,9 @@ export default class MagicContentReveal extends Component {
     const clipPaths = [
       'polygon(0 0, 0 0, 0 1px, 0 1px)',
       'polygon(0% 0, 100% 0, 100% 1px, 0% 1px)',
-      'polygon(0% 0%, 100% 0%, 100% 1px, 0% 1px)',
       'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
     ];
+
 
     timeline.fromTo(
       container,
@@ -58,23 +58,18 @@ export default class MagicContentReveal extends Component {
       { clipPath: clipPaths[0], webkitClipPath: clipPaths[0] },
       { clipPath: clipPaths[1], webkitClipPath: clipPaths[1], ease }
     );
-    timeline.fromTo(
+    timeline.to(
       container,
       0.6 * speed,
       {
         clipPath: clipPaths[2],
         webkitClipPath: clipPaths[2],
-      },
-      {
-        clipPath: clipPaths[3],
-        webkitClipPath: clipPaths[3],
         ease,
       }
     );
-    timeline.fromTo(
+    timeline.to(
       mask,
       0.6 * speed,
-      { height: '100%' },
       { height: '0%', ease, delay: -0.2 * speed }
     );
   }

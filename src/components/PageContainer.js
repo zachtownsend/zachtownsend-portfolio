@@ -48,9 +48,7 @@ export default class PageContainer extends Component {
               </TransitionPortal>
             )}
           </Location>
-          <ContentContainer pose={offCanvasOpen ? 'menuOpen' : 'menuClosed'}>
-            {children}
-          </ContentContainer>
+          {children}
         </div>
       </ThemeProvider>
     );

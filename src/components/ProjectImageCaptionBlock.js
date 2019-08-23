@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Img from 'gatsby-image';
 // import { Parallax } from 'react-scroll-parallax';
 import { getColumnWidth } from '../lib/helpers';
 import ViewportBlock, { customViewportBlock } from './ViewportBlock';
+import { SmoothSrcollConsumer } from './SmoothScrollContainer';
 
 const BlockContainer = styled.figure`
   position: relative;
@@ -37,13 +39,18 @@ const FigCaption = styled(CustomViewportBlock)`
   padding: 56px 59px 42px;
 `;
 
-const ProjectImageCaptionBlock = ({ children }) => (
+const ProjectImageCaptionBlock = ({ children, onLoad }) => (
   <BlockContainer>
     <ViewportBlock>
-      <img
-        src="https://images.unsplash.com/photo-1553013476-72259f63abd4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1051&q=80"
-        alt=""
-      />
+      <SmoothSrcollConsumer>
+        {props => (
+          <img
+            src="https://images.unsplash.com/photo-1553013476-72259f63abd4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1051&q=80"
+            alt=""
+            onLoad={props.onLoad}
+          />
+        )}
+      </SmoothSrcollConsumer>
     </ViewportBlock>
     {children && <FigCaption tag="figcaption">{children}</FigCaption>}
   </BlockContainer>
@@ -51,6 +58,7 @@ const ProjectImageCaptionBlock = ({ children }) => (
 
 ProjectImageCaptionBlock.propTypes = {
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.node]),
+  onLoad: PropTypes.func,
 };
 
 export default ProjectImageCaptionBlock;
