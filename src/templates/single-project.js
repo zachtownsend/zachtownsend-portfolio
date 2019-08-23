@@ -137,7 +137,7 @@ const ProjectPost = ({ data }) => {
               egestas fusce nam leo pharetra per turpis nascetur. At sed.
             </p>
           </ProjectTextBlock>
-          <ProjectImageCaptionBlock onLoad={}>
+          <ProjectImageCaptionBlock>
             <p>
               Quisque aenean taciti semper dolor varius morbi elementum
               suspendisse odio tempus nec sociosqu. Nibh tempus molestie dapibus
