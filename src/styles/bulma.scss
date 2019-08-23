@@ -1,2 +1,6 @@
 @import "./variables";
 @import "~bulma/bulma.sass";
+
+html {
+  overscroll-behavior: none;
+}

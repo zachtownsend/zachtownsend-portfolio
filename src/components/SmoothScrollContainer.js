@@ -2,7 +2,7 @@ import React, { Component, createContext } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-export const SmoothScrollContext = createContext('smoothScroll');
+export const SmoothScrollContext = createContext({ onLoad: null });
 export const SmoothSrcollProvider = SmoothScrollContext.Provider;
 export const SmoothSrcollConsumer = SmoothScrollContext.Consumer;
 
@@ -101,12 +101,11 @@ export default class SmoothScrollContainer extends Component {
     super(props);
     this.scrollable = null;
     this.scrollClass = null;
-    console.log(props.children);
   }
 
   componentDidMount() {
     const { scrollable } = this;
-    this.scrollClass = new SmoothScroll(scrollable, 0.1);
+    this.scrollClass = new SmoothScroll(scrollable, 0.05);
   }
 
   recalcuatePageSize = () => {
