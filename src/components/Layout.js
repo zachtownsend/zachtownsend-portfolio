@@ -4,7 +4,11 @@ import Helmet from 'react-helmet';
 // import Navigation from './Navigation';
 import './all.scss';
 import useSiteMetadata from './SiteMetadata';
-import SmoothScrollContainer from './SmoothScrollContainer';
+// import SmoothScrollContainer from './SmoothScrollContainer';
+
+// if (!("scrollBehavior" in document.documentElement.style)) {
+// 	await import("scroll-behavior-polyfill");
+// }
 
 const settings = {
   pagePadding: 20,
@@ -40,7 +44,7 @@ const TemplateWrapper = ({ children }) => {
   const { title, description } = useSiteMetadata();
   return (
     <ThemeProvider theme={siteTheme}>
-      <SmoothScrollContainer className="page-container">
+      <div className="page-container">
         <Helmet>
           <html lang="en" />
           <title>{title} | Freelance Web Developer based in Berlin</title>
@@ -77,7 +81,7 @@ const TemplateWrapper = ({ children }) => {
           <meta property="og:image" content="/img/og-image.jpg" />
         </Helmet>
         <LayoutWrapper>{children}</LayoutWrapper>
-      </SmoothScrollContainer>
+      </div>
     </ThemeProvider>
   );
 };

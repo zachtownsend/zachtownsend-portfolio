@@ -1,6 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, createContext } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+export const SmoothScrollContext = createContext('smoothScroll');
+export const SmoothSrcollProvider = SmoothScrollContext.Provider;
+export const SmoothSrcollConsumer = SmoothScrollContext.Consumer;
 
 const Container = styled.main`
   position: fixed;
@@ -18,7 +22,7 @@ const MathUtils = {
   lerp: (a, b, n) => (1 - n) * a + n * b,
 };
 
-const { body } = document;
+const body = typeof document !== 'undefined' ? document.body : {};
 
 class SmoothScroll {
   constructor(scrollable, ease = 0.1) {
@@ -97,6 +101,7 @@ export default class SmoothScrollContainer extends Component {
     super(props);
     this.scrollable = null;
     this.scrollClass = null;
+    console.log(props.children);
   }
 
   componentDidMount() {
@@ -104,13 +109,20 @@ export default class SmoothScrollContainer extends Component {
     this.scrollClass = new SmoothScroll(scrollable, 0.1);
   }
 
+  recalcuatePageSize = () => {
+    this.scrollClass.setSize();
+  };
+
   render() {
+    const { recalcuatePageSize } = this;
     const { children } = this.props;
 
     return (
-      <Container>
-        <div ref={c => (this.scrollable = c)}>{children}</div>
-      </Container>
+      <SmoothSrcollProvider value={{ onLoad: recalcuatePageSize }}>
+        <Container>
+          <div ref={c => (this.scrollable = c)}>{children}</div>
+        </Container>
+      </SmoothSrcollProvider>
     );
   }
 }

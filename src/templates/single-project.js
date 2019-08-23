@@ -81,73 +81,75 @@ const ProjectPost = ({ data }) => {
 
   return (
     <Layout>
-      <StyledPageContainer vAlign="flex-start" display="block">
-        <SingleProjectTemplate
-          content={post.html}
-          contentComponent={HTMLContent}
-          description={post.frontmatter.description}
-          helmet={
-            <Helmet titleTemplate="%s | Blog">
-              <title>{`${post.frontmatter.title}`}</title>
-              <meta
-                name="description"
-                content={`${post.frontmatter.description}`}
-              />
-            </Helmet>
-          }
-          tags={post.frontmatter.tags}
-          title={post.frontmatter.title}
-          thumbnail={post.frontmatter.thumbnail.childImageSharp.resize.src}
-        />
-        <ProjectTextBlock title="Introduction">
-          <p>
-            <strong>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
-              amet, consectetur adipisicing elit, sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-              veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-              ex ea commodo consequat.
-            </strong>
-          </p>
-          <p>
-            Nunc montes porttitor quam nunc at ullamcorper penatibus cubilia
-            ridiculus tortor suscipit. Gravida purus sollicitudin class pharetra
-            egestas dis senectus ullamcorper penatibus aptent dictum odio. Ut
-            morbi eget condimentum varius volutpat porta euismod sociosqu.
-            Venenatis per quis erat cum pellentesque aliquam sem rutrum platea
-            malesuada risus parturient. Nulla consectetur feugiat fringilla
-            mauris vitae, placerat curabitur integer eu praesent. Platea semper
-            porttitor magna nostra ornare vulputate elementum elementum quis
-            tincidunt laoreet. Sagittis, lobortis posuere varius mus odio.
-            Venenatis gravida, mi ut. Diam taciti, nibh nisi. Magnis proin at
-            condimentum, sollicitudin platea natoque. Porttitor a aliquet
-            blandit.
-          </p>
-          <p>
-            Quisque aenean taciti semper dolor varius morbi elementum
-            suspendisse odio tempus nec sociosqu. Nibh tempus molestie dapibus
-            per tellus velit pharetra senectus. Etiam integer cras nec. Nec
-            malesuada, imperdiet magna volutpat himenaeos aliquet ultrices
-            lectus tristique ullamcorper aptent. Phasellus purus dui gravida
-            per; dolor himenaeos tempus lectus erat! Mauris semper velit egestas
-            fusce nam leo pharetra per turpis nascetur. At sed.
-          </p>
-        </ProjectTextBlock>
-        <ProjectImageCaptionBlock>
-          <p>
-            Quisque aenean taciti semper dolor varius morbi elementum
-            suspendisse odio tempus nec sociosqu. Nibh tempus molestie dapibus
-            per tellus velit pharetra senectus. Etiam integer cras nec. Nec
-            malesuada, imperdiet magna volutpat himenaeos aliquet ultrices
-            lectus tristique ullamcorper aptent. Phasellus purus dui gravida
-            per; dolor himenaeos tempus lectus erat! Mauris semper velit egestas
-            fusce nam leo pharetra per turpis nascetur. At sed.
-          </p>
-        </ProjectImageCaptionBlock>
-      </StyledPageContainer>
+      <SmoothScrollContainer>
+        <StyledPageContainer vAlign="flex-start" display="block">
+          <SingleProjectTemplate
+            content={post.html}
+            contentComponent={HTMLContent}
+            description={post.frontmatter.description}
+            helmet={
+              <Helmet titleTemplate="%s | Blog">
+                <title>{`${post.frontmatter.title}`}</title>
+                <meta
+                  name="description"
+                  content={`${post.frontmatter.description}`}
+                />
+              </Helmet>
+            }
+            tags={post.frontmatter.tags}
+            title={post.frontmatter.title}
+            thumbnail={post.frontmatter.thumbnail.childImageSharp.resize.src}
+          />
+          <ProjectTextBlock title="Introduction">
+            <p>
+              <strong>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
+                amet, consectetur adipisicing elit, sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                veniam, quis nostrud exercitation ullamco laboris nisi ut
+                aliquip ex ea commodo consequat.
+              </strong>
+            </p>
+            <p>
+              Nunc montes porttitor quam nunc at ullamcorper penatibus cubilia
+              ridiculus tortor suscipit. Gravida purus sollicitudin class
+              pharetra egestas dis senectus ullamcorper penatibus aptent dictum
+              odio. Ut morbi eget condimentum varius volutpat porta euismod
+              sociosqu. Venenatis per quis erat cum pellentesque aliquam sem
+              rutrum platea malesuada risus parturient. Nulla consectetur
+              feugiat fringilla mauris vitae, placerat curabitur integer eu
+              praesent. Platea semper porttitor magna nostra ornare vulputate
+              elementum elementum quis tincidunt laoreet. Sagittis, lobortis
+              posuere varius mus odio. Venenatis gravida, mi ut. Diam taciti,
+              nibh nisi. Magnis proin at condimentum, sollicitudin platea
+              natoque. Porttitor a aliquet blandit.
+            </p>
+            <p>
+              Quisque aenean taciti semper dolor varius morbi elementum
+              suspendisse odio tempus nec sociosqu. Nibh tempus molestie dapibus
+              per tellus velit pharetra senectus. Etiam integer cras nec. Nec
+              malesuada, imperdiet magna volutpat himenaeos aliquet ultrices
+              lectus tristique ullamcorper aptent. Phasellus purus dui gravida
+              per; dolor himenaeos tempus lectus erat! Mauris semper velit
+              egestas fusce nam leo pharetra per turpis nascetur. At sed.
+            </p>
+          </ProjectTextBlock>
+          <ProjectImageCaptionBlock onLoad={}>
+            <p>
+              Quisque aenean taciti semper dolor varius morbi elementum
+              suspendisse odio tempus nec sociosqu. Nibh tempus molestie dapibus
+              per tellus velit pharetra senectus. Etiam integer cras nec. Nec
+              malesuada, imperdiet magna volutpat himenaeos aliquet ultrices
+              lectus tristique ullamcorper aptent. Phasellus purus dui gravida
+              per; dolor himenaeos tempus lectus erat! Mauris semper velit
+              egestas fusce nam leo pharetra per turpis nascetur. At sed.
+            </p>
+          </ProjectImageCaptionBlock>
+        </StyledPageContainer>
+      </SmoothScrollContainer>
     </Layout>
   );
 };
