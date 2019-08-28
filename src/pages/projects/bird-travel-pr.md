@@ -11,10 +11,4 @@ techs:
 ---
 Lorem ipsum dolor amet literally meditation retro, sartorial hexagon affogato vaporware poke craft beer skateboard fixie 8-bit thundercats polaroid gentrify. Art party whatever celiac swag. Humblebrag heirloom mixtape actually celiac raw denim. Listicle vaporware bicycle rights cloud bread. Cred ramps locavore, 3 wolf moon ugh wayfarers jianbing put a bird on it blog squid ethical. Distillery viral portland selfies subway tile freegan tattooed authentic. Helvetica vinyl pug raw denim. Zach is cool
 
-Image: /img/chemex.jpg | Caption: asdfa sdf asdf asdfasdf
-
-{"widget":"image-caption-block","image":"/img/chemex.jpg","caption":"asdfasdfasdfasdf asdfasdfas dasdfa"}
-
-![asdfasdf](/img/products-grid2.jpg "This is cool man")
-
-{"widget":"image-caption-block","image":"/img/blog-index.jpg","caption":"asdfasdfasdf"}
+[image-caption-block image="/img/chemex.jpg"]afgasdfasdfasdf[/image-caption-block]
