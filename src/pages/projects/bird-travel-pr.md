@@ -16,3 +16,5 @@ Image: /img/chemex.jpg | Caption: asdfa sdf asdf asdfasdf
 {"widget":"image-caption-block","image":"/img/chemex.jpg","caption":"asdfasdfasdfasdf asdfasdfas dasdfa"}
 
 ![asdfasdf](/img/products-grid2.jpg "This is cool man")
+
+{"widget":"image-caption-block","image":"/img/blog-index.jpg","caption":"asdfasdfasdf"}
