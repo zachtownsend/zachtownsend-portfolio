@@ -39,17 +39,11 @@ const FigCaption = styled(CustomViewportBlock)`
   padding: 56px 59px 42px;
 `;
 
-const ProjectImageCaptionBlock = ({ children, onLoad }) => (
+const ProjectImageCaptionBlock = ({ children, onLoad, image }) => (
   <BlockContainer>
     <ViewportBlock>
       <SmoothSrcollConsumer>
-        {props => (
-          <img
-            src="https://images.unsplash.com/photo-1553013476-72259f63abd4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1051&q=80"
-            alt=""
-            onLoad={props.onLoad}
-          />
-        )}
+        {props => <img src={image} alt="" onLoad={props.onLoad} />}
       </SmoothSrcollConsumer>
     </ViewportBlock>
     {children && <FigCaption tag="figcaption">{children}</FigCaption>}
