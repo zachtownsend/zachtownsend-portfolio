@@ -1,7 +1,7 @@
 import React from 'react';
 import { StaticQuery, graphql } from 'gatsby';
 import styled from 'styled-components';
-import Swiper from 'swiper';
+import Swiper from 'react-id-swiper';
 import posed, { PoseGroup } from 'react-pose';
 import TransitionLink, { TransitionState } from 'gatsby-plugin-transition-link';
 import classNames from 'classnames';
@@ -11,7 +11,8 @@ import Button from '../../components/Button';
 import PageHead from '../../components/PageHead';
 import PeepholeText from '../../components/PeepholeText';
 import StyledPageContainer from '../../styles/StyledPageContainer';
-import '../../../node_modules/swiper/dist/css/swiper.min.css';
+import ProjectSlider from '../../components/ProjectSlider';
+import 'swiper/swiper.scss';
 
 const StyledSwiper = styled.div`
   width: 100%;
@@ -139,6 +140,7 @@ class ProjectIndexPage extends React.Component {
     console.log(props);
     this.infoContainer = null;
     this.projectImage = React.createRef();
+    this.swiper = React.createRef();
   }
 
   updateSlider = swiper => {
@@ -160,36 +162,36 @@ class ProjectIndexPage extends React.Component {
     });
   };
 
-  componentDidMount = () => {
-    const swiper = new Swiper('.swiper-container', {
-      initialSlide: 0,
-      direction: 'horizontal',
-      slidesPerView: 'auto',
-      centeredSlides: true,
-      spaceBetween: '10%',
-      preloadImages: true,
-      updateOnImagesReady: true,
-      preventClicksPropagation: false,
-      init: false,
-    });
+  // componentDidMount = () => {
+  //   const swiper = new Swiper('.swiper-container', {
+  //     initialSlide: 0,
+  //     direction: 'horizontal',
+  //     slidesPerView: 'auto',
+  //     centeredSlides: true,
+  //     spaceBetween: '10%',
+  //     preloadImages: true,
+  //     updateOnImagesReady: true,
+  //     preventClicksPropagation: false,
+  //     init: false,
+  //   });
 
-    swiper
-      .on('transitionStart', () => {
-        this.setState({
-          currentIndex: swiper.activeIndex,
-          previousIndex: swiper.previousIndex,
-          transitioning: true,
-        });
-      })
-      .on('transitionEnd', () => {
-        this.updateSlider(swiper);
-      })
-      .on('init', () => {
-        this.updateSlider(swiper);
-      });
+  //   swiper
+  //     .on('transitionStart', () => {
+  //       this.setState({
+  //         currentIndex: swiper.activeIndex,
+  //         previousIndex: swiper.previousIndex,
+  //         transitioning: true,
+  //       });
+  //     })
+  //     .on('transitionEnd', () => {
+  //       this.updateSlider(swiper);
+  //     })
+  //     .on('init', () => {
+  //       this.updateSlider(swiper);
+  //     });
 
-    swiper.init();
-  };
+  //   swiper.init();
+  // };
 
   projectTransition = entryImageBox => {
     const { currentIndex } = this.state;
@@ -242,21 +244,7 @@ class ProjectIndexPage extends React.Component {
     const { bottom, left } = this.projectInfoPosition();
 
     const { edges } = this.props.data.allMarkdownRemark;
-
-    const projects = edges.map((project, index) => (
-      <div className="swiper-slide" key={project.node.id}>
-        <div
-          className="project-container"
-          ref={index === currentIndex ? this.projectImage : null}
-        >
-          <img
-            src={project.node.frontmatter.thumbnail.childImageSharp.resize.src}
-            alt=""
-          />
-        </div>
-      </div>
-    ));
-
+    console.log(this.props);
     return (
       <Layout>
         <PageHead pageTitle="Projects">
@@ -266,9 +254,7 @@ class ProjectIndexPage extends React.Component {
           />
         </PageHead>
         <StyledPageContainer>
-          <StyledSwiper className="swiper-container">
-            <div className="swiper-wrapper">{projects}</div>
-          </StyledSwiper>
+          <ProjectSlider projects={edges} />
           <ProjectInfo
             style={{
               bottom: `${bottom}px`,
