@@ -21,6 +21,17 @@ function Slide({ project }) {
 
 function ProjectSlider({ projects }) {
   const [swiper, setSwiper] = useState(null);
+  const [swiperState, setSwiperState] = useState({
+    currentIndex: 0,
+    previousIndex: null,
+    transitioning: false,
+  });
+  const [containerDimensions, setContainerDimensions] = useState({
+    width: 0,
+    height: 0
+  });
+  const [projectIsWiderThanWindow, setProjectIsWiderThanWindow] = useState(false);
+
   const params = {
     getSwiper: setSwiper,
     initialSlide: 0,
@@ -33,20 +44,61 @@ function ProjectSlider({ projects }) {
     preventClicksPropagation: false,
   };
 
-  useEffect(() => {
-    if (swiper !== null) {
-      swiper.on('slideChangeTransitionStart', () => {
+  const updateSlider = () => {
+    const { y, x, width, height } = swiper.slides[
+      swiper.activeIndex
+    ].getBoundingClientRect();
 
-      });
+    setSwiperState({
+      ...swiperState,
+      previousIndex: null,
+      transitioning: false,
+    });
+
+    setContainerDimensions({
+      width: window.innerWidth - 168 < width ? window.innerWidth - 168 : width,
+      height,
+      x,
+      y,
+    });
+
+    setProjectIsWiderThanWindow(window.innerWidth - 168 < width);
+  };
+
+  useEffect(() => {
+    if (swiper !== null && !swiper.initialized) {
+      swiper
+        .on('slideChangeTransitionStart', () => {
+          setSwiperState({
+            currentIndex: swiper.activeIndex,
+            previousIndex: swiper.previousIndex,
+            transitioning: true,
+          });
+        })
+        .on('transitionEnd', () => {
+          updateSlider();
+          console.log(swiper);
+        })
+        .on('init', () => {
+          updateSlider();
+        });
     }
-    // swiper.params.on.slideChangeTransitionStart = () => {
-    //   console.log(swiper);
-    // };
   });
+  const infoBoxPosition = () => {
+    const windowHeight = typeof window !== 'undefined' ? window.innerHeight : 0;
+
+    return {
+      bottom: windowHeight - (containerDimensions.y + containerDimensions.height) + 24,
+      left: projectIsWiderThanWindow ? 40 : containerDimensions.x - 48,
+    };
+  };
 
   const slides = projects.map(project => <Slide project={project.node} />);
 
-  return <Swiper {...params}>{slides}</Swiper>;
+  return <div>
+    <Swiper {...params}>{slides}</Swiper>
+
+  </div>;
 }
 
 Slide.propTypes = {

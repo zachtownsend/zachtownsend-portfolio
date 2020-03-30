@@ -47,75 +47,6 @@ const StyledSwiper = styled.div`
   }
 `;
 
-const ProjectInfo = styled.div`
-  position: fixed;
-  left: 0;
-  z-index: 1;
-  padding: 48px 64px;
-  display: block;
-  background-color: rgba(0, 0, 0, 0.9);
-  color: ${({ theme }) => theme.white};
-  transition: transform 0.4s ease-in-out;
-
-  header {
-    text-align: left;
-
-    h2 {
-      font-size: 32px;
-      line-height: 1;
-    }
-
-    p.client {
-      font-family: ${({ theme }) => theme.displayFontFamily};
-      font-size: 18px;
-      font-weight: 100;
-      color: ${({ theme }) => theme.white};
-    }
-  }
-
-  hr {
-    border: 1px inset ${({ theme }) => theme.primary};
-    margin: 13px 0 12px;
-  }
-
-  aside.project-details {
-    text-align: left;
-
-    h3 {
-      font-size: 18px;
-    }
-
-    ul.techs {
-      font-family: ${({ theme }) => theme.displayFontFamily};
-      font-weight: 100;
-      font-size: 14px;
-      color: ${({ theme }) => theme.white};
-
-      &.transitioning {
-        white-space: nowrap;
-      }
-
-      li {
-        display: inline-block;
-        margin-right: 10px;
-
-        &::after {
-          content: ', ';
-        }
-
-        &:last-child::after {
-          display: none;
-        }
-      }
-    }
-  }
-
-  .cta {
-    text-align: left;
-    margin-top: 12px;
-  }
-`;
-
 const Tech = posed.li({
   enter: {
     opacity: 1,
@@ -140,7 +71,6 @@ class ProjectIndexPage extends React.Component {
     console.log(props);
     this.infoContainer = null;
     this.projectImage = React.createRef();
-    this.swiper = React.createRef();
   }
 
   updateSlider = swiper => {
@@ -161,37 +91,6 @@ class ProjectIndexPage extends React.Component {
       projectIsWiderThanWindow: window.innerWidth - 168 < width,
     });
   };
-
-  // componentDidMount = () => {
-  //   const swiper = new Swiper('.swiper-container', {
-  //     initialSlide: 0,
-  //     direction: 'horizontal',
-  //     slidesPerView: 'auto',
-  //     centeredSlides: true,
-  //     spaceBetween: '10%',
-  //     preloadImages: true,
-  //     updateOnImagesReady: true,
-  //     preventClicksPropagation: false,
-  //     init: false,
-  //   });
-
-  //   swiper
-  //     .on('transitionStart', () => {
-  //       this.setState({
-  //         currentIndex: swiper.activeIndex,
-  //         previousIndex: swiper.previousIndex,
-  //         transitioning: true,
-  //       });
-  //     })
-  //     .on('transitionEnd', () => {
-  //       this.updateSlider(swiper);
-  //     })
-  //     .on('init', () => {
-  //       this.updateSlider(swiper);
-  //     });
-
-  //   swiper.init();
-  // };
 
   projectTransition = entryImageBox => {
     const { currentIndex } = this.state;
@@ -244,7 +143,7 @@ class ProjectIndexPage extends React.Component {
     const { bottom, left } = this.projectInfoPosition();
 
     const { edges } = this.props.data.allMarkdownRemark;
-    console.log(this.props);
+
     return (
       <Layout>
         <PageHead pageTitle="Projects">
