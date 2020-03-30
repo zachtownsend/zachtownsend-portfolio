@@ -7,55 +7,11 @@ import TransitionLink, { TransitionState } from 'gatsby-plugin-transition-link';
 import classNames from 'classnames';
 import TweenMax from 'gsap/umd/TweenMax';
 import Layout from '../../components/Layout';
-import Button from '../../components/Button';
 import PageHead from '../../components/PageHead';
 import PeepholeText from '../../components/PeepholeText';
 import StyledPageContainer from '../../styles/StyledPageContainer';
 import ProjectSlider from '../../components/ProjectSlider';
 import 'swiper/swiper.scss';
-
-const StyledSwiper = styled.div`
-  width: 100%;
-  height: 100%;
-
-  &.swiper-container {
-    overflow: visible;
-  }
-
-  .swiper-slide {
-    width: auto;
-
-    .project-container {
-      line-height: 0;
-      height: 75vh;
-      transform-origin: top left;
-
-      img {
-        height: 100%;
-        width: auto;
-      }
-    }
-  }
-
-  .info-container {
-    position: absolute;
-    z-index: 1;
-    top: 0px;
-    left: 50%;
-    transform: translateX(-50%);
-    transition: width 0.4s ease-in-out;
-  }
-`;
-
-const Tech = posed.li({
-  enter: {
-    opacity: 1,
-    delay: ({ delay }) => delay,
-  },
-  exit: {
-    opacity: 0,
-  },
-});
 
 class ProjectIndexPage extends React.Component {
   state = {
@@ -154,100 +110,6 @@ class ProjectIndexPage extends React.Component {
         </PageHead>
         <StyledPageContainer>
           <ProjectSlider projects={edges} />
-          <ProjectInfo
-            style={{
-              bottom: `${bottom}px`,
-              transform: `translateX(${left}px)`,
-            }}
-          >
-            <header>
-              <PeepholeText
-                tag="h2"
-                nowrap
-                dynamicWidth
-                direction={previousIndex > currentIndex ? 'up' : 'down'}
-                nextContent={
-                  transitioning
-                    ? edges[currentIndex].node.frontmatter.title
-                    : null
-                }
-              >
-                {
-                  edges[transitioning ? previousIndex : currentIndex].node
-                    .frontmatter.title
-                }
-              </PeepholeText>
-              <PeepholeText
-                tag="p"
-                className="client"
-                direction={previousIndex < currentIndex ? 'up' : 'down'}
-                nextContent={
-                  transitioning
-                    ? edges[currentIndex].node.frontmatter.client
-                    : null
-                }
-              >
-                {
-                  edges[transitioning ? previousIndex : currentIndex].node
-                    .frontmatter.client
-                }
-              </PeepholeText>
-            </header>
-            <hr />
-            <aside className="project-details">
-              <h3>
-                <span>eCommerce</span>
-              </h3>
-              <ul
-                className={classNames(
-                  'techs',
-                  transitioning && 'transitioning'
-                )}
-              >
-                <PoseGroup>
-                  {edges[currentIndex].node.frontmatter.techs.map(
-                    (tech, index) => (
-                      <Tech key={tech} delay={index * 50}>
-                        {tech}
-                      </Tech>
-                    )
-                  )}
-                </PoseGroup>
-              </ul>
-            </aside>
-            <div className="cta">
-              <Button>
-                <TransitionLink
-                  to={edges[currentIndex].node.fields.slug}
-                  exit={{
-                    trigger: ({ node, e, exit, entry }) => {
-                      console.log(
-                        node,
-                        node.querySelector('.image-container'),
-                        e,
-                        exit,
-                        entry
-                      );
-                    },
-                    length: 1,
-                    zIndex: 2,
-                  }}
-                  entry={{
-                    trigger: ({ node }) => {
-                      requestAnimationFrame(() => {
-                        const image = node.querySelector('.image-container');
-                        this.projectTransition(image.getBoundingClientRect());
-                      });
-                    },
-                    delay: 0,
-                    length: 1,
-                  }}
-                >
-                  <span>Explore</span>
-                </TransitionLink>
-              </Button>
-            </div>
-          </ProjectInfo>
         </StyledPageContainer>
       </Layout>
     );
