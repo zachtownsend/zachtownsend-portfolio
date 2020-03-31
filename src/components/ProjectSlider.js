@@ -6,8 +6,8 @@ import 'swiper/swiper.scss';
 import ProjectInfoBox from './ProjectInfoBox';
 
 const StyledSwiper = styled.div `
-  width: 100%;
-  height: 100%;
+  /* width: 100%;
+  height: 100%; */
 
   &.swiper-container {
     overflow: visible;
@@ -76,32 +76,37 @@ function ProjectSlider({ projects }) {
     preloadImages: true,
     updateOnImagesReady: true,
     preventClicksPropagation: false,
+    autoResize: true,
     init: false,
-  };
-
-  const updateSlider = () => {
-    const windowHeight = typeof window !== 'undefined' ? window.innerHeight : 0;
-
-    const { y, x, width, height } = swiper.slides[
-      swiper.activeIndex
-    ].getBoundingClientRect();
-    const projectIsWiderThanWindow = window.innerWidth - 168 < width;
-
-    setSwiperState({
-      currentIndex: swiper.activeIndex,
-      previousIndex: null,
-      transitioning: false,
-    });
-
-    const newProjectInfoBoxPosition = {
-      bottom: windowHeight - (y + height),
-      left: projectIsWiderThanWindow ? 40 : x - 48,
-    };
-    setProjectInfoBoxPosition(newProjectInfoBoxPosition);
   };
 
   useEffect(() => {
     if (swiper !== null && !swiper.initialized) {
+      const updateSlider = () => {
+        const slide = swiper.slides[swiper.activeIndex];
+
+        if (slide === undefined) {
+          return false;
+        }
+
+        const windowHeight = typeof window !== 'undefined' ? window.innerHeight : 0;
+
+        const { y, x, width, height } = slide.getBoundingClientRect();
+        const projectIsWiderThanWindow = window.innerWidth - 168 < width;
+
+        setSwiperState({
+          currentIndex: swiper.activeIndex,
+          previousIndex: null,
+          transitioning: false,
+        });
+
+        const newProjectInfoBoxPosition = {
+          bottom: windowHeight - (y + height),
+          left: projectIsWiderThanWindow ? 40 : x - 48,
+        };
+        setProjectInfoBoxPosition(newProjectInfoBoxPosition);
+      };
+
       swiper
         .on('slideChangeTransitionStart', () => {
           setSwiperState({
@@ -113,7 +118,9 @@ function ProjectSlider({ projects }) {
         .on('transitionEnd', updateSlider)
         .on('init', updateSlider);
 
-      swiper.init();
+      requestAnimationFrame(() => {
+        swiper.init();
+      });
     }
   }, [swiper]);
 
