@@ -14,6 +14,8 @@ const StyledSwiper = styled.div `
   }
 
   .swiper-slide {
+    width: auto;
+
     .project-container {
       line-height: 0;
       height: 75vh;
@@ -58,11 +60,7 @@ function ProjectSlider({ projects }) {
     previousIndex: null,
     transitioning: false,
   });
-  const [containerDimensions, setContainerDimensions] = useState({
-    width: 0,
-    height: 0
-  });
-  const [projectIsWiderThanWindow, setProjectIsWiderThanWindow] = useState(false);
+
   const [projectInfoBoxPosition, setProjectInfoBoxPosition] = useState({
     bottom: 0,
     left: 0,
@@ -82,39 +80,28 @@ function ProjectSlider({ projects }) {
   };
 
   const updateSlider = () => {
-    console.log('test');
     const windowHeight = typeof window !== 'undefined' ? window.innerHeight : 0;
 
     const { y, x, width, height } = swiper.slides[
       swiper.activeIndex
     ].getBoundingClientRect();
+    const projectIsWiderThanWindow = window.innerWidth - 168 < width;
 
     setSwiperState({
-      ...swiperState,
+      currentIndex: swiper.activeIndex,
       previousIndex: null,
       transitioning: false,
     });
 
-    setContainerDimensions({
-      width: window.innerWidth - 168 < width ? window.innerWidth - 168 : width,
-      height,
-      x,
-      y,
-    });
-
-    setProjectIsWiderThanWindow(window.innerWidth - 168 < width);
-
-    setProjectInfoBoxPosition({
-      bottom:
-        windowHeight -
-        (containerDimensions.y + containerDimensions.height) +
-        24,
-      left: projectIsWiderThanWindow ? 40 : containerDimensions.x - 48,
-    });
+    const newProjectInfoBoxPosition = {
+      bottom: windowHeight - (y + height),
+      left: projectIsWiderThanWindow ? 40 : x - 48,
+    };
+    setProjectInfoBoxPosition(newProjectInfoBoxPosition);
   };
 
   useEffect(() => {
-    if (swiper !== null && !swiper.initalized) {
+    if (swiper !== null && !swiper.initialized) {
       swiper
         .on('slideChangeTransitionStart', () => {
           setSwiperState({
@@ -123,27 +110,27 @@ function ProjectSlider({ projects }) {
             transitioning: true,
           });
         })
-        .on('transitionEnd', () => {
-          updateSlider();
-        })
-        .on('init', () => {
-          updateSlider();
-        });
+        .on('transitionEnd', updateSlider)
+        .on('init', updateSlider);
 
       swiper.init();
     }
-  }, [swiper, updateSlider]);
+  }, [swiper]);
 
-  const slides = projects.map(project => <Slide project={project.node} />);
-
-  return <StyledSwiper>
-    <Swiper {...params}>{slides}</Swiper>
-    <ProjectInfoBox
-      projects={projects}
-      position={projectInfoBoxPosition}
-      swiperState={swiperState}
-    />
-  </StyledSwiper>;
+  const slides = projects.map(project => (
+    <Slide key={project.node.id} project={project.node} />
+  ));
+  console.log(projectInfoBoxPosition);
+  return (
+    <StyledSwiper>
+      <Swiper {...params}>{slides}</Swiper>
+      <ProjectInfoBox
+        projects={projects}
+        swiperState={swiperState}
+        position={projectInfoBoxPosition}
+      />
+    </StyledSwiper>
+  );
 }
 
 Slide.propTypes = {

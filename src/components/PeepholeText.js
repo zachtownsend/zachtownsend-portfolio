@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import posed from 'react-pose';
 
 function getNextWidth(
-  widthSetter,
-  direction = 'up',
-  dynamicWidth = true,
-  callback
+  direction,
+  { widthSetter,  dynamicWidth,  callback }
 ) {
   if (dynamicWidth && widthSetter.current !== undefined) {
     const { current } = widthSetter;
@@ -63,13 +61,13 @@ const Transition = posed.span({
   },
   up: {
     y: '-100%',
-    width: ({ widthSetter, dynamicWidth, callback }) =>
-      getNextWidth(widthSetter, 'up', dynamicWidth, callback) || '100%',
+    width: (props) =>
+      getNextWidth('up', props) || '100%',
   },
   down: {
     y: '100%',
-    width: ({ widthSetter, dynamicWidth, callback }) =>
-      getNextWidth(widthSetter, 'down', dynamicWidth, callback) || '100%',
+    width: (props) =>
+      getNextWidth('down', props) || '100%',
   },
 });
 
@@ -85,7 +83,7 @@ function PeepholeText({
   className,
 }) {
   const Tag = tag;
-  const widthSetter = React.createRef();
+  const widthSetter = useRef(null);
 
   return (
     <Tag className={className}>
@@ -123,10 +121,10 @@ PeepholeText.propTypes = {
   dynamicWidth: PropTypes.bool,
   duration: PropTypes.number,
   onTransitionComplete: PropTypes.func,
+  className: PropTypes.string,
 };
 
 PeepholeText.defaultProps = {
-  children: 'Try me',
   tag: 'div',
   nextContent: null,
   direction: 'up',
