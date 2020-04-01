@@ -5,9 +5,9 @@ import Swiper from 'react-id-swiper';
 import 'swiper/swiper.scss';
 import ProjectInfoBox from './ProjectInfoBox';
 
-const StyledSwiper = styled.div `
-  /* width: 100%;
-  height: 100%; */
+const StyledSwiper = styled.div`
+  opacity: ${({ swiperLoaded }) => (swiperLoaded ? 1 : 0)};
+  transition: opacity 0.6s linear 0.6s;
 
   &.swiper-container {
     overflow: visible;
@@ -15,6 +15,7 @@ const StyledSwiper = styled.div `
 
   .swiper-slide {
     width: auto;
+    max-width: 100%;
 
     .project-container {
       line-height: 0;
@@ -24,6 +25,11 @@ const StyledSwiper = styled.div `
       img {
         height: 100%;
         width: auto;
+
+        &.cover {
+          width: 100%;
+          object-fit: cover;
+        }
       }
     }
   }
@@ -40,10 +46,7 @@ const StyledSwiper = styled.div `
 function Slide({ project }) {
   return (
     <div className="swiper-slide" key={project.id}>
-      <div
-        className="project-container"
-        // ref={index === currentIndex ? this.projectImage : null}
-      >
+      <div className="project-container">
         <img
           src={project.frontmatter.thumbnail.childImageSharp.resize.src}
           alt=""
@@ -60,11 +63,11 @@ function ProjectSlider({ projects }) {
     previousIndex: null,
     transitioning: false,
   });
-
   const [projectInfoBoxPosition, setProjectInfoBoxPosition] = useState({
     bottom: 0,
     left: 0,
   });
+  const [swiperLoaded, setSwiperLoaded] = useState(false);
 
   const params = {
     getSwiper: setSwiper,
@@ -116,20 +119,36 @@ function ProjectSlider({ projects }) {
           });
         })
         .on('transitionEnd', updateSlider)
-        .on('init', updateSlider);
+        .on('init', updateSlider)
+        .on('resize', () => {
+          console.log(swiper.slides);
+          swiper.slides.each(index => {
+            const currentSlide = swiper.slides[index];
+            const image = currentSlide.querySelector('img');
+            if (currentSlide.offsetWidth > window.innerWidth - 168) {
+              if (!image.classList.contains('cover')) {
+                image.classList.add('cover')
+              }
+            } else {
+              if (image.classList.contains('cover')) {
+                image.classList.remove('cover')
+              }
+            }
+          });
+        });
 
-      requestAnimationFrame(() => {
-        swiper.init();
-      });
+      swiper.init();
     }
+
+    setSwiperLoaded(true);
   }, [swiper]);
 
   const slides = projects.map(project => (
     <Slide key={project.node.id} project={project.node} />
   ));
-  console.log(projectInfoBoxPosition);
+
   return (
-    <StyledSwiper>
+    <StyledSwiper swiperLoaded={swiperLoaded}>
       <Swiper {...params}>{slides}</Swiper>
       <ProjectInfoBox
         projects={projects}

@@ -16,6 +16,8 @@ const ProjectInfo = styled.div `
   background-color: rgba(0, 0, 0, 0.9);
   color: ${({ theme }) => theme.white};
   transition: transform 0.4s ease-in-out;
+  bottom: ${({ bottom }) => bottom}px;
+  transform: translate(${({ left }) => left}px, -24px);
 
   header {
     text-align: left;
@@ -95,12 +97,7 @@ function ProjectInfoBox({ projects, swiperState, position }) {
   const previousProject = projects[transitioning ? previousIndex : currentIndex].node;
 
   return (
-    <ProjectInfo
-      style={{
-        bottom: `${bottom}px`,
-        transform: `translateX(${left}px)`
-      }}
-    >
+    <ProjectInfo {...position}>
       <header>
         <PeepholeText
           tag="h2"
