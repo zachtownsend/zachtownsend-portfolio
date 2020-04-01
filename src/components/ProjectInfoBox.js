@@ -1,9 +1,10 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import posed, { PoseGroup } from 'react-pose';
 import TransitionLink from 'gatsby-plugin-transition-link';
 import classNames from 'classnames';
+import TweenMax from 'gsap/umd/TweenMax';
 import PeepholeText from './PeepholeText';
 import Button from './Button';
 
@@ -99,11 +100,73 @@ const Tech = posed.li({
   },
 });
 
-function ProjectInfoBox({ projects, swiperState, position }) {
+// const projectTransition = entryImageBox => {
+//   const { currentIndex } = this.state;
+//   const exitImage = this.projectImage.current;
+//   const exitImageBox = exitImage.getBoundingClientRect();
+//   const toPositions = {
+//     x: entryImageBox.x - exitImageBox.x,
+//     y: entryImageBox.y - exitImageBox.y,
+//     scale: entryImageBox.width / exitImageBox.width,
+//   };
+
+//   const projects = Array.from(
+//     exitImage
+//       .closest('.swiper-wrapper')
+//       .querySelectorAll('.project-container')
+//   );
+
+//   TweenMax.to(exitImage, 1, {
+//     x: toPositions.x,
+//     y: toPositions.y,
+//     scale: toPositions.scale,
+//     ease: Power2.easeInOut,
+//   });
+
+//   projects.forEach((project, index) => {
+//     if (index < currentIndex) {
+//       TweenMax.to(project, 1, { x: '-25vw', alpha: 0 });
+//     } else if (index > currentIndex) {
+//       TweenMax.to(project, 1, { x: '25vw', alpha: 0 });
+//     }
+//   });
+// };
+
+function ProjectInfoBox({ swiper, projects, swiperState, position }) {
+  console.log(swiper);
   const { currentIndex, previousIndex, transitioning } = swiperState;
-  const { bottom, left } = position;
   const currentProject = projects[currentIndex].node;
   const previousProject = projects[transitioning ? previousIndex : currentIndex].node;
+
+  const transitionToProject = entryImageBox => {
+    if (!swiper) {
+      return false;
+    }
+    console.log(swiper);
+    // const { slides } = swiper;
+    const exitImage = swiper[currentIndex].querySelector('img');
+    const exitImageBox = exitImage.getBoundingClientRect();
+    const toTransitions = {
+      x: entryImageBox.x - exitImageBox.x,
+      y: entryImageBox.y - exitImageBox.y,
+      scale: entryImageBox.width / exitImageBox.width,
+    };
+    console.log(exitImage);
+    TweenMax.to(exitImage, 1, {
+      x: toTransitions.x,
+      y: toTransitions.y,
+      scale: toTransitions.scale,
+      ease: Power2.easeInOut,
+    });
+
+    // slides.forEach((project, index) => {
+    //   if (index < currentIndex) {
+    //     TweenMax.to(project, 1, { x: '-25vw', alpha: 0 });
+    //   } else if (index > currentIndex) {
+    //     TweenMax.to(project, 1, { x: '25vw', alpha: 0 });
+    //   }
+    // });
+  };
 
   return (
     <ProjectInfo {...position}>
@@ -181,7 +244,7 @@ function ProjectInfoBox({ projects, swiperState, position }) {
               trigger: ({ node }) => {
                 requestAnimationFrame(() => {
                   const image = node.querySelector('.image-container');
-                  this.projectTransition(image.getBoundingClientRect());
+                  transitionToProject(image.getBoundingClientRect());
                 });
               },
               delay: 0,

@@ -20,38 +20,6 @@ const StyledProjectPageContainer = styled(StyledPageContainer)`
   }
 `;
 class ProjectIndexPage extends React.Component {
-  projectTransition = entryImageBox => {
-    const { currentIndex } = this.state;
-    const exitImage = this.projectImage.current;
-    const exitImageBox = exitImage.getBoundingClientRect();
-    const toPositions = {
-      x: entryImageBox.x - exitImageBox.x,
-      y: entryImageBox.y - exitImageBox.y,
-      scale: entryImageBox.width / exitImageBox.width,
-    };
-
-    const projects = Array.from(
-      exitImage
-        .closest('.swiper-wrapper')
-        .querySelectorAll('.project-container')
-    );
-
-    TweenMax.to(exitImage, 1, {
-      x: toPositions.x,
-      y: toPositions.y,
-      scale: toPositions.scale,
-      ease: Power2.easeInOut,
-    });
-
-    projects.forEach((project, index) => {
-      if (index < currentIndex) {
-        TweenMax.to(project, 1, { x: '-25vw', alpha: 0 });
-      } else if (index > currentIndex) {
-        TweenMax.to(project, 1, { x: '25vw', alpha: 0 });
-      }
-    });
-  };
-
   render() {
     const { edges } = this.props.data.allMarkdownRemark;
 

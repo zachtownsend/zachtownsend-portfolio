@@ -153,6 +153,7 @@ function ProjectSlider({ projects }) {
         projects={projects}
         swiperState={swiperState}
         position={projectInfoBoxPosition}
+        swiper={swiper !== null && swiper.hasOwnProperty('slides') ? swiper.slides : null}
       />
     </StyledSwiper>
   );
