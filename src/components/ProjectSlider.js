@@ -23,7 +23,7 @@ const StyledSwiper = styled.div`
       transform-origin: top left;
 
       @media (max-width: 768px) {
-        height: 70vh;
+        height: calc(100vh - 40px);
 
         img {
           width: 100%;
