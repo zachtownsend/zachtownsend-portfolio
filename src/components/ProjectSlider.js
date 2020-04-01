@@ -22,6 +22,15 @@ const StyledSwiper = styled.div`
       height: 75vh;
       transform-origin: top left;
 
+      @media (max-width: 768px) {
+        height: 70vh;
+
+        img {
+          width: 100%;
+          object-fit: cover;
+        }
+      }
+
       img {
         height: 100%;
         width: auto;
@@ -32,15 +41,6 @@ const StyledSwiper = styled.div`
         }
       }
     }
-  }
-
-  .info-container {
-    position: absolute;
-    z-index: 1;
-    top: 0px;
-    left: 50%;
-    transform: translateX(-50%);
-    transition: width 0.4s ease-in-out;
   }
 `;
 function Slide({ project }) {
@@ -121,7 +121,6 @@ function ProjectSlider({ projects }) {
         .on('transitionEnd', updateSlider)
         .on('init', updateSlider)
         .on('resize', () => {
-          console.log(swiper.slides);
           swiper.slides.each(index => {
             const currentSlide = swiper.slides[index];
             const image = currentSlide.querySelector('img');

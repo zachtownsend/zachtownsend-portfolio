@@ -1,14 +1,13 @@
 import styled from 'styled-components';
-import { getJustifyContentPosition } from '../lib/helpers';
+import { getJustifyContentPosition, getAlignItemsPosition } from '../lib/helpers';
 
 const StyledPageContainer = styled.div`
   background: ${props => props.theme.darkGray};
   padding-top: 20px;
   min-height: calc(100vh - 20px);
   display: ${({ display }) => display || 'flex'};
-  justify-content: ${({ hAlign }) =>
-    getJustifyContentPosition(hAlign || 'left')};
-  align-items: center;
+  justify-content: ${({ hAlign }) => getJustifyContentPosition(hAlign || 'left')};
+  align-items: ${({ vAlign }) => getAlignItemsPosition(vAlign)};
   text-align: center;
   background-size: cover;
   height: 100%;

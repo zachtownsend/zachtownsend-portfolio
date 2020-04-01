@@ -13,41 +13,13 @@ import StyledPageContainer from '../../styles/StyledPageContainer';
 import ProjectSlider from '../../components/ProjectSlider';
 import 'swiper/swiper.scss';
 
-class ProjectIndexPage extends React.Component {
-  state = {
-    currentIndex: 0,
-    previousIndex: null,
-    transitioning: false,
-    containerDimensions: { width: 0, height: 0 },
-    projectIsWiderThanWindow: false,
-  };
-
-  constructor(props) {
-    super(props);
-    console.log(props);
-    this.infoContainer = null;
-    this.projectImage = React.createRef();
+const StyledProjectPageContainer = styled(StyledPageContainer)`
+  @media (max-width: 768px) {
+    align-items: flex-start;
+    padding-top: 0;
   }
-
-  updateSlider = swiper => {
-    const { y, x, width, height } = swiper.slides[
-      swiper.activeIndex
-    ].getBoundingClientRect();
-
-    this.setState({
-      previousIndex: null,
-      transitioning: false,
-      containerDimensions: {
-        width:
-          window.innerWidth - 168 < width ? window.innerWidth - 168 : width,
-        height,
-        x,
-        y,
-      },
-      projectIsWiderThanWindow: window.innerWidth - 168 < width,
-    });
-  };
-
+`;
+class ProjectIndexPage extends React.Component {
   projectTransition = entryImageBox => {
     const { currentIndex } = this.state;
     const exitImage = this.projectImage.current;
@@ -80,24 +52,7 @@ class ProjectIndexPage extends React.Component {
     });
   };
 
-  projectInfoPosition() {
-    const { containerDimensions, projectIsWiderThanWindow } = this.state;
-    const windowHeight = typeof window !== 'undefined' ? window.innerHeight : 0;
-
-    return {
-      bottom:
-        windowHeight -
-        (containerDimensions.y + containerDimensions.height) +
-        24,
-      left: projectIsWiderThanWindow ? 40 : containerDimensions.x - 48,
-    };
-  }
-
   render() {
-    const { currentIndex, previousIndex, transitioning } = this.state;
-
-    const { bottom, left } = this.projectInfoPosition();
-
     const { edges } = this.props.data.allMarkdownRemark;
 
     return (
@@ -108,9 +63,9 @@ class ProjectIndexPage extends React.Component {
             content="This is a description for the projects page"
           />
         </PageHead>
-        <StyledPageContainer>
+        <StyledProjectPageContainer>
           <ProjectSlider projects={edges} />
-        </StyledPageContainer>
+        </StyledProjectPageContainer>
       </Layout>
     );
   }

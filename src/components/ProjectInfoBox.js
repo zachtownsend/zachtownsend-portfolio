@@ -19,6 +19,15 @@ const ProjectInfo = styled.div `
   bottom: ${({ bottom }) => bottom}px;
   transform: translate(${({ left }) => left}px, -24px);
 
+  @media (max-width: 768px) {
+    min-height: 30vh;
+    width: calc(100% - 40px);
+    left: 20px;
+    bottom: 20px;
+    transform: translate(0, 0);
+    padding: 32px 44px;
+  }
+
   header {
     text-align: left;
 
