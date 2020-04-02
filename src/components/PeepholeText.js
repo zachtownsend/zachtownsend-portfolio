@@ -61,13 +61,11 @@ const Transition = posed.span({
   },
   up: {
     y: '-100%',
-    width: (props) =>
-      getNextWidth('up', props) || '100%',
+    width: props => getNextWidth('up', props) || '100%',
   },
   down: {
     y: '100%',
-    width: (props) =>
-      getNextWidth('down', props) || '100%',
+    width: props => getNextWidth('down', props) || '100%',
   },
 });
 
