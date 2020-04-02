@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import PeepholeText from './PeepholeText';
 import Button from './Button';
 
-const ProjectInfo = styled.div `
+const ProjectInfo = styled.div`
   position: fixed;
   left: 0;
   z-index: 1;
@@ -89,9 +89,7 @@ const ProjectInfo = styled.div `
 const Tech = posed.li({
   enter: {
     opacity: 1,
-    delay: ({
-      delay
-    }) => delay,
+    delay: ({ delay }) => delay,
   },
   exit: {
     opacity: 0,
@@ -112,29 +110,17 @@ function ProjectInfoBox({ swiper, projects, transitioning, transition, position 
           nowrap
           dynamicWidth
           direction={previousIndex > activeIndex ? 'up' : 'down'}
-          nextContent={
-            transitioning
-              ? currentProject.frontmatter.title
-              : null
-          }
+          nextContent={transitioning ? currentProject.frontmatter.title : null}
         >
-          {
-            previousProject.frontmatter.title
-          }
+          {previousProject.frontmatter.title}
         </PeepholeText>
         <PeepholeText
           tag="p"
           className="client"
           direction={previousIndex < activeIndex ? 'up' : 'down'}
-          nextContent={
-            transitioning
-              ? currentProject.frontmatter.client
-              : null
-          }
+          nextContent={transitioning ? currentProject.frontmatter.client : null}
         >
-          {
-            previousProject.frontmatter.client
-          }
+          {previousProject.frontmatter.client}
         </PeepholeText>
       </header>
       <hr />
@@ -142,20 +128,13 @@ function ProjectInfoBox({ swiper, projects, transitioning, transition, position 
         <h3>
           <span>eCommerce</span>
         </h3>
-        <ul
-          className={classNames(
-            'techs',
-            transitioning && 'transitioning'
-          )}
-        >
+        <ul className={classNames('techs', transitioning && 'transitioning')}>
           <PoseGroup>
-            {currentProject.frontmatter.techs.map(
-              (tech, index) => (
-                <Tech key={tech} delay={index * 50}>
-                  {tech}
-                </Tech>
-              )
-            )}
+            {currentProject.frontmatter.techs.map((tech, index) => (
+              <Tech key={tech} delay={index * 50}>
+                {tech}
+              </Tech>
+            ))}
           </PoseGroup>
         </ul>
       </aside>

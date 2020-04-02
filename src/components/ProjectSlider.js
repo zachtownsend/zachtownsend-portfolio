@@ -129,10 +129,8 @@ function ProjectSlider({ projects }) {
               if (!image.classList.contains('cover')) {
                 image.classList.add('cover')
               }
-            } else {
-              if (image.classList.contains('cover')) {
-                image.classList.remove('cover')
-              }
+            } else if (image.classList.contains('cover')) {
+              image.classList.remove('cover')
             }
           });
         });
@@ -215,5 +213,4 @@ ProjectSlider.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.object),
 }
 
-export default ProjectSlider
-
+export default ProjectSlider;
