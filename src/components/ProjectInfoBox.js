@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import posed, { PoseGroup } from 'react-pose';
 import TransitionLink from 'gatsby-plugin-transition-link';
 import classNames from 'classnames';
-import TweenMax from 'gsap/umd/TweenMax';
 import PeepholeText from './PeepholeText';
 import Button from './Button';
 
@@ -100,7 +99,7 @@ const Tech = posed.li({
 });
 
 // const projectTransition = entryImageBox => {
-//   const { currentIndex } = this.state;
+//   const { activeIndex } = this.state;
 //   const exitImage = this.projectImage.current;
 //   const exitImageBox = exitImage.getBoundingClientRect();
 //   const toPositions = {
@@ -123,49 +122,19 @@ const Tech = posed.li({
 //   });
 
 //   projects.forEach((project, index) => {
-//     if (index < currentIndex) {
+//     if (index < activeIndex) {
 //       TweenMax.to(project, 1, { x: '-25vw', alpha: 0 });
-//     } else if (index > currentIndex) {
+//     } else if (index > activeIndex) {
 //       TweenMax.to(project, 1, { x: '25vw', alpha: 0 });
 //     }
 //   });
 // };
 
-function ProjectInfoBox({ swiper, projects, swiperState, position }) {
-  console.log(swiper);
-  const { currentIndex, previousIndex, transitioning } = swiperState;
-  const currentProject = projects[currentIndex].node;
-  const previousProject = projects[transitioning ? previousIndex : currentIndex].node;
-
-  const transitionToProject = entryImageBox => {
-    if (!swiper) {
-      return false;
-    }
-
-    // const { slides } = swiper;
-    const exitImage = swiper[currentIndex].querySelector('img');
-    const exitImageBox = exitImage.getBoundingClientRect();
-    const toTransitions = {
-      x: entryImageBox.x - exitImageBox.x,
-      y: entryImageBox.y - exitImageBox.y,
-      scale: entryImageBox.width / exitImageBox.width,
-    };
-    console.log(toTransitions);
-    TweenMax.to(exitImage, 1, {
-      x: toTransitions.x,
-      y: toTransitions.y,
-      scale: toTransitions.scale,
-      ease: Power2.easeInOut,
-    });
-
-    // swiper.forEach((project, index) => {
-    //   if (index < currentIndex) {
-    //     TweenMax.to(project, 1, { x: '-25vw', alpha: 0 });
-    //   } else if (index > currentIndex) {
-    //     TweenMax.to(project, 1, { x: '25vw', alpha: 0 });
-    //   }
-    // });
-  };
+function ProjectInfoBox({ swiper, projects, transitioning, transition, position }) {
+  if (swiper === null) return null;
+  const { activeIndex, previousIndex } = swiper;
+  const currentProject = projects[activeIndex].node;
+  const previousProject = projects[transitioning ? previousIndex : activeIndex].node;
 
   return (
     <ProjectInfo {...position}>
@@ -174,7 +143,7 @@ function ProjectInfoBox({ swiper, projects, swiperState, position }) {
           tag="h2"
           nowrap
           dynamicWidth
-          direction={previousIndex > currentIndex ? 'up' : 'down'}
+          direction={previousIndex > activeIndex ? 'up' : 'down'}
           nextContent={
             transitioning
               ? currentProject.frontmatter.title
@@ -188,7 +157,7 @@ function ProjectInfoBox({ swiper, projects, swiperState, position }) {
         <PeepholeText
           tag="p"
           className="client"
-          direction={previousIndex < currentIndex ? 'up' : 'down'}
+          direction={previousIndex < activeIndex ? 'up' : 'down'}
           nextContent={
             transitioning
               ? currentProject.frontmatter.client
@@ -227,26 +196,11 @@ function ProjectInfoBox({ swiper, projects, swiperState, position }) {
           <TransitionLink
             to={currentProject.fields.slug}
             exit={{
-              trigger: ({ node, e, exit, entry }) => {
-                console.log(
-                  node,
-                  node.querySelector('.image-container'),
-                  e,
-                  exit,
-                  entry
-                );
-              },
               length: 1,
               zIndex: 2,
             }}
             entry={{
-              trigger: ({ node }) => {
-                requestAnimationFrame(() => {
-                  const image = node.querySelector('.image-container > img');
-                  console.log(node);
-                  transitionToProject(image.getBoundingClientRect());
-                });
-              },
+              trigger: transition,
               delay: 0,
               length: 1,
             }}

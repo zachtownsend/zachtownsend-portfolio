@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Swiper from 'react-id-swiper';
+import TweenMax from 'gsap/umd/TweenMax';
 import 'swiper/swiper.scss';
 import ProjectInfoBox from './ProjectInfoBox';
 
@@ -146,14 +147,53 @@ function ProjectSlider({ projects }) {
     <Slide key={project.node.id} project={project.node} />
   ));
 
+  const transitionToProject = entryImageBox => {
+    if (!swiper) {
+      return false;
+    }
+
+    // const { slides } = swiper;
+    const exitImage = swiper.slides[swiperState.currentIndex].querySelector('img');
+    const exitImageBox = exitImage.getBoundingClientRect();
+    const toTransitions = {
+      x: entryImageBox.x - exitImageBox.x,
+      y: entryImageBox.y - exitImageBox.y,
+      scale: entryImageBox.width / exitImageBox.width,
+    };
+    console.log(toTransitions);
+    TweenMax.to(exitImage, 1, {
+      x: toTransitions.x,
+      y: toTransitions.y,
+      scale: toTransitions.scale,
+      ease: Power2.easeInOut,
+    });
+
+    // swiper.forEach((project, index) => {
+    //   if (index < activeIndex) {
+    //     TweenMax.to(project, 1, { x: '-25vw', alpha: 0 });
+    //   } else if (index > activeIndex) {
+    //     TweenMax.to(project, 1, { x: '25vw', alpha: 0 });
+    //   }
+    // });
+  };
+
+  const pageTransition = ({ node }) => {
+    requestAnimationFrame(() => {
+      const image = node.querySelector('.image-container > img');
+      console.log(node);
+      transitionToProject(image.getBoundingClientRect());
+    });
+  };
+
   return (
     <StyledSwiper swiperLoaded={swiperLoaded}>
       <Swiper {...params}>{slides}</Swiper>
       <ProjectInfoBox
         projects={projects}
-        swiperState={swiperState}
+        swiper={swiper}
+        transitioning={swiperState.transitioning}
         position={projectInfoBoxPosition}
-        swiper={swiper !== null && swiper.hasOwnProperty('slides') ? swiper.slides : null}
+        transition={pageTransition}
       />
     </StyledSwiper>
   );
