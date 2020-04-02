@@ -141,7 +141,7 @@ function ProjectInfoBox({ swiper, projects, swiperState, position }) {
     if (!swiper) {
       return false;
     }
-    console.log(swiper);
+
     // const { slides } = swiper;
     const exitImage = swiper[currentIndex].querySelector('img');
     const exitImageBox = exitImage.getBoundingClientRect();
@@ -150,7 +150,7 @@ function ProjectInfoBox({ swiper, projects, swiperState, position }) {
       y: entryImageBox.y - exitImageBox.y,
       scale: entryImageBox.width / exitImageBox.width,
     };
-    console.log(exitImage);
+    console.log(toTransitions);
     TweenMax.to(exitImage, 1, {
       x: toTransitions.x,
       y: toTransitions.y,
@@ -158,7 +158,7 @@ function ProjectInfoBox({ swiper, projects, swiperState, position }) {
       ease: Power2.easeInOut,
     });
 
-    // slides.forEach((project, index) => {
+    // swiper.forEach((project, index) => {
     //   if (index < currentIndex) {
     //     TweenMax.to(project, 1, { x: '-25vw', alpha: 0 });
     //   } else if (index > currentIndex) {
@@ -242,7 +242,8 @@ function ProjectInfoBox({ swiper, projects, swiperState, position }) {
             entry={{
               trigger: ({ node }) => {
                 requestAnimationFrame(() => {
-                  const image = node.querySelector('.image-container');
+                  const image = node.querySelector('.image-container > img');
+                  console.log(node);
                   transitionToProject(image.getBoundingClientRect());
                 });
               },

@@ -20,7 +20,6 @@ const StyledSwiper = styled.div`
     .project-container {
       line-height: 0;
       height: 75vh;
-      transform-origin: top left;
 
       @media (max-width: 768px) {
         height: calc(100vh - 40px);
@@ -34,6 +33,7 @@ const StyledSwiper = styled.div`
       img {
         height: 100%;
         width: auto;
+        transform-origin: top left;
 
         &.cover {
           width: 100%;
