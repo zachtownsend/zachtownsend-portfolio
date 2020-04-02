@@ -152,7 +152,6 @@ function ProjectSlider({ projects }) {
       return false;
     }
 
-    // const { slides } = swiper;
     const exitImage = swiper.slides[swiperState.currentIndex].querySelector('img');
     const exitImageBox = exitImage.getBoundingClientRect();
     const toTransitions = {
@@ -160,7 +159,7 @@ function ProjectSlider({ projects }) {
       y: entryImageBox.y - exitImageBox.y,
       scale: entryImageBox.width / exitImageBox.width,
     };
-    console.log(toTransitions);
+
     TweenMax.to(exitImage, 1, {
       x: toTransitions.x,
       y: toTransitions.y,
@@ -168,10 +167,10 @@ function ProjectSlider({ projects }) {
       ease: Power2.easeInOut,
     });
 
-    // swiper.forEach((project, index) => {
-    //   if (index < activeIndex) {
+    // slides.forEach((project, index) => {
+    //   if (index < swiperState.currentIndex) {
     //     TweenMax.to(project, 1, { x: '-25vw', alpha: 0 });
-    //   } else if (index > activeIndex) {
+    //   } else if (index > swiperState.currentIndex) {
     //     TweenMax.to(project, 1, { x: '25vw', alpha: 0 });
     //   }
     // });
@@ -180,7 +179,6 @@ function ProjectSlider({ projects }) {
   const pageTransition = ({ node }) => {
     requestAnimationFrame(() => {
       const image = node.querySelector('.image-container > img');
-      console.log(node);
       transitionToProject(image.getBoundingClientRect());
     });
   };

@@ -98,38 +98,6 @@ const Tech = posed.li({
   },
 });
 
-// const projectTransition = entryImageBox => {
-//   const { activeIndex } = this.state;
-//   const exitImage = this.projectImage.current;
-//   const exitImageBox = exitImage.getBoundingClientRect();
-//   const toPositions = {
-//     x: entryImageBox.x - exitImageBox.x,
-//     y: entryImageBox.y - exitImageBox.y,
-//     scale: entryImageBox.width / exitImageBox.width,
-//   };
-
-//   const projects = Array.from(
-//     exitImage
-//       .closest('.swiper-wrapper')
-//       .querySelectorAll('.project-container')
-//   );
-
-//   TweenMax.to(exitImage, 1, {
-//     x: toPositions.x,
-//     y: toPositions.y,
-//     scale: toPositions.scale,
-//     ease: Power2.easeInOut,
-//   });
-
-//   projects.forEach((project, index) => {
-//     if (index < activeIndex) {
-//       TweenMax.to(project, 1, { x: '-25vw', alpha: 0 });
-//     } else if (index > activeIndex) {
-//       TweenMax.to(project, 1, { x: '25vw', alpha: 0 });
-//     }
-//   });
-// };
-
 function ProjectInfoBox({ swiper, projects, transitioning, transition, position }) {
   if (swiper === null) return null;
   const { activeIndex, previousIndex } = swiper;
