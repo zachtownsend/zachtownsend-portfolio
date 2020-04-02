@@ -13,6 +13,10 @@ const Container = styled.main`
   left: 0;
   width: 100%;
   height: 100%;
+
+  > div {
+    will-change: transform;
+  }
 `;
 
 const MathUtils = {
