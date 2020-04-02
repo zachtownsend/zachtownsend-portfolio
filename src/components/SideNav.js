@@ -176,7 +176,7 @@ export default class SideNav extends Component {
       <StyledSideNavigation visible={visible}>
         <ul>
           {links.map((link, index) => (
-            <li>
+            <li key={index}>
               <TransitionLink to={link} {...transitionProps}>
                 <span
                   className="text-wrapper"

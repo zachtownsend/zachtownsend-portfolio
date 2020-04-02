@@ -56,3 +56,36 @@ export const getJustifyContentPosition = function(position = 'left') {
 };
 
 export const getColumnWidth = (columns, baseColumns = 12) => `${100 * (columns / baseColumns)}%`;
+
+export const getAlignItemsPosition = function (position = 'center') {
+  if (typeof position !== 'string' && position !== null) {
+    throw new Error(
+      `Invalid type. Must be a string, ${typeof position} passed.`
+    );
+  }
+
+  switch (position) {
+    case '':
+    case null:
+    case 'top':
+      return 'flex-start';
+
+    case 'bottom':
+      return 'flex-end';
+
+    case 'center':
+    case 'flex-start':
+    case 'flex-end':
+    case 'start':
+    case 'end':
+    case 'space-between':
+    case 'space-around':
+    case 'space-evenly':
+      return position;
+
+    default:
+      throw new Error(
+        `Invalid string. Must be one of 'left', 'right', 'flex-start', 'flex-end', 'center', 'space-around', 'space-between' or 'space-evenly'`
+      );
+  }
+}

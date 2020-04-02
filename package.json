@@ -45,6 +45,7 @@
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-helmet": "^5.2.0",
+    "react-id-swiper": "^3.0.0",
     "react-in-viewport": "^0.0.38",
     "react-media": "^1.9.2",
     "react-pose": "^4.0.8",
@@ -53,7 +54,7 @@
     "react-transition-group": "^2.8.0",
     "sanitize-html": "^1.20.0",
     "styled-components": "^4.2.0",
-    "swiper": "^4.5.0",
+    "swiper": "^5.3.6",
     "uuid": "^3.2.1"
   },
   "keywords": [
