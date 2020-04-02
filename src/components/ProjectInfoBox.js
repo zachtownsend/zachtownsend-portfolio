@@ -21,7 +21,7 @@ const ProjectInfo = styled.div `
   transform: translate(${({ left }) => left}px, -24px);
 
   @media (max-width: 768px) {
-    width: calc(100% - 40px);
+    width: calc(100% - 20px);
     left: 20px;
     bottom: 20px;
     transform: translate(0, 0);
