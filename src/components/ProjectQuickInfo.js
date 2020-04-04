@@ -11,6 +11,10 @@ const ProjectInfo = styled.div.attrs({ className: 'projectInfo' })`
       font-family: ${props => props.displayFontFamily};
       font-size: 24px;
 
+      @media (max-width: 768px) {
+        font-size: 1.15rem;
+      }
+
       &:not(:last-child) {
         margin-bottom: 0;
       }

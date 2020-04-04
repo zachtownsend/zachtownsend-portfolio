@@ -3,7 +3,6 @@ import { getJustifyContentPosition, getAlignItemsPosition } from '../lib/helpers
 
 const StyledPageContainer = styled.div`
   background: ${props => props.theme.darkGray};
-  padding-top: 20px;
   min-height: calc(100vh - 20px);
   display: ${({ display }) => display || 'flex'};
   justify-content: ${({ hAlign }) => getJustifyContentPosition(hAlign || 'left')};
@@ -12,7 +11,7 @@ const StyledPageContainer = styled.div`
   background-size: cover;
   height: 100%;
 
-  > .columns {
+  .columns {
     flex: 1 1 100%;
   }
 `;
