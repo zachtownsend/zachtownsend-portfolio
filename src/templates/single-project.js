@@ -21,6 +21,10 @@ const ProjectInfoContainer = styled.div`
 
   .projectInfo + .projectInfo {
     margin-top: 78px;
+
+    @media (max-width: 768px) {
+      margin-top: 1rem;
+    }
   }
 `;
 
@@ -34,6 +38,12 @@ const ProjectTop = styled.section`
   height: ${({ theme }) => theme.fullHeight};
   align-items: center;
   display: flex;
+  height: auto;
+  padding-top: 70px;
+
+  .columns {
+    padding: 20px;
+  }
 `;
 
 export const SingleProjectTemplate = ({

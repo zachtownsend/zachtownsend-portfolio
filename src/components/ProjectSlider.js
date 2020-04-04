@@ -10,7 +10,7 @@ const StyledSwiper = styled.div`
   opacity: ${({ swiperLoaded }) => (swiperLoaded ? 1 : 0)};
   transition: opacity 0.6s linear 0.6s;
 
-  &.swiper-container {
+  .swiper-container {
     overflow: visible;
   }
 
@@ -24,17 +24,24 @@ const StyledSwiper = styled.div`
 
       @media (max-width: 768px) {
         height: calc(100vh - 40px);
+        display: flex;
+        align-items: center;
 
         img {
           width: 100%;
-          object-fit: cover;
+          height: auto;
         }
       }
 
       img {
+        transform-origin: top left;
         height: 100%;
         width: auto;
-        transform-origin: top left;
+
+        @media (max-width: 768px) {
+          height: auto;
+          width: 100%;
+        }
 
         &.cover {
           width: 100%;

@@ -6,7 +6,7 @@
 body {
   padding: 20px;
   background: $white;
-  min-height: 100vh;
+  height: 100vh;
 
   &::before,
   &::after {
@@ -90,4 +90,27 @@ p {
 
 .columns {
   width: 100%;
+}
+
+.page-layout {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: "";
+    position: fixed;
+    width: 20px;
+    height: 100%;
+    top: 0;
+    background: white;
+    z-index: 11000;
+  }
+
+  &::before {
+    left: 0;
+  }
+
+  &::after {
+    right: 0;
+  }
 }
