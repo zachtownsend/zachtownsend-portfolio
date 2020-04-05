@@ -13,18 +13,25 @@ const ProjectInfo = styled.div`
   z-index: 1;
   padding: 48px 64px;
   display: block;
-  background-color: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.9);
   color: ${({ theme }) => theme.white};
   transition: transform 0.4s ease-in-out;
   bottom: ${({ bottom }) => bottom}px;
   transform: translate(${({ left }) => left}px, -24px);
 
   @media (max-width: 768px) {
-    width: calc(100% - 20px);
+    width: calc(100% - 40px);
     left: 20px;
     bottom: 20px;
     transform: translate(0, 0);
-    padding: 32px 44px;
+    padding: 100px 44px 32px;
+    background: rgb(0,0,0);
+    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7721463585434174) 35%, rgba(0,212,255,0) 100%);
+    pointer-events: none;
+
+    .cta {
+      pointer-events: auto;
+    }
   }
 
   header {
