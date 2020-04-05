@@ -26,7 +26,7 @@ const ProjectInfo = styled.div`
     transform: translate(0, 0);
     padding: 100px 44px 32px;
     background: rgb(0,0,0);
-    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7721463585434174) 35%, rgba(0,212,255,0) 100%);
+    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7721463585434174) 35%, rgba(0,0,0,0) 100%);
     pointer-events: none;
 
     .cta {
