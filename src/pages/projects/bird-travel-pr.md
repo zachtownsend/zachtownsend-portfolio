@@ -11,4 +11,4 @@ techs:
 ---
 Lorem ipsum dolor amet literally meditation retro, sartorial hexagon affogato vaporware poke craft beer skateboard fixie 8-bit thundercats polaroid gentrify. Art party whatever celiac swag. Humblebrag heirloom mixtape actually celiac raw denim. Listicle vaporware bicycle rights cloud bread. Cred ramps locavore, 3 wolf moon ugh wayfarers jianbing put a bird on it blog squid ethical. Distillery viral portland selfies subway tile freegan tattooed authentic. Helvetica vinyl pug raw denim. Zach is cool
 
-<span>Image: /img/coffee.png caption: asfdasdfasdfasdfasdf</span>
+image-caption-block image=/img/coffee.png caption=This is an amazing caption xPosition=left yPosition=middle
