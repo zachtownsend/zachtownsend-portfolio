@@ -56,25 +56,28 @@ export const SingleProjectTemplate = ({
 }) => {
   const PostContent = contentComponent || Content;
   return (
-    <ProjectTop className="container">
-      <div className="columns">
-        <div className="column is-5 is-offset-1">
-          <ImageContainer className="image-container">
-            <img src={thumbnail} alt="" />
-          </ImageContainer>
+    <div>
+      <ProjectTop className="container">
+        <div className="columns">
+          <div className="column is-5 is-offset-1">
+            <ImageContainer className="image-container">
+              <img src={thumbnail} alt="" />
+            </ImageContainer>
+          </div>
+          <div className="column is-3 is-offset-1">
+            <ProjectInfoContainer>
+              <ProjectQuickInfo title="Project" content={title} />
+              <ProjectQuickInfo title="Agency" content="Verb Brands Ltd" />
+              <ProjectQuickInfo
+                title="Technology"
+                content="Wordpress, Woocommerce, PHP, jQuery"
+              />
+            </ProjectInfoContainer>
+          </div>
         </div>
-        <div className="column is-3 is-offset-1">
-          <ProjectInfoContainer>
-            <ProjectQuickInfo title="Project" content={title} />
-            <ProjectQuickInfo title="Agency" content="Verb Brands Ltd" />
-            <ProjectQuickInfo
-              title="Technology"
-              content="Wordpress, Woocommerce, PHP, jQuery"
-            />
-          </ProjectInfoContainer>
-        </div>
-      </div>
-    </ProjectTop>
+      </ProjectTop>
+      {content}
+    </div>
   );
 };
 
