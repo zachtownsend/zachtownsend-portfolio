@@ -11,6 +11,7 @@ import StyledPageContainer from '../styles/StyledPageContainer';
 import ProjectTextBlock from '../components/ProjectTextBlock';
 import ProjectImageCaptionBlock from '../components/ProjectImageCaptionBlock';
 import SmoothScrollContainer from '../components/SmoothScrollContainer';
+import { processContent } from '../lib/content-functions';
 
 const ProjectInfoContainer = styled.div`
   display: flex;
@@ -76,7 +77,7 @@ export const SingleProjectTemplate = ({
           </div>
         </div>
       </ProjectTop>
-      {content}
+      {processContent(content)}
     </div>
   );
 };

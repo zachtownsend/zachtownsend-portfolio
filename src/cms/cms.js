@@ -42,7 +42,7 @@ CMS.registerEditorComponent({
     },
   ],
   // Pattern to identify a block as being an instance of this component
-  pattern: /^image-caption-block image=(.*) caption=(.*) xPosition=(.*) yPosition=(.*)/,
+  pattern: /^\/\/{ name: 'image-caption-block', component: 'ProjectImageCaptionBlock', image: '(.*)', caption: '(.*)', xPosition: '(.*)', yPosition: '(.*)' }}\/\/$/,
   // Function to extract data elements from the regexp match
   fromBlock(match) {
     console.log(match);
@@ -56,8 +56,7 @@ CMS.registerEditorComponent({
   // Function to create a text block from an instance of this component
   toBlock(obj) {
     const { image, caption, xPosition, yPosition } = obj;
-
-    return `image-caption-block image=${image} caption=${caption} xPosition=${xPosition} yPosition=${yPosition}`;
+    return `//{ name: 'image-caption-block', component: 'ProjectImageCaptionBlock', image: '${image}', caption: '${caption}', xPosition: '${xPosition}', yPosition: '${yPosition}' }//`;
   },
   // Preview output for this component. Can either be a string or a React component
   // (component gives better render performance)
