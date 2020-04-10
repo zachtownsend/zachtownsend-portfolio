@@ -9,15 +9,11 @@ techs:
   - Advanced JavaShell
   - MongoDongo
 sections:
-  - type: carousel
-    header: Hello
-    template: carousel.html
-    images:
-      - /img/meeting-space.png
-  - type: spotlight
-    header: Spotlight
-    template: spotlight.html
-    text: Hello World
+  - type: image-caption-block
+    image: /img/apple-touch-icon.png
+    caption: This is a big **old** test - hello!
+    xPosition: right
+    yPosition: bottom
 ---
 Lorem ipsum dolor amet literally meditation retro, sartorial hexagon affogato vaporware poke craft beer skateboard fixie 8-bit thundercats polaroid gentrify. Art party whatever celiac swag. Humblebrag heirloom mixtape actually celiac raw denim. Listicle vaporware bicycle rights cloud bread. Cred ramps locavore, 3 wolf moon ugh wayfarers jianbing put a bird on it blog squid ethical. Distillery viral portland selfies subway tile freegan tattooed authentic. Helvetica vinyl pug raw denim. Zach is cool
 
